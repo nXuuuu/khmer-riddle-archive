@@ -1,0 +1,824 @@
+/* ============================================================
+   DESIGN TOKENS — DARK (default)
+   ============================================================ */
+:root,
+[data-theme="dark"] {
+  --bg-base:       #0b0f19;
+  --bg-card:       #1e293b;
+  --bg-card-hover: #334155;
+
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-hover:  rgba(255, 255, 255, 0.16);
+  --border-accent: rgba(16, 185, 129, 0.4);
+
+  --accent:        #10B981;
+  --accent-dim:    #059669;
+  --accent-glow:   rgba(16, 185, 129, 0.12);
+
+  --text-primary:   #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted:     #475569;
+
+  --shadow-card:   0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.3);
+  --shadow-hover:  0 20px 25px -5px rgba(0,0,0,0.4), 0 8px 10px -6px rgba(0,0,0,0.4);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================================
+   DESIGN TOKENS — LIGHT
+   ============================================================ */
+[data-theme="light"] {
+  --bg-base:       #eef1f6;
+  --bg-card:       #ffffff;
+  --bg-card-hover: #f8fafc;
+
+  --border:        rgba(0, 0, 0, 0.08);
+  --border-hover:  rgba(0, 0, 0, 0.16);
+  --border-accent: rgba(5, 150, 105, 0.3);
+
+  --accent:        #059669;
+  --accent-dim:    #047857;
+  --accent-glow:   rgba(5, 150, 105, 0.06);
+
+  --text-primary:   #1e293b;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+
+  --shadow-card:   0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --shadow-hover:  0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================
+   SHARED TOKENS (theme-independent)
+   ============================================================ */
+:root {
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: var(--font-montserrat), var(--font-sans);
+  --mono: 'Courier New', 'Consolas', monospace;
+  
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  20px;
+  
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   BASE RESETS
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  font-size: 15px;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* Khmer text — generous line-height for subscripts & diacritics */
+[lang="km"] {
+  line-height: 1.95;
+  font-family: "Hanuman", "Kantumruy Pro", var(--font-sans);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ============================================================
+   FLOATING QUESTION MARKS ANIMATIONS
+   ============================================================ */
+@keyframes float-qmark-1 {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.05; }
+  50% { transform: translateY(-40px) rotate(180deg) scale(1.15); opacity: 0.12; }
+  100% { transform: translateY(0) rotate(360deg) scale(1); opacity: 0.05; }
+}
+@keyframes float-qmark-2 {
+  0% { transform: translateY(0) rotate(0deg) scale(1.2); opacity: 0.07; }
+  50% { transform: translateY(-60px) rotate(-120deg) scale(0.9); opacity: 0.15; }
+  100% { transform: translateY(0) rotate(-360deg) scale(1.2); opacity: 0.07; }
+}
+
+.float-q {
+  position: absolute;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(80px, 15vw, 220px);
+  color: var(--accent);
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+/* ============================================================
+   SCROLL PROGRESS BAR
+   ============================================================ */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: var(--accent);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* ============================================================
+   BUTTON BASE & INTERACTION
+   ============================================================ */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent-glow);
+  color: var(--accent);
+}
+
+/* ============================================================
+   MODERN INTERACTIVE CARD STATES
+   ============================================================ */
+.modern-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+}
+.modern-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ============================================================
+   NAVBAR & HEADER CLASSES
+   ============================================================ */
+.gr-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.gr-nav-scrolled {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+}
+.gr-nav-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.gr-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--text-primary);
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+.gr-logo span {
+  color: var(--accent);
+}
+.gr-nav-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  align-items: center;
+}
+.gr-nav-link {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.gr-nav-link:hover {
+  color: var(--accent);
+}
+.gr-nav-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.gr-streak-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--accent);
+  background-color: var(--accent-glow);
+  border: 1px solid var(--border-accent);
+  padding: 6px 14px;
+  border-radius: 99px;
+  text-decoration: none;
+  transition: transform var(--transition-fast);
+}
+.gr-streak-badge:hover {
+  transform: scale(1.05);
+}
+.gr-theme-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+.gr-theme-btn:hover {
+  border-color: var(--border-accent);
+  color: var(--accent);
+  background-color: var(--bg-base);
+}
+
+/* ============================================================
+   HERO SECTION CLASSES
+   ============================================================ */
+.gr-hero-sec {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 80px 24px;
+}
+.gr-hero-inner {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 48px;
+  align-items: center;
+  z-index: 1;
+}
+@media (max-width: 868px) {
+  .gr-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+}
+.gr-hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+@media (max-width: 868px) {
+  .gr-hero-content {
+    align-items: center;
+  }
+}
+.gr-hero-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  background-color: var(--accent-glow);
+  border: 1px solid var(--border-accent);
+  border-radius: 99px;
+  padding: 6px 16px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.gr-hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background-color: var(--accent);
+  animation: pulse-dot 1.5s infinite;
+}
+.gr-hero-title {
+  font-size: clamp(36px, 5.5vw, 56px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+.gr-hero-title span {
+  color: var(--accent);
+}
+.gr-hero-sub {
+  font-size: 17px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 32px;
+  max-width: 520px;
+}
+.gr-hero-khmer-sub {
+  display: block;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+.gr-hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.gr-btn-primary {
+  display: inline-block;
+  background-color: var(--accent);
+  color: #ffffff !important;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 28px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+.gr-btn-primary:hover {
+  background-color: var(--accent-dim);
+  transform: translateY(-2px);
+}
+.gr-btn-secondary {
+  display: inline-block;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 28px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+.gr-btn-secondary:hover {
+  border-color: var(--border-accent);
+  background-color: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   INTERACTIVE HERO QUIZ CARD
+   ============================================================ */
+.gr-quiz-card {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 28px;
+}
+.gr-quiz-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 16px;
+}
+.gr-quiz-question {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  min-height: 80px;
+}
+.gr-quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.gr-quiz-opt {
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+.gr-quiz-opt:hover:not(:disabled) {
+  border-color: var(--border-accent);
+  background-color: var(--bg-card-hover);
+  transform: translateX(4px);
+}
+.gr-quiz-opt.correct {
+  background-color: #22c55e !important;
+  border-color: #16a34a !important;
+  color: #ffffff !important;
+}
+.gr-quiz-opt.incorrect {
+  background-color: #ef4444 !important;
+  border-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+.gr-quiz-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.gr-quiz-hint {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+.gr-quiz-hint:hover {
+  color: var(--accent);
+}
+.gr-quiz-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--accent);
+}
+.gr-quiz-next:hover {
+  color: var(--accent-dim);
+}
+
+/* ============================================================
+   RIDDLE CARD & LIST CLASSES
+   ============================================================ */
+.gr-card-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  background-color: var(--accent-glow);
+  border: 1px solid var(--border-accent);
+  border-radius: 4px;
+  padding: 2px 8px;
+  letter-spacing: 0.5px;
+}
+.gr-card-id {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.gr-card-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.gr-card-question {
+  border-left: 2px solid var(--accent);
+  padding-left: 14px;
+  margin-bottom: 16px;
+}
+.gr-card-q-text {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+.gr-card-source {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.gr-card-source::before {
+  content: "•";
+  color: var(--accent);
+}
+.gr-card-reveal-btn {
+  width: 100%;
+  padding: 10px 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  transition: all var(--transition-fast);
+}
+.gr-card-reveal-btn:hover {
+  border-color: var(--border-accent);
+  background-color: var(--accent-glow);
+  color: var(--accent);
+}
+.gr-card-reveal-btn.active {
+  border-color: var(--border-accent);
+  background-color: var(--accent-glow);
+  color: var(--accent);
+}
+.gr-card-ans-box {
+  margin-top: 16px;
+  padding: 16px;
+  background-color: var(--bg-base);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent);
+  animation: slide-down 0.25s ease-out;
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.gr-card-ans-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 6px;
+}
+.gr-card-ans-en {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.gr-card-ans-km {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.gr-card-explanation {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+.gr-card-contributor {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 12px;
+}
+
+/* ============================================================
+   DAILY CHALLENGE PAGE CLASSES
+   ============================================================ */
+.gr-daily-container {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 0 24px;
+}
+.gr-daily-progress {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.gr-daily-step {
+  flex: 1;
+  height: 6px;
+  background-color: var(--border);
+  border-radius: 99px;
+  margin-right: 8px;
+  transition: background-color var(--transition-base);
+}
+.gr-daily-step:last-child {
+  margin-right: 0;
+}
+.gr-daily-step.active {
+  background-color: var(--accent);
+}
+.gr-daily-success {
+  text-align: center;
+  padding: 48px 32px;
+}
+.gr-daily-success-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  animation: bounce 1s infinite alternate;
+}
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+
+/* ============================================================
+   SUBMISSION FORM CLASSES
+   ============================================================ */
+.gr-submit-container {
+  max-width: 650px;
+  margin: 60px auto;
+  padding: 0 24px;
+}
+.gr-form-card {
+  padding: 36px;
+}
+.gr-form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.gr-form-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.gr-form-input, .gr-form-select, .gr-form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.gr-form-input:focus, .gr-form-select:focus, .gr-form-textarea:focus {
+  border-color: var(--border-accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.gr-form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.gr-submit-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--accent);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+.gr-submit-btn:hover {
+  background-color: var(--accent-dim);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   CURATOR DASHBOARD CLASSES
+   ============================================================ */
+.gr-curator-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 0 24px;
+}
+.gr-curator-header {
+  margin-bottom: 32px;
+}
+.gr-curator-card {
+  margin-bottom: 24px;
+  padding: 24px;
+}
+.gr-curator-meta {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.gr-curator-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.gr-btn-approve {
+  background-color: #10b981;
+  color: white;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+.gr-btn-approve:hover {
+  background-color: #059669;
+}
+.gr-btn-reject {
+  background-color: #ef4444;
+  color: white;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+.gr-btn-reject:hover {
+  background-color: #dc2626;
+}
+
+/* ============================================================
+   SOURCE FILTER CLASSES
+   ============================================================ */
+.gr-source-container {
+  margin: 16px 0 24px;
+}
+.gr-source-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  display: block;
+}
+.gr-source-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.gr-source-pill {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+.gr-source-pill:hover {
+  border-color: var(--border-accent);
+  color: var(--accent);
+}
+.gr-source-pill.active {
+  border-color: var(--border-accent);
+  background-color: var(--accent-glow);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+
+
+
+
+
+
+
+
+
