@@ -34,11 +34,11 @@ export default function DailyChallenge() {
   useEffect(() => {
     if (selectedRiddles.length === 0 || step < 0 || step > 2) return;
     const current = selectedRiddles[step];
-    const otherAnswers = INITIAL_RIDDLES
+    const distractors = INITIAL_RIDDLES
       .filter(r => r.id !== current.id)
-      .map(r => r.answerEn);
-    const distractors = [...new Set(otherAnswers)].sort(() => 0.5 - Math.random()).slice(0, 3);
-    const opts = [current.answerEn, ...distractors].sort(() => 0.5 - Math.random());
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3);
+    const opts = [current, ...distractors].sort(() => 0.5 - Math.random());
     setOptions(opts);
     setSelected(null);
     setHint(false);
@@ -46,10 +46,10 @@ export default function DailyChallenge() {
 
   const handleSelect = (opt) => {
     if (selected) return;
-    setSelected(opt);
+    setSelected(opt.id);
     const current = selectedRiddles[step];
     
-    if (opt === current.answerEn) {
+    if (opt.id === current.id) {
       setTimeout(() => {
         if (step === 2) {
           // Success! Update streak
@@ -91,8 +91,8 @@ export default function DailyChallenge() {
                 </div>
                 <div className="gr-quiz-options">
                   {options.map((opt) => {
-                    const isSelected = selected === opt;
-                    const isCorrect = opt === currentRiddle.answerEn;
+                    const isSelected = selected === opt.id;
+                    const isCorrect = opt.id === currentRiddle.id;
                     const btnClass = `gr-quiz-opt ${
                       selected
                         ? isCorrect
@@ -104,19 +104,24 @@ export default function DailyChallenge() {
                     }`;
                     return (
                       <button
-                        key={opt}
+                        key={opt.id}
                         disabled={!!selected}
                         onClick={() => handleSelect(opt)}
                         className={btnClass}
                       >
-                        {opt}
+                        <span lang="km">{opt.answer}</span>
+                        <span style={{ fontSize: "0.85em", opacity: 0.85, marginLeft: 6 }}>
+                          ({opt.answerEn})
+                        </span>
                       </button>
                     );
                   })}
                 </div>
                 <div className="gr-quiz-footer">
                   <span className="gr-quiz-hint" onClick={() => setHint(true)}>
-                    {hint ? currentRiddle.questionHint || "No hint available" : "Need a hint?"}
+                    {hint
+                      ? `💡 ${currentRiddle.clueKm} (${currentRiddle.clue})`
+                      : "💡 Need a hint? · ត្រូវការតម្រុយ?"}
                   </span>
                 </div>
               </div>

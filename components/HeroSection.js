@@ -14,11 +14,11 @@ export default function HeroSection({ totalEntries, totalCategories }) {
   const loadNewRiddle = () => {
     if (INITIAL_RIDDLES.length === 0) return;
     const randomRiddle = INITIAL_RIDDLES[Math.floor(Math.random() * INITIAL_RIDDLES.length)];
-    const otherAnswers = INITIAL_RIDDLES
+    const distractors = INITIAL_RIDDLES
       .filter(r => r.id !== randomRiddle.id)
-      .map(r => r.answerEn);
-    const distractors = [...new Set(otherAnswers)].sort(() => 0.5 - Math.random()).slice(0, 3);
-    const opts = [randomRiddle.answerEn, ...distractors].sort(() => 0.5 - Math.random());
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3);
+    const opts = [randomRiddle, ...distractors].sort(() => 0.5 - Math.random());
 
     setRiddle(randomRiddle);
     setOptions(opts);
@@ -30,9 +30,9 @@ export default function HeroSection({ totalEntries, totalCategories }) {
     loadNewRiddle();
   }, []);
 
-  const handleSelect = (opt) => {
+  const handleSelect = (optId) => {
     if (selected) return;
-    setSelected(opt);
+    setSelected(optId);
   };
 
   return (
@@ -56,7 +56,7 @@ export default function HeroSection({ totalEntries, totalCategories }) {
             </span>
           </p>
           <div className="gr-hero-actions">
-            <Link href="#archive" className="gr-btn-primary">Start Solving</Link>
+            <Link href="#archive" className="gr-btn-primary">Browse Archive</Link>
             <Link href="/daily" className="gr-btn-secondary">Daily Challenge</Link>
           </div>
         </div>
@@ -69,8 +69,8 @@ export default function HeroSection({ totalEntries, totalCategories }) {
             </div>
             <div className="gr-quiz-options">
               {options.map((opt) => {
-                const isSelected = selected === opt;
-                const isCorrect = opt === riddle.answerEn;
+                const isSelected = selected === opt.id;
+                const isCorrect = opt.id === riddle.id;
                 const className = `gr-quiz-opt ${selected
                   ? isCorrect
                     ? "correct"
@@ -81,12 +81,15 @@ export default function HeroSection({ totalEntries, totalCategories }) {
                   }`;
                 return (
                   <button
-                    key={opt}
+                    key={opt.id}
                     disabled={!!selected}
-                    onClick={() => handleSelect(opt)}
+                    onClick={() => handleSelect(opt.id)}
                     className={className}
                   >
-                    {opt}
+                    <span lang="km">{opt.answer}</span>
+                    <span style={{ fontSize: "0.85em", opacity: 0.85, marginLeft: 6 }}>
+                      ({opt.answerEn})
+                    </span>
                   </button>
                 );
               })}
@@ -96,11 +99,13 @@ export default function HeroSection({ totalEntries, totalCategories }) {
                 className="gr-quiz-hint"
                 onClick={() => setHint(true)}
               >
-                {hint ? riddle.questionHint || "No hint available" : "Need a hint?"}
+                {hint
+                  ? `💡 ${riddle.clueKm} (${riddle.clue})`
+                  : "💡 Need a hint? · ត្រូវការតម្រុយ?"}
               </span>
               {selected && (
                 <button className="gr-quiz-next" onClick={loadNewRiddle}>
-                  Next riddle <span className="gr-arrow">→</span>
+                  Next riddle · បន្ទាប់ <span className="gr-arrow">→</span>
                 </button>
               )}
             </div>
