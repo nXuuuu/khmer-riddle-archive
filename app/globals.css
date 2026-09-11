@@ -64,6 +64,28 @@
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Fluid Spacing Scale */
+  --space-xs: clamp(0.25rem, 0.4vw, 0.375rem);
+  --space-sm: clamp(0.5rem, 0.8vw, 0.75rem);
+  --space-md: clamp(0.875rem, 1.5vw, 1.25rem);
+  --space-lg: clamp(1.25rem, 2.5vw, 2rem);
+  --space-xl: clamp(2rem, 4vw, 3.5rem);
+  --space-2xl: clamp(3rem, 6vw, 5.5rem);
+
+  /* Fluid Typography Scale */
+  --text-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.75rem);
+  --text-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
+  --text-base: clamp(0.9375rem, 0.88rem + 0.25vw, 1.0625rem);
+  --text-lg: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.35rem + 0.8vw, 2rem);
+  --text-3xl: clamp(1.875rem, 1.55rem + 1.3vw, 2.6rem);
+  --text-hero: clamp(2.1rem, 1.7rem + 2.4vw, 3.75rem);
+
+  /* Fluid Containers */
+  --container-max: 1120px;
+  --container-padding: clamp(16px, 4vw, 36px);
 }
 
 /* ============================================================
@@ -183,6 +205,9 @@ button {
 /* ============================================================
    NAVBAR & HEADER CLASSES
    ============================================================ */
+/* ============================================================
+   NAVBAR & HEADER CLASSES
+   ============================================================ */
 .gr-nav {
   position: sticky;
   top: 0;
@@ -196,10 +221,10 @@ button {
   border-bottom: 1px solid var(--border);
 }
 .gr-nav-inner {
-  max-width: 1000px;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 24px;
-  height: 64px;
+  padding: 0 var(--container-padding);
+  height: clamp(56px, 7vw, 68px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -207,24 +232,25 @@ button {
 .gr-logo {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 20px;
+  font-size: clamp(17px, 2.2vw, 21px);
   color: var(--text-primary);
   text-decoration: none;
   letter-spacing: -0.5px;
+  flex-shrink: 0;
 }
 .gr-logo span {
   color: var(--accent);
 }
 .gr-nav-links {
   display: flex;
-  gap: 24px;
+  gap: clamp(16px, 2.5vw, 28px);
   list-style: none;
   align-items: center;
 }
 .gr-nav-link {
   font-family: var(--font-heading);
   font-weight: 500;
-  font-size: 14px;
+  font-size: var(--text-sm);
   color: var(--text-secondary);
   text-decoration: none;
   transition: color var(--transition-fast);
@@ -234,43 +260,94 @@ button {
 }
 .gr-nav-actions {
   display: flex;
-  gap: 16px;
+  gap: clamp(8px, 1.5vw, 16px);
   align-items: center;
 }
 .gr-streak-badge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--accent);
   background-color: var(--accent-glow);
   border: 1px solid var(--border-accent);
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: 99px;
   text-decoration: none;
   transition: transform var(--transition-fast);
+  white-space: nowrap;
 }
 .gr-streak-badge:hover {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 .gr-theme-btn {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 99px;
   border: 1px solid var(--border);
   background-color: var(--bg-card);
   color: var(--text-secondary);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: all var(--transition-fast);
+  flex-shrink: 0;
 }
 .gr-theme-btn:hover {
   border-color: var(--border-accent);
   color: var(--accent);
   background-color: var(--bg-base);
+}
+.gr-nav-mobile-btn {
+  display: none;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+.gr-nav-mobile-btn:hover {
+  border-color: var(--border-accent);
+  color: var(--accent);
+}
+@media (max-width: 768px) {
+  .gr-nav-links {
+    display: none;
+  }
+  .gr-nav-mobile-btn {
+    display: inline-flex;
+  }
+}
+.gr-mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-hover);
+  padding: 16px var(--container-padding) 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: slide-down 0.2s ease-out;
+}
+.gr-mobile-menu .gr-nav-link {
+  font-size: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  display: block;
+}
+.gr-mobile-menu .gr-streak-badge {
+  align-self: flex-start;
+  margin-top: 6px;
 }
 
 /* ============================================================
@@ -278,27 +355,27 @@ button {
    ============================================================ */
 .gr-hero-sec {
   position: relative;
-  min-height: 85vh;
+  min-height: clamp(540px, 80vh, 880px);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 80px 24px;
+  padding: clamp(48px, 8vw, 100px) var(--container-padding);
 }
 .gr-hero-inner {
-  max-width: 1000px;
+  max-width: var(--container-max);
   width: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 48px;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(24px, 5vw, 56px);
   align-items: center;
   z-index: 1;
 }
 @media (max-width: 868px) {
   .gr-hero-inner {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: clamp(32px, 5vw, 44px);
     text-align: center;
   }
 }
@@ -317,14 +394,14 @@ button {
   align-items: center;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: var(--text-xs);
   font-weight: 700;
   color: var(--accent);
   background-color: var(--accent-glow);
   border: 1px solid var(--border-accent);
   border-radius: 99px;
-  padding: 6px 16px;
-  margin-bottom: 24px;
+  padding: 6px 14px;
+  margin-bottom: var(--space-md);
   text-transform: uppercase;
 }
 .gr-hero-dot {
@@ -335,42 +412,52 @@ button {
   animation: pulse-dot 1.5s infinite;
 }
 .gr-hero-title {
-  font-size: clamp(36px, 5.5vw, 56px);
+  font-size: var(--text-hero);
   font-weight: 900;
-  line-height: 1.1;
-  letter-spacing: -1.5px;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
-  margin-bottom: 16px;
+  margin-bottom: var(--space-sm);
+  text-wrap: balance;
 }
 .gr-hero-title span {
   color: var(--accent);
 }
 .gr-hero-sub {
-  font-size: 17px;
+  font-size: var(--text-base);
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 32px;
-  max-width: 520px;
+  line-height: 1.65;
+  margin-bottom: var(--space-lg);
+  max-width: 540px;
 }
 .gr-hero-khmer-sub {
   display: block;
-  font-size: 14px;
+  font-size: var(--text-sm);
   color: var(--text-muted);
   margin-top: 8px;
 }
 .gr-hero-actions {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
 }
+@media (max-width: 480px) {
+  .gr-hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+}
 .gr-btn-primary {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--accent);
   color: #ffffff !important;
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 14px;
-  padding: 12px 28px;
+  padding: 12px 26px;
+  min-height: 44px;
   border-radius: var(--radius-sm);
   text-decoration: none;
   transition: background-color var(--transition-fast), transform var(--transition-fast);
@@ -380,14 +467,17 @@ button {
   transform: translateY(-2px);
 }
 .gr-btn-secondary {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--bg-card);
   border: 1px solid var(--border);
   color: var(--text-primary);
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 14px;
-  padding: 12px 28px;
+  padding: 12px 26px;
+  min-height: 44px;
   border-radius: var(--radius-sm);
   text-decoration: none;
   transition: all var(--transition-fast);
@@ -405,7 +495,7 @@ button {
   width: 100%;
   max-width: 440px;
   margin: 0 auto;
-  padding: 28px;
+  padding: clamp(20px, 4vw, 32px);
 }
 .gr-quiz-label {
   font-family: var(--mono);
@@ -436,6 +526,9 @@ button {
   width: 100%;
   text-align: left;
   padding: 12px 16px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background-color: var(--bg-base);
@@ -542,6 +635,10 @@ button {
 .gr-card-reveal-btn {
   width: 100%;
   padding: 10px 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background-color: transparent;
@@ -656,12 +753,12 @@ button {
    SUBMISSION FORM CLASSES
    ============================================================ */
 .gr-submit-container {
-  max-width: 650px;
-  margin: 60px auto;
-  padding: 0 24px;
+  max-width: min(650px, 100%);
+  margin: clamp(32px, 6vw, 64px) auto;
+  padding: 0 var(--container-padding);
 }
 .gr-form-card {
-  padding: 36px;
+  padding: clamp(20px, 4vw, 36px);
 }
 .gr-form-group {
   margin-bottom: 20px;
@@ -677,14 +774,15 @@ button {
 }
 .gr-form-input, .gr-form-select, .gr-form-textarea {
   width: 100%;
-  padding: 12px 16px;
+  padding: clamp(10px, 2vw, 13px) clamp(12px, 2.5vw, 16px);
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background-color: var(--bg-base);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 16px; /* Prevents auto-zoom in mobile Safari */
   outline: none;
+  min-height: 44px;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 .gr-form-input:focus, .gr-form-select:focus, .gr-form-textarea:focus {
@@ -698,6 +796,7 @@ button {
 .gr-submit-btn {
   width: 100%;
   padding: 14px;
+  min-height: 48px;
   background-color: var(--accent);
   color: #ffffff;
   font-family: var(--font-heading);
@@ -715,9 +814,9 @@ button {
    CURATOR DASHBOARD CLASSES
    ============================================================ */
 .gr-curator-container {
-  max-width: 800px;
-  margin: 60px auto;
-  padding: 0 24px;
+  max-width: min(840px, 100%);
+  margin: clamp(32px, 6vw, 64px) auto;
+  padding: 0 var(--container-padding);
 }
 .gr-curator-header {
   margin-bottom: 32px;
@@ -770,48 +869,115 @@ button {
   background-color: #dc2626;
 }
 
+
 /* ============================================================
-   SOURCE FILTER CLASSES
+   FLUID LAYOUT & RESPONSIVE GRID SYSTEM
    ============================================================ */
-.gr-source-container {
-  margin: 16px 0 24px;
+.gr-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
 }
-.gr-source-label {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-  display: block;
+
+.gr-section-header {
+  margin-bottom: var(--space-lg);
 }
-.gr-source-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.gr-source-pill {
+
+.gr-section-label {
   font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 500;
-  padding: 6px 16px;
-  border-radius: 99px;
-  border: 1px solid var(--border);
-  background-color: var(--bg-card);
+  font-size: var(--text-xs);
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  display: block;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.gr-section-title {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: var(--space-xs);
+}
+
+.gr-section-desc {
+  font-size: var(--text-base);
   color: var(--text-secondary);
-  transition: all var(--transition-fast);
+  line-height: 1.65;
+  max-width: 68ch;
 }
-.gr-source-pill:hover {
-  border-color: var(--border-accent);
-  color: var(--accent);
+
+/* Fluid archive grid */
+.gr-archive-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 2.5vw, 24px);
+  width: 100%;
 }
-.gr-source-pill.active {
-  border-color: var(--border-accent);
-  background-color: var(--accent-glow);
-  color: var(--accent);
-  font-weight: 700;
+
+@media (min-width: 640px) {
+  .gr-archive-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  }
 }
+
+/* Fluid about grid */
+.gr-about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(14px, 2vw, 20px);
+  width: 100%;
+}
+
+@media (min-width: 520px) {
+  .gr-about-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .gr-about-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Filter Horizontal Touch Scroll on Mobile */
+.gr-filter-scroll {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .gr-filter-scroll {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+    margin-right: calc(-1 * var(--container-padding));
+    padding-right: var(--container-padding);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .gr-filter-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .gr-filter-scroll > * {
+    flex-shrink: 0;
+  }
+}
+
+/* Safe touch target padding */
+.gr-touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 
 
 

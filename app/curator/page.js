@@ -37,7 +37,7 @@ export default function CuratorDashboard() {
       <NavBar />
       <main className="gr-curator-container">
         <div className="gr-curator-header">
-          <h2 style={{ fontSize: "32px", fontWeight: 900, marginBottom: "8px" }}>
+          <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginBottom: "8px" }}>
             Curator Curation Dashboard
           </h2>
           <p style={{ color: "var(--text-secondary)" }}>
@@ -46,7 +46,7 @@ export default function CuratorDashboard() {
         </div>
 
         {pendingList.length === 0 ? (
-          <div className="modern-card" style={{ padding: "40px", textAlign: "center" }}>
+          <div className="modern-card" style={{ padding: "clamp(24px, 5vw, 40px)", textAlign: "center" }}>
             <span style={{ fontSize: "48px", display: "block", marginBottom: "16px" }}>🌿</span>
             <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px" }}>
               Archive is Up to Date
@@ -73,7 +73,7 @@ export default function CuratorDashboard() {
                   </p>
                 )}
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "16px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 180px), 1fr))", gap: "16px", marginBottom: "16px" }}>
                 <div>
                   <strong style={{ fontSize: "11px", color: "var(--text-muted)", display: "block" }}>
                     ANSWER (ENGLISH)
@@ -98,7 +98,7 @@ export default function CuratorDashboard() {
               <div style={{ fontSize: "13px", color: "var(--text-muted)" }}>
                 Source: {r.sourceEn} · Contributor: {r.contributor}
               </div>
-              <div className="gr-curator-actions">
+              <div className="gr-curator-actions" style={{ flexWrap: "wrap", gap: "10px" }}>
                 <button className="gr-btn-approve" onClick={() => handleApprove(r.id)}>
                   Approve & Publish
                 </button>

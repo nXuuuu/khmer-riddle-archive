@@ -11,13 +11,14 @@ const S = {
     width: "100%", boxSizing: "border-box",
     padding: "13px 44px", backgroundColor: "var(--bg-base)",
     border: "1px solid var(--border)", borderRadius: "var(--radius-md)",
-    color: "var(--text-primary)", fontSize: 15, lineHeight: 1.7,
-    outline: "none", fontFamily: "inherit",
+    color: "var(--text-primary)", fontSize: 16, lineHeight: 1.6,
+    minHeight: 48, outline: "none", fontFamily: "inherit",
     transition: "border-color var(--transition-fast), box-shadow var(--transition-fast)",
   },
   clearBtn: {
-    position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)",
-    color: "var(--text-muted)", fontSize: 18, lineHeight: 1, padding: "2px 4px",
+    position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)",
+    color: "var(--text-muted)", fontSize: 20, lineHeight: 1, padding: 8,
+    width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center",
     borderRadius: 4, transition: "color var(--transition-fast)",
   },
 };

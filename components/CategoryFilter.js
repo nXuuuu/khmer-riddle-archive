@@ -1,15 +1,17 @@
 import { CATEGORY_LABELS } from "../data/riddles.js";
 
 const S = {
-  wrap: { display: "flex", flexWrap: "wrap", gap: 8, margin: "16px 0 20px" },
+  wrap: { margin: "16px 0 20px" },
   pill: (active) => ({
-    padding: "6px 16px", borderRadius: 20, fontSize: 13,
+    padding: "8px 16px", borderRadius: 20, fontSize: 13,
+    minHeight: 38,
     fontFamily: "var(--mono)", cursor: "pointer",
     border: active ? "1px solid var(--border-accent)" : "1px solid var(--border)",
     backgroundColor: active ? "var(--accent-glow)" : "var(--bg-base)",
     color: active ? "var(--accent)" : "var(--text-secondary)",
     transition: "all var(--transition-fast)",
-    display: "flex", alignItems: "center", gap: 6, lineHeight: 1.5,
+    display: "inline-flex", alignItems: "center", gap: 6, lineHeight: 1.5,
+    flexShrink: 0,
   }),
   dot: { width: 5, height: 5, borderRadius: "50%", backgroundColor: "var(--accent)", flexShrink: 0 },
   km: { fontSize: 10, color: "var(--text-muted)", marginLeft: 2 },
@@ -17,7 +19,7 @@ const S = {
 
 export default function CategoryFilter({ categories, selected, onSelect }) {
   return (
-    <nav style={S.wrap} aria-label="Filter by category">
+    <nav className="gr-filter-scroll" style={S.wrap} aria-label="Filter by category">
       {categories.map(cat => {
         const active = selected === cat;
         return (

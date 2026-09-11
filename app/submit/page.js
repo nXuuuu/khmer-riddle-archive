@@ -68,7 +68,7 @@ export default function SubmitRiddle() {
             <p style={{ color: "var(--text-secondary)", marginBottom: "32px" }}>
               Your riddle has been queued for curator review. Once approved, it will be published to the public archive.
             </p>
-            <div style={{ display: "flex", gap: "16px", justifyContent: "center" }}>
+            <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
               <button className="gr-btn-primary" onClick={() => setSuccess(false)}>
                 Submit Another
               </button>

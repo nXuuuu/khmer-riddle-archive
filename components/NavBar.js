@@ -31,6 +31,7 @@ export default function NavBar() {
   const [progress, setProgress] = useState(0);
   const [theme, setTheme] = useState("dark");
   const [streak, setStreak] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
@@ -40,7 +41,6 @@ export default function NavBar() {
     const storedStreak = localStorage.getItem("riddle-streak");
     if (storedStreak) setStreak(parseInt(storedStreak, 10));
 
-    // Listen for custom event when streak changes on /daily
     const handleStreakChange = () => {
       const s = localStorage.getItem("riddle-streak");
       setStreak(s ? parseInt(s, 10) : 0);
@@ -97,8 +97,32 @@ export default function NavBar() {
           >
             {theme === "dark" ? <SunIcon /> : <MoonIcon />}
           </button>
+          <button
+            className="gr-nav-mobile-btn"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            )}
+          </button>
         </div>
       </div>
+      {mobileOpen && (
+        <div className="gr-mobile-menu">
+          <Link href="/" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Home</Link>
+          <Link href="/daily" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Daily Challenge</Link>
+          <Link href="/submit" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Submit Riddle</Link>
+          {streak > 0 && (
+            <Link href="/daily" className="gr-streak-badge" onClick={() => setMobileOpen(false)}>
+              🔥 {streak} Day Streak
+            </Link>
+          )}
+        </div>
+      )}
     </header>
   );
 }

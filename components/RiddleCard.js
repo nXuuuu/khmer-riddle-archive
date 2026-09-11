@@ -6,7 +6,7 @@ export default function RiddleCard({ item }) {
   const [revealed, setRevealed] = useState(false);
 
   return (
-    <article className="modern-card" style={{ padding: "24px" }}>
+    <article className="modern-card" style={{ padding: "clamp(18px, 3vw, 24px)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
         <span className="gr-card-badge">{item.category}</span>
         <span className="gr-card-id">#{item.id}</span>

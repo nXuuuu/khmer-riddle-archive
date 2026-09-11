@@ -3,21 +3,31 @@
 import { useEffect, useState } from "react";
 
 const S = {
-  container: { marginTop: 40, padding: "0 24px" },
-  title: { fontSize: 20, fontWeight: 600, marginBottom: 12, color: "var(--text-primary)" },
-  listItem: { borderBottom: "1px solid var(--border)", padding: "12px 0" },
+  container: { marginTop: "var(--space-md)", width: "100%" },
+  title: { fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: 16, color: "var(--text-primary)" },
+  listItem: {
+    borderBottom: "1px solid var(--border)",
+    padding: "14px 0",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: 12,
+  },
   btn: {
-    marginLeft: 8,
-    padding: "6px 12px",
+    marginLeft: 6,
+    padding: "8px 14px",
+    minHeight: 38,
     backgroundColor: "var(--accent-glow)",
     border: "1px solid var(--border-accent)",
     borderRadius: "var(--radius-sm)",
     color: "var(--accent)",
     fontFamily: "var(--mono)",
+    fontSize: 13,
     cursor: "pointer",
-    transition: "background-color var(--transition-fast)"
+    transition: "background-color var(--transition-fast)",
   },
-  empty: { color: "var(--text-muted)" }
+  empty: { color: "var(--text-muted)", fontSize: 14 }
 };
 
 export default function AdminPanel() {

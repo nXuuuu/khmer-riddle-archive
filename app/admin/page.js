@@ -27,10 +27,10 @@ export default function AdminPage() {
   return (
     <>
       <NavBar />
-      <main style={{ maxWidth: 900, margin: "80px auto", padding: "0 24px" }}>
+      <main className="gr-container" style={{ margin: "clamp(40px, 8vw, 80px) auto" }}>
         {!isLoggedIn ? (
-          <div className="modern-card" style={{ maxWidth: 400, margin: "0 auto", padding: 32 }}>
-            <h2 style={{ marginBottom: 16, fontSize: 24, fontWeight: 700 }}>Curator Login</h2>
+          <div className="modern-card" style={{ maxWidth: 420, margin: "0 auto", padding: "clamp(24px, 5vw, 36px)" }}>
+            <h2 style={{ marginBottom: 16, fontSize: "var(--text-xl)", fontWeight: 700 }}>Curator Login</h2>
             <p style={{ color: "var(--text-secondary)", marginBottom: 24, fontSize: 14 }}>
               Enter your passcode to manage riddle submissions and edit the archive.
             </p>
@@ -51,9 +51,9 @@ export default function AdminPage() {
           </div>
         ) : (
           <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16, marginBottom: 32 }}>
               <div>
-                <h1 style={{ fontSize: 32, fontWeight: 800 }}>Admin Dashboard</h1>
+                <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800 }}>Admin Dashboard</h1>
                 <p style={{ color: "var(--text-secondary)", marginTop: 4 }}>
                   Welcome back, {collection.curator}.
                 </p>
