@@ -38,6 +38,13 @@ export default function NavBar() {
     window.addEventListener("scroll", onScroll, { passive: true });
 
     const supabase = createClient();
+    if (!supabase) {
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("streak-updated", handleStreakChange);
+      };
+    }
+
     supabase.auth.getUser().then(({ data }) => {
       setUser(data?.user ?? null);
     });
@@ -49,7 +56,7 @@ export default function NavBar() {
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("streak-updated", handleStreakChange);
-      subscription.unsubscribe();
+      subscription?.unsubscribe?.();
     };
   }, []);
 
@@ -62,7 +69,9 @@ export default function NavBar() {
 
   const handleLogout = async () => {
     const supabase = createClient();
-    await supabase.auth.signOut();
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
     setUser(null);
     window.location.href = "/";
   };
