@@ -3,28 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import collection from "../collection.config.js";
-
-function SunIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="5" />
-      <line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" />
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-      <line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" />
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-    </svg>
-  );
-}
-
-function MoonIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-    </svg>
-  );
-}
+import { SunIcon, MoonIcon } from "./ThemeIcons.js";
+import { createClient } from "../utils/supabase/client.js";
 
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -32,6 +12,7 @@ export default function NavBar() {
   const [theme, setTheme] = useState("dark");
   const [streak, setStreak] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
@@ -55,10 +36,20 @@ export default function NavBar() {
       setScrolled(top > 40);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
-    
+
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("streak-updated", handleStreakChange);
+      subscription.unsubscribe();
     };
   }, []);
 
@@ -67,6 +58,13 @@ export default function NavBar() {
     setTheme(next);
     document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem("theme", next);
+  };
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setUser(null);
+    window.location.href = "/";
   };
 
   return (
@@ -89,6 +87,40 @@ export default function NavBar() {
               🔥 {streak} Day Streak
             </Link>
           )}
+
+          <div className="gr-desktop-auth" style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+            {user ? (
+              <>
+                <span
+                  style={{ fontSize: "13px", color: "var(--text-secondary)", maxWidth: "150px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+                  title={user.email}
+                >
+                  {user.email}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="gr-btn-secondary"
+                  style={{ padding: "6px 12px", fontSize: "12px", minHeight: "32px", cursor: "pointer" }}
+                >
+                  Log Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="gr-nav-link" style={{ fontSize: "13px" }}>
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  className="gr-btn-primary"
+                  style={{ padding: "6px 12px", fontSize: "12px", minHeight: "32px", textDecoration: "none" }}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+
           <button
             className="gr-theme-btn"
             onClick={toggleTheme}
@@ -120,6 +152,39 @@ export default function NavBar() {
             <Link href="/daily" className="gr-streak-badge" onClick={() => setMobileOpen(false)}>
               🔥 {streak} Day Streak
             </Link>
+          )}
+          {user ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "6px", paddingTop: "12px", borderTop: "1px solid var(--border)" }}>
+              <span style={{ fontSize: "13px", color: "var(--text-secondary)" }}>
+                Signed in as: <strong>{user.email}</strong>
+              </span>
+              <button
+                onClick={() => { setMobileOpen(false); handleLogout(); }}
+                className="gr-btn-secondary"
+                style={{ width: "100%", padding: "10px", textAlign: "center" }}
+              >
+                Log Out
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: "flex", gap: "10px", marginTop: "6px", paddingTop: "12px", borderTop: "1px solid var(--border)" }}>
+              <Link
+                href="/login"
+                className="gr-btn-secondary"
+                style={{ flex: 1, textAlign: "center", padding: "10px", textDecoration: "none" }}
+                onClick={() => setMobileOpen(false)}
+              >
+                Log In
+              </Link>
+              <Link
+                href="/signup"
+                className="gr-btn-primary"
+                style={{ flex: 1, textAlign: "center", padding: "10px", textDecoration: "none" }}
+                onClick={() => setMobileOpen(false)}
+              >
+                Sign Up
+              </Link>
+            </div>
           )}
         </div>
       )}

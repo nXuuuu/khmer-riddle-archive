@@ -331,6 +331,9 @@ button {
   .gr-nav-links {
     display: none;
   }
+  .gr-desktop-auth {
+    display: none;
+  }
   .gr-nav-mobile-btn {
     display: inline-flex;
   }
