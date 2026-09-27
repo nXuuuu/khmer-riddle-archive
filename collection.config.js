@@ -21,3 +21,21 @@ const collection = {
 };
 
 export default collection;
+
+export const CATEGORIES = [
+  "All",
+  "Nature & Animals",
+  "Plants & Fruits",
+  "Tools & Farming",
+  "Body & Daily Life",
+  "Wisdom & Folklore",
+];
+
+export const CATEGORY_LABELS = {
+  "All":               "ទាំងអស់",
+  "Nature & Animals":  "ធម្មជាតិ និង សត្វ",
+  "Plants & Fruits":   "រុក្ខជាតិ និង ផ្លែឈើ",
+  "Tools & Farming":   "ឧបករណ៍ និង កសិកម្ម",
+  "Body & Daily Life": "រាងកាយ និង ជីវិតរស់នៅ",
+  "Wisdom & Folklore": "ចំណោទប្រាជ្ញា និង រឿងព្រេង",
+};

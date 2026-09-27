@@ -5,15 +5,18 @@ import { useState } from "react";
 export default function RiddleCard({ item }) {
   const [revealed, setRevealed] = useState(false);
 
+  // Use a short version of the UUID for display, or the original ID if it's the static one
+  const displayId = item.id.length > 15 ? item.id.slice(0, 8) : item.id;
+
   return (
     <article className="modern-card" style={{ padding: "clamp(18px, 3vw, 24px)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
         <span className="gr-card-badge">{item.category}</span>
-        <span className="gr-card-id">#{item.id}</span>
+        <span className="gr-card-id">#{displayId}</span>
       </div>
 
-      {item.questionHint && (
-        <p className="gr-card-hint">"{item.questionHint}"</p>
+      {item.hint && (
+        <p className="gr-card-hint">"{item.hint}"</p>
       )}
 
       <div className="gr-card-question">
@@ -21,7 +24,7 @@ export default function RiddleCard({ item }) {
       </div>
 
       <div className="gr-card-source">
-        <span>{item.sourceEn}</span>
+        <span>{item.source}</span>
       </div>
 
       <button
@@ -35,10 +38,9 @@ export default function RiddleCard({ item }) {
       {revealed && (
         <div className="gr-card-ans-box">
           <span className="gr-card-ans-title">ANSWER</span>
-          <p className="gr-card-ans-en">{item.answerEn}</p>
-          <p className="gr-card-ans-km" lang="km">{item.answer}</p>
+          <p className="gr-card-ans-en">{item.answer_en}</p>
+          <p className="gr-card-ans-km" lang="km">{item.answer_kh}</p>
           {item.explanation && <p className="gr-card-explanation">{item.explanation}</p>}
-          {item.contributor && <p className="gr-card-contributor">Added by {item.contributor}</p>}
         </div>
       )}
     </article>

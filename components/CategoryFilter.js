@@ -1,4 +1,4 @@
-import { CATEGORY_LABELS } from "../data/riddles.js";
+import { CATEGORY_LABELS } from "../collection.config.js";
 
 const S = {
   wrap: { margin: "16px 0 20px" },

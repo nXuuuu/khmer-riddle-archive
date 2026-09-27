@@ -3,18 +3,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import collection from "../collection.config.js";
-import { INITIAL_RIDDLES } from "../data/riddles.js";
 
-export default function HeroSection({ totalEntries, totalCategories }) {
+export default function HeroSection({ totalEntries, totalCategories, riddles = [] }) {
   const [riddle, setRiddle] = useState(null);
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState(null);
   const [hint, setHint] = useState(false);
 
   const loadNewRiddle = () => {
-    if (INITIAL_RIDDLES.length === 0) return;
-    const randomRiddle = INITIAL_RIDDLES[Math.floor(Math.random() * INITIAL_RIDDLES.length)];
-    const distractors = INITIAL_RIDDLES
+    if (!riddles || riddles.length === 0) return;
+    const randomRiddle = riddles[Math.floor(Math.random() * riddles.length)];
+    const distractors = riddles
       .filter(r => r.id !== randomRiddle.id)
       .sort(() => 0.5 - Math.random())
       .slice(0, 3);
@@ -28,7 +27,7 @@ export default function HeroSection({ totalEntries, totalCategories }) {
 
   useEffect(() => {
     loadNewRiddle();
-  }, []);
+  }, [riddles]);
 
   const handleSelect = (optId) => {
     if (selected) return;
@@ -57,7 +56,6 @@ export default function HeroSection({ totalEntries, totalCategories }) {
           </p>
           <div className="gr-hero-actions">
             <Link href="#archive" className="gr-btn-primary">Browse Archive</Link>
-            <Link href="/daily" className="gr-btn-secondary">Daily Challenge</Link>
           </div>
         </div>
 
@@ -86,9 +84,9 @@ export default function HeroSection({ totalEntries, totalCategories }) {
                     onClick={() => handleSelect(opt.id)}
                     className={className}
                   >
-                    <span lang="km">{opt.answer}</span>
+                    <span lang="km">{opt.answer_kh}</span>
                     <span style={{ fontSize: "0.85em", opacity: 0.85, marginLeft: 6 }}>
-                      ({opt.answerEn})
+                      ({opt.answer_en})
                     </span>
                   </button>
                 );
@@ -100,7 +98,7 @@ export default function HeroSection({ totalEntries, totalCategories }) {
                 onClick={() => setHint(true)}
               >
                 {hint
-                  ? `💡 ${riddle.clueKm} (${riddle.clue})`
+                  ? `💡 ${riddle.hint || "No hint available"}`
                   : "💡 Need a hint? · ត្រូវការតម្រុយ?"}
               </span>
               {selected && (

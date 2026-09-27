@@ -3,53 +3,68 @@
 import { useState } from "react";
 import Link from "next/link";
 import NavBar from "../../components/NavBar.js";
-import { CATEGORIES } from "../../data/riddles.js";
+import { CATEGORIES } from "../../collection.config.js";
+import { createClient } from "../../utils/supabase/client.js";
 
 export default function SubmitRiddle() {
   const [formData, setFormData] = useState({
     category: CATEGORIES[1] || "",
     question: "",
-    questionHint: "",
-    answer: "",
-    answerEn: "",
+    hint: "",
+    answer_kh: "",
+    answer_en: "",
     explanation: "",
     source: "",
-    sourceEn: "",
-    contributor: "",
   });
   const [success, setSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.question || !formData.answer || !formData.answerEn) {
-      alert("Please fill in the riddle question and answer fields.");
+    setErrorMsg("");
+    
+    if (!formData.question || !formData.answer_kh || !formData.answer_en) {
+      setErrorMsg("Please fill in the riddle question and answer fields.");
+      return;
+    }
+
+    const supabase = createClient();
+    if (!supabase) {
+      setErrorMsg("Database connection not configured.");
+      return;
+    }
+
+    // Try to get user
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      setErrorMsg("You must be logged in to submit a riddle (RLS enforced).");
       return;
     }
 
     const newRiddle = {
-      id: `custom-${Date.now()}`,
       ...formData,
-      status: "pending",
+      owner: user.id,
       source: formData.source || "Submitted Online",
-      sourceEn: formData.sourceEn || "Submitted Online",
-      contributor: formData.contributor || "Anonymous Contributor",
-      createdAt: new Date().toISOString().split("T")[0],
     };
 
-    const existing = JSON.parse(localStorage.getItem("custom-riddles") || "[]");
-    localStorage.setItem("custom-riddles", JSON.stringify([newRiddle, ...existing]));
+    const { error } = await supabase.from("entries").insert([newRiddle]);
+
+    if (error) {
+      console.error(error);
+      setErrorMsg(`Submission failed: ${error.message}`);
+      return;
+    }
     
     setSuccess(true);
     setFormData({
       category: CATEGORIES[1] || "",
       question: "",
-      questionHint: "",
-      answer: "",
-      answerEn: "",
+      hint: "",
+      answer_kh: "",
+      answer_en: "",
       explanation: "",
       source: "",
-      sourceEn: "",
-      contributor: "",
     });
   };
 
@@ -66,7 +81,7 @@ export default function SubmitRiddle() {
             <div className="gr-daily-success-icon">📥</div>
             <h2 style={{ marginBottom: "12px", fontSize: "28px" }}>Riddle Submitted!</h2>
             <p style={{ color: "var(--text-secondary)", marginBottom: "32px" }}>
-              Your riddle has been queued for curator review. Once approved, it will be published to the public archive.
+              Your riddle has been securely saved to the database.
             </p>
             <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
               <button className="gr-btn-primary" onClick={() => setSuccess(false)}>
@@ -81,6 +96,12 @@ export default function SubmitRiddle() {
             <p style={{ color: "var(--text-secondary)", marginBottom: "28px", fontSize: "14px" }}>
               Share a riddle from your family, elders, or books to help preserve Khmer oral history.
             </p>
+
+            {errorMsg && (
+              <div style={{ padding: "12px", backgroundColor: "#ffebee", color: "#c62828", borderRadius: "8px", marginBottom: "20px", fontSize: "14px", border: "1px solid #ef9a9a" }}>
+                {errorMsg}
+              </div>
+            )}
 
             <div className="gr-form-group">
               <label className="gr-form-label">Category</label>
@@ -107,7 +128,7 @@ export default function SubmitRiddle() {
               <label className="gr-form-label">English Hint/Translation</label>
               <input 
                 type="text" className="gr-form-input" placeholder="e.g. Dressed in blue when young..."
-                value={formData.questionHint} onChange={(e) => updateField("questionHint", e.target.value)}
+                value={formData.hint} onChange={(e) => updateField("hint", e.target.value)}
               />
             </div>
 
@@ -115,7 +136,7 @@ export default function SubmitRiddle() {
               <label className="gr-form-label">Answer (Khmer)*</label>
               <input 
                 type="text" required className="gr-form-input" placeholder="e.g. ផ្លែម្ទេស"
-                value={formData.answer} onChange={(e) => updateField("answer", e.target.value)}
+                value={formData.answer_kh} onChange={(e) => updateField("answer_kh", e.target.value)}
               />
             </div>
 
@@ -123,7 +144,7 @@ export default function SubmitRiddle() {
               <label className="gr-form-label">Answer (English)*</label>
               <input 
                 type="text" required className="gr-form-input" placeholder="e.g. Chili Pepper"
-                value={formData.answerEn} onChange={(e) => updateField("answerEn", e.target.value)}
+                value={formData.answer_en} onChange={(e) => updateField("answer_en", e.target.value)}
               />
             </div>
 
@@ -138,21 +159,13 @@ export default function SubmitRiddle() {
             <div className="gr-form-group">
               <label className="gr-form-label">Source (English)</label>
               <input 
-                type="text" className="gr-form-input" placeholder="e.g. Grandmother Sokum, Takeo Province"
-                value={formData.sourceEn} onChange={(e) => updateField("sourceEn", e.target.value)}
-              />
-            </div>
-
-            <div className="gr-form-group">
-              <label className="gr-form-label">Your Name (Contributor)</label>
-              <input 
-                type="text" className="gr-form-input" placeholder="e.g. Sokunthanou Chhoy"
-                value={formData.contributor} onChange={(e) => updateField("contributor", e.target.value)}
+                type="text" required className="gr-form-input" placeholder="e.g. Grandmother Sokum, Takeo Province"
+                value={formData.source} onChange={(e) => updateField("source", e.target.value)}
               />
             </div>
 
             <button type="submit" className="gr-submit-btn" style={{ marginTop: "12px" }}>
-              Publish to Local Archive
+              Publish to Database
             </button>
           </form>
         )}

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { INITIAL_RIDDLES, CATEGORIES, CATEGORY_LABELS } from "../data/riddles.js";
+import collection, { CATEGORIES, CATEGORY_LABELS } from "../collection.config.js";
+import { createClient } from "../utils/supabase/client.js";
 import NavBar from "../components/NavBar.js";
 import HeroSection from "../components/HeroSection.js";
 import SearchBar from "../components/SearchBar.js";
@@ -9,7 +10,6 @@ import CategoryFilter from "../components/CategoryFilter.js";
 import StatsBar from "../components/StatsBar.js";
 import RiddleCard from "../components/RiddleCard.js";
 import EmptyState from "../components/EmptyState.js";
-import collection from "../collection.config.js";
 
 /* ── Normalize Khmer & English text (NFC + strip zero-width chars) ── */
 function cleanKhmer(str) {
@@ -19,9 +19,6 @@ function cleanKhmer(str) {
     .replace(/[\u200B-\u200D\uFEFF]/g, "")
     .toLowerCase();
 }
-
-
-
 
 /* ── Scroll-reveal via IntersectionObserver (vanilla browser API) ── */
 function useReveal() {
@@ -35,8 +32,6 @@ function useReveal() {
     return () => io.disconnect();
   }, []);
 }
-
-const UNIQUE_SOURCES = new Set(INITIAL_RIDDLES.map(r => r.source)).size;
 
 const S = {
   archiveSection: {
@@ -84,23 +79,27 @@ const aboutCards = [
 export default function Home() {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [riddles, setRiddles] = useState(INITIAL_RIDDLES);
+  const [riddles, setRiddles] = useState([]);
   useReveal();
 
-  const loadPublishedRiddles = () => {
-    const custom = JSON.parse(localStorage.getItem("custom-riddles") || "[]");
-    const published = custom.filter((r) => r.status === "published");
-    if (published.length > 0) {
-      setRiddles([...published, ...INITIAL_RIDDLES]);
-    } else {
-      setRiddles(INITIAL_RIDDLES);
-    }
-  };
-
   useEffect(() => {
-    loadPublishedRiddles();
-    window.addEventListener("riddlesUpdated", loadPublishedRiddles);
-    return () => window.removeEventListener("riddlesUpdated", loadPublishedRiddles);
+    async function loadRiddles() {
+      const supabase = createClient();
+      if (!supabase) return;
+
+      const { data, error } = await supabase
+        .from("entries")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (data) {
+        setRiddles(data);
+      } else if (error) {
+        console.error("Failed to load riddles:", error);
+      }
+    }
+    
+    loadRiddles();
   }, []);
 
   const filteredRiddles = useMemo(() => {
@@ -113,16 +112,13 @@ export default function Home() {
       const kmCat = CATEGORY_LABELS[item.category] || "";
       const searchable = [
         item.question,
-        item.questionHint,
-        item.answer,
-        item.answerEn,
+        item.hint,
+        item.answer_kh,
+        item.answer_en,
         item.explanation,
-        item.explanationKm,
         item.source,
-        item.sourceEn,
         item.category,
         kmCat,
-        item.contributor,
       ]
         .map(cleanKhmer)
         .join(" ");
@@ -143,6 +139,7 @@ export default function Home() {
       <HeroSection
         totalEntries={riddles.length}
         totalCategories={CATEGORIES.length - 1}
+        riddles={riddles}
       />
 
       {/* ── Archive ── */}
@@ -203,7 +200,7 @@ export default function Home() {
           Preserving the oral wit and wisdom of the Khmer people, one riddle at a time.
         </span>
         <br />
-        <a href="/admin" style={{ color: "var(--text-muted)", textDecoration: "none", fontSize: 11, marginTop: 16, display: "inline-block", opacity: 0.6 }}>
+        <a href="/login" style={{ color: "var(--text-muted)", textDecoration: "none", fontSize: 11, marginTop: 16, display: "inline-block", opacity: 0.6 }}>
           Admin Login
         </a>
       </footer>

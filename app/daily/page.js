@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "../../components/NavBar.js";
-import { INITIAL_RIDDLES } from "../../data/riddles.js";
+import { createClient } from "../../utils/supabase/client.js";
 
 export default function DailyChallenge() {
   const [step, setStep] = useState(0); // 0, 1, 2 = riddle steps, 3 = success, -1 = fail
+  const [riddles, setRiddles] = useState([]);
   const [selectedRiddles, setSelectedRiddles] = useState([]);
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -14,10 +15,11 @@ export default function DailyChallenge() {
   const [streak, setStreak] = useState(0);
 
   // Initialize game
-  const initGame = () => {
-    if (INITIAL_RIDDLES.length < 3) return;
+  const initGame = (dataList) => {
+    const rData = dataList || riddles;
+    if (rData.length < 3) return;
     // Shuffle and pick 3 unique riddles
-    const shuffled = [...INITIAL_RIDDLES].sort(() => 0.5 - Math.random());
+    const shuffled = [...rData].sort(() => 0.5 - Math.random());
     setSelectedRiddles(shuffled.slice(0, 3));
     setStep(0);
     setSelected(null);
@@ -25,7 +27,17 @@ export default function DailyChallenge() {
   };
 
   useEffect(() => {
-    initGame();
+    async function loadRiddles() {
+      const supabase = createClient();
+      if (!supabase) return;
+      const { data } = await supabase.from("entries").select("*");
+      if (data) {
+        setRiddles(data);
+        initGame(data);
+      }
+    }
+    loadRiddles();
+    
     const storedStreak = localStorage.getItem("riddle-streak");
     if (storedStreak) setStreak(parseInt(storedStreak, 10));
   }, []);
@@ -34,7 +46,7 @@ export default function DailyChallenge() {
   useEffect(() => {
     if (selectedRiddles.length === 0 || step < 0 || step > 2) return;
     const current = selectedRiddles[step];
-    const distractors = INITIAL_RIDDLES
+    const distractors = riddles
       .filter(r => r.id !== current.id)
       .sort(() => 0.5 - Math.random())
       .slice(0, 3);
@@ -42,7 +54,7 @@ export default function DailyChallenge() {
     setOptions(opts);
     setSelected(null);
     setHint(false);
-  }, [step, selectedRiddles]);
+  }, [step, selectedRiddles, riddles]);
 
   const handleSelect = (opt) => {
     if (selected) return;
@@ -83,7 +95,7 @@ export default function DailyChallenge() {
               <div className={`gr-daily-step ${step >= 1 ? "active" : ""}`} />
               <div className={`gr-daily-step ${step >= 2 ? "active" : ""}`} />
             </div>
-            {currentRiddle && (
+            {currentRiddle ? (
               <div className="modern-card gr-quiz-card">
                 <span className="gr-quiz-label">Question {step + 1} of 3</span>
                 <div className="gr-quiz-question" lang="km">
@@ -109,9 +121,9 @@ export default function DailyChallenge() {
                         onClick={() => handleSelect(opt)}
                         className={btnClass}
                       >
-                        <span lang="km">{opt.answer}</span>
+                        <span lang="km">{opt.answer_kh}</span>
                         <span style={{ fontSize: "0.85em", opacity: 0.85, marginLeft: 6 }}>
-                          ({opt.answerEn})
+                          ({opt.answer_en})
                         </span>
                       </button>
                     );
@@ -120,11 +132,13 @@ export default function DailyChallenge() {
                 <div className="gr-quiz-footer">
                   <span className="gr-quiz-hint" onClick={() => setHint(true)}>
                     {hint
-                      ? `💡 ${currentRiddle.clueKm} (${currentRiddle.clue})`
+                      ? `💡 ${currentRiddle.hint || "No hint available"}`
                       : "💡 Need a hint? · ត្រូវការតម្រុយ?"}
                   </span>
                 </div>
               </div>
+            ) : (
+              <p style={{ textAlign: "center", marginTop: "40px" }}>Loading daily challenge...</p>
             )}
           </div>
         )}
@@ -150,7 +164,7 @@ export default function DailyChallenge() {
             <p style={{ color: "var(--text-secondary)", marginBottom: "32px" }}>
               Don't worry, daily challenges can be tried as many times as you like!
             </p>
-            <button className="gr-btn-primary" onClick={initGame}>Try Again</button>
+            <button className="gr-btn-primary" onClick={() => initGame()}>Try Again</button>
           </div>
         )}
       </main>
