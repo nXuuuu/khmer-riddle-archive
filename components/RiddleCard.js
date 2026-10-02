@@ -80,30 +80,33 @@ export default function RiddleCard({ item, currentUser }) {
         <span>{item.source}</span>
       </div>
 
-      <div style={{ display: "flex", gap: "8px", marginTop: "16px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "16px" }}>
         <button
           type="button"
           onClick={() => setRevealed(r => !r)}
           className={`gr-card-reveal-btn ${revealed ? "active" : ""}`}
-          style={{ flex: 1 }}
         >
           {revealed ? "Hide Answer" : "Reveal Answer"}
         </button>
         
         {isOwner && (
-          <>
-            <Link href={`/edit/${item.id}`} className="gr-card-reveal-btn" style={{ flex: "0 0 auto", textDecoration: "none", backgroundColor: "var(--bg-elevated)" }}>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <Link 
+              href={`/edit/${item.id}`} 
+              className="gr-card-reveal-btn" 
+              style={{ flex: 1, width: "auto", textDecoration: "none", backgroundColor: "var(--bg-elevated)" }}
+            >
               Edit
             </Link>
             <button
               type="button"
               onClick={handleDelete}
               className="gr-card-reveal-btn"
-              style={{ flex: "0 0 auto", backgroundColor: "#ffebee", color: "#c62828", border: "1px solid #ffcdd2" }}
+              style={{ flex: 1, width: "auto", backgroundColor: "#ffebee", color: "#c62828", border: "1px solid #ffcdd2" }}
             >
               Delete
             </button>
-          </>
+          </div>
         )}
       </div>
 

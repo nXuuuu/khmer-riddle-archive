@@ -927,16 +927,18 @@ button {
 
 /* Fluid archive grid */
 .gr-archive-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(16px, 2.5vw, 24px);
+  column-width: 340px;
+  column-gap: clamp(16px, 2.5vw, 24px);
   width: 100%;
 }
 
-@media (min-width: 640px) {
-  .gr-archive-grid {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-  }
+.gr-archive-grid > div {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: clamp(16px, 2.5vw, 24px);
+  /* Prevents column cutting issues on some browsers */
+  display: inline-block; 
+  width: 100%;
 }
 
 /* Fluid about grid */
