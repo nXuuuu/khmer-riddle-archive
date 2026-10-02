@@ -87,7 +87,7 @@ export default function NavBar() {
           <ul className="gr-nav-links">
             <li><Link href="/" className="gr-nav-link">Home</Link></li>
             <li><Link href="/daily" className="gr-nav-link">Daily Challenge</Link></li>
-            <li><Link href="/submit" className="gr-nav-link">Submit Riddle</Link></li>
+            <li><Link href="/contribute" className="gr-nav-link">Submit Riddle</Link></li>
           </ul>
         </nav>
         <div className="gr-nav-actions">
@@ -156,7 +156,7 @@ export default function NavBar() {
         <div className="gr-mobile-menu">
           <Link href="/" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Home</Link>
           <Link href="/daily" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Daily Challenge</Link>
-          <Link href="/submit" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Submit Riddle</Link>
+          <Link href="/contribute" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Submit Riddle</Link>
           {streak > 0 && (
             <Link href="/daily" className="gr-streak-badge" onClick={() => setMobileOpen(false)}>
               🔥 {streak} Day Streak

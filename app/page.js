@@ -80,12 +80,16 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [riddles, setRiddles] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
   useReveal();
 
   useEffect(() => {
-    async function loadRiddles() {
+    async function loadData() {
       const supabase = createClient();
       if (!supabase) return;
+
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUser(user);
 
       const { data, error } = await supabase
         .from("entries")
@@ -99,7 +103,7 @@ export default function Home() {
       }
     }
     
-    loadRiddles();
+    loadData();
   }, []);
 
   const filteredRiddles = useMemo(() => {
@@ -164,7 +168,7 @@ export default function Home() {
             ? <EmptyState onReset={handleReset} />
             : filteredRiddles.map((riddle, i) => (
                 <div key={riddle.id} className={`reveal delay-${Math.min(i + 1, 5)}`}>
-                  <RiddleCard item={riddle} />
+                  <RiddleCard item={riddle} currentUser={currentUser} />
                 </div>
               ))
           }
