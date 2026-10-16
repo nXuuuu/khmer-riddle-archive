@@ -426,16 +426,12 @@ button {
    ============================================================ */
 .gr-hero-sec {
   position: relative;
-  min-height: calc(100vh - 16px);
-  min-height: calc(100dvh - 16px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding-top: calc(72px + clamp(14px, 2vh, 24px));
-  padding-bottom: clamp(28px, 4vh, 44px);
+  width: 100%;
+  padding-top: calc(72px + 28px);
+  padding-bottom: clamp(36px, 5vh, 60px);
   padding-left: var(--container-padding);
   padding-right: var(--container-padding);
+  overflow: hidden;
   --glow-x: 50%;
   --glow-y: 50%;
   --glow-opacity: 0;
@@ -452,8 +448,7 @@ button {
 }
 @media (max-width: 868px) {
   .gr-hero-sec {
-    min-height: auto;
-    padding-top: calc(72px + 20px);
+    padding-top: calc(68px + 20px);
     padding-bottom: 36px;
   }
   .gr-hero-inner {
