@@ -133,7 +133,7 @@ export default function ContributeRiddle() {
           </p>
 
           {errorMsg && (
-            <div style={{ padding: "12px", backgroundColor: "#ffebee", color: "#c62828", borderRadius: "8px", marginBottom: "20px", fontSize: "14px", border: "1px solid #ef9a9a" }}>
+            <div className="gr-alert-error">
               {errorMsg}
             </div>
           )}
@@ -207,7 +207,7 @@ export default function ContributeRiddle() {
               required 
               onChange={(e) => setPhotoFile(e.target.files[0])}
             />
-            <small style={{display: 'block', color: 'var(--text-muted)', marginTop: 4}}>Max 5MB (JPG, PNG, WEBP)</small>
+            <small style={{display: 'block', color: 'var(--text-secondary)', marginTop: 4}}>Max 5MB (JPG, PNG, WEBP)</small>
           </div>
 
           <button type="submit" className="gr-submit-btn" style={{ marginTop: "12px" }} disabled={isSubmitting}>

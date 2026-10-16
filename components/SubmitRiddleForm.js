@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const S = {
   form: { display: "flex", flexDirection: "column", gap: 12, maxWidth: 560, margin: "0 auto" },
-  label: { fontSize: 13, color: "var(--text-secondary)" },
+  label: { fontSize: 13, color: "var(--text-secondary)", fontWeight: 600 },
   input: {
     padding: "8px 10px",
     border: "1px solid var(--border)",

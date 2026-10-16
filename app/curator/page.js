@@ -63,7 +63,7 @@ export default function CuratorDashboard() {
                 <span>Category: {r.category}</span>
               </div>
               <div style={{ marginBottom: "16px" }}>
-                <strong style={{ fontSize: "13px", color: "var(--text-muted)", display: "block" }}>
+                <strong style={{ fontSize: "13px", color: "var(--text-secondary)", display: "block" }}>
                   KHMER QUESTION:
                 </strong>
                 <p style={{ fontSize: "18px", fontWeight: 700 }} lang="km">« {r.question} »</p>
@@ -75,13 +75,13 @@ export default function CuratorDashboard() {
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 180px), 1fr))", gap: "16px", marginBottom: "16px" }}>
                 <div>
-                  <strong style={{ fontSize: "11px", color: "var(--text-muted)", display: "block" }}>
+                  <strong style={{ fontSize: "11px", color: "var(--text-secondary)", display: "block" }}>
                     ANSWER (ENGLISH)
                   </strong>
                   <span style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent)" }}>{r.answerEn}</span>
                 </div>
                 <div>
-                  <strong style={{ fontSize: "11px", color: "var(--text-muted)", display: "block" }}>
+                  <strong style={{ fontSize: "11px", color: "var(--text-secondary)", display: "block" }}>
                     ANSWER (KHMER)
                   </strong>
                   <span style={{ fontSize: "16px", fontWeight: 700 }} lang="km">{r.answer}</span>
@@ -89,13 +89,13 @@ export default function CuratorDashboard() {
               </div>
               {r.explanation && (
                 <div style={{ marginBottom: "16px" }}>
-                  <strong style={{ fontSize: "11px", color: "var(--text-muted)", display: "block" }}>
+                  <strong style={{ fontSize: "11px", color: "var(--text-secondary)", display: "block" }}>
                     CULTURAL EXPLANATION
                   </strong>
                   <p style={{ fontSize: "13.5px", color: "var(--text-secondary)", lineHeight: 1.6 }}>{r.explanation}</p>
                 </div>
               )}
-              <div style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+              <div style={{ fontSize: "13px", color: "var(--text-secondary)" }}>
                 Source: {r.sourceEn} · Contributor: {r.contributor}
               </div>
               <div className="gr-curator-actions" style={{ flexWrap: "wrap", gap: "10px" }}>

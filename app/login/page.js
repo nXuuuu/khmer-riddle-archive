@@ -59,18 +59,7 @@ export default function LoginPage() {
           </p>
 
           {error && (
-            <div
-              style={{
-                backgroundColor: "rgba(239, 68, 68, 0.12)",
-                border: "1px solid rgba(239, 68, 68, 0.3)",
-                color: "#f87171",
-                padding: "10px 14px",
-                borderRadius: "var(--radius-sm)",
-                fontSize: "14px",
-                marginBottom: "20px",
-              }}
-              role="alert"
-            >
+            <div className="gr-alert-error" role="alert">
               {error}
             </div>
           )}

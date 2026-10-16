@@ -167,7 +167,7 @@ export default function EditRiddle() {
           </p>
 
           {errorMsg && (
-            <div style={{ padding: "12px", backgroundColor: "#ffebee", color: "#c62828", borderRadius: "8px", marginBottom: "20px", fontSize: "14px", border: "1px solid #ef9a9a" }}>
+            <div className="gr-alert-error">
               {errorMsg}
             </div>
           )}
@@ -245,7 +245,7 @@ export default function EditRiddle() {
               accept="image/jpeg, image/png, image/webp"
               onChange={(e) => setPhotoFile(e.target.files[0])}
             />
-            <small style={{display: 'block', color: 'var(--text-muted)', marginTop: 4}}>Max 5MB (JPG, PNG, WEBP). Leave empty to keep current photo.</small>
+            <small style={{display: 'block', color: 'var(--text-secondary)', marginTop: 4}}>Max 5MB (JPG, PNG, WEBP). Leave empty to keep current photo.</small>
           </div>
 
           <div style={{ display: "flex", gap: "12px", marginTop: "24px" }}>

@@ -27,7 +27,7 @@ const S = {
     cursor: "pointer",
     transition: "background-color var(--transition-fast)",
   },
-  empty: { color: "var(--text-muted)", fontSize: 14 }
+  empty: { color: "var(--text-secondary)", fontSize: 14 }
 };
 
 export default function AdminPanel() {
