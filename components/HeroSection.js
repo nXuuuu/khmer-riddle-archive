@@ -1,114 +1,75 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import collection from "../collection.config.js";
+import useTypewriter from "../hooks/useTypewriter.js";
+import HeroQuizCard from "./HeroQuizCard.js";
 
 export default function HeroSection({ totalEntries, totalCategories, riddles = [] }) {
-  const [riddle, setRiddle] = useState(null);
-  const [options, setOptions] = useState([]);
-  const [selected, setSelected] = useState(null);
-  const [hint, setHint] = useState(false);
+  const [riddle, setRiddle] = useState(() => (riddles.length > 0 ? riddles[0] : null));
+  const [options, setOptions] = useState(() => {
+    if (!riddles || riddles.length === 0) return [];
+    const r = riddles[0];
+    const distractors = riddles.slice(1, 4);
+    return [r, ...distractors].sort(() => 0.5 - Math.random());
+  });
 
-  const loadNewRiddle = () => {
+  const typeText = riddle ? `ចំណោទ: « ${riddle.question} »` : "Loading a riddle from the archive…";
+  const { displayed, done } = useTypewriter(typeText, 38, 400);
+
+  const loadNewRiddle = useCallback(() => {
     if (!riddles || riddles.length === 0) return;
-    const randomRiddle = riddles[Math.floor(Math.random() * riddles.length)];
-    const distractors = riddles
-      .filter(r => r.id !== randomRiddle.id)
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 3);
-    const opts = [randomRiddle, ...distractors].sort(() => 0.5 - Math.random());
-
-    setRiddle(randomRiddle);
-    setOptions(opts);
-    setSelected(null);
-    setHint(false);
-  };
-
-  useEffect(() => {
-    loadNewRiddle();
+    const r = riddles[Math.floor(Math.random() * riddles.length)];
+    const distractors = riddles.filter((x) => x.id !== r.id).sort(() => 0.5 - Math.random()).slice(0, 3);
+    setRiddle(r);
+    setOptions([r, ...distractors].sort(() => 0.5 - Math.random()));
   }, [riddles]);
 
-  const handleSelect = (optId) => {
-    if (selected) return;
-    setSelected(optId);
-  };
+  useEffect(() => {
+    if (!riddle && riddles.length > 0) loadNewRiddle();
+  }, [riddles, riddle, loadNewRiddle]);
 
   return (
     <section className="gr-hero-sec" aria-label="Archive hero">
-      <div className="float-q" style={{ top: "15%", left: "5%", animation: "float-qmark-1 12s infinite ease-in-out" }}>?</div>
-      <div className="float-q" style={{ bottom: "10%", right: "8%", animation: "float-qmark-2 15s infinite ease-in-out" }}>?</div>
-
       <div className="gr-hero-inner">
         <div className="gr-hero-content">
           <div className="gr-hero-counter">
             <span className="gr-hero-dot" />
-            {totalEntries} riddles & counting
+            LIVING FOLKLORE ARCHIVE · {totalEntries} PRESERVED
           </div>
+
           <h1 className="gr-hero-title">
-            KumPi <span>Khmer</span> riddle collection.
+            The oral wisdom of <span>Cambodia</span> is a living treasure.
           </h1>
+
+          <p className="gr-hero-typewriter" lang="km" aria-live="polite">
+            {displayed}
+            {!done && <span className="gr-cursor" aria-hidden="true" />}
+          </p>
+
           <p className="gr-hero-sub">
             {collection.description}
             <span className="gr-hero-khmer-sub" lang="km">
               ថែរក្សាចំណោទប្រាជ្ញាខ្មែរ ដោយ {collection.curator}
             </span>
           </p>
-          <div className="gr-hero-actions">
-            <Link href="#archive" className="gr-btn-primary">Browse Archive</Link>
+
+          <div className="gr-hero-pills">
+            <Link href="#archive" className="gr-pill gr-pill-primary">
+              Explore Archive
+            </Link>
+            <Link href="/daily" className="gr-pill gr-pill-secondary">
+              Daily Challenge →
+            </Link>
           </div>
         </div>
 
-        {riddle && (
-          <div className="modern-card gr-quiz-card">
-            <span className="gr-quiz-label">Try a Quiz Riddle</span>
-            <div className="gr-quiz-question" lang="km">
-              « {riddle.question} »
-            </div>
-            <div className="gr-quiz-options">
-              {options.map((opt) => {
-                const isSelected = selected === opt.id;
-                const isCorrect = opt.id === riddle.id;
-                const className = `gr-quiz-opt ${selected
-                  ? isCorrect
-                    ? "correct"
-                    : isSelected
-                      ? "incorrect"
-                      : ""
-                  : ""
-                  }`;
-                return (
-                  <button
-                    key={opt.id}
-                    disabled={!!selected}
-                    onClick={() => handleSelect(opt.id)}
-                    className={className}
-                  >
-                    <span lang="km">{opt.answer_kh}</span>
-                    <span style={{ fontSize: "0.85em", opacity: 0.85, marginLeft: 6 }}>
-                      ({opt.answer_en})
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            <div className="gr-quiz-footer">
-              <span
-                className="gr-quiz-hint"
-                onClick={() => setHint(true)}
-              >
-                {hint
-                  ? `💡 ${riddle.hint || "No hint available"}`
-                  : "💡 Need a hint? · ត្រូវការតម្រុយ?"}
-              </span>
-              {selected && (
-                <button className="gr-quiz-next" onClick={loadNewRiddle}>
-                  Next riddle · បន្ទាប់ <span className="gr-arrow">→</span>
-                </button>
-              )}
-            </div>
-          </div>
-        )}
+        <HeroQuizCard
+          riddle={riddle}
+          options={options}
+          onNext={loadNewRiddle}
+        />
       </div>
     </section>
   );
