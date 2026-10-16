@@ -16,8 +16,9 @@ export default function NavBar() {
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
-    const sysTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    setTheme(storedTheme || sysTheme);
+    const activeTheme = storedTheme || "dark";
+    setTheme(activeTheme);
+    document.documentElement.setAttribute("data-theme", activeTheme);
 
     const storedStreak = localStorage.getItem("riddle-streak");
     if (storedStreak) setStreak(parseInt(storedStreak, 10));
@@ -80,20 +81,30 @@ export default function NavBar() {
     <header className={`gr-nav ${scrolled ? "gr-nav-scrolled" : ""}`} role="banner">
       <div className="scroll-progress-bar" style={{ width: `${progress}%` }} aria-hidden="true" />
       <div className="gr-nav-inner">
-        <Link href="/" className="gr-logo" aria-label="Khmer Riddle Archive Home">
-          <span>{collection.name.split(" ")[0]}</span>{collection.name.substring(collection.name.indexOf(" "))}
+        <div className="gr-nav-left">
+          <nav aria-label="Main navigation">
+            <ul className="gr-nav-links">
+              <li><Link href="/" className="gr-nav-link">Home</Link></li>
+              <li><Link href="/daily" className="gr-nav-link">Daily Challenge</Link></li>
+            </ul>
+          </nav>
+        </div>
+
+        <Link href="/" className="gr-logo-center" aria-label="Khmer Riddle Archive Home">
+          <span className="gr-logo-title">
+            {collection.name.split(" ")[0]}<span className="gr-logo-dot">·</span>{collection.name.split(" ").slice(1).join(" ")}
+          </span>
+          <span className="gr-logo-tagline">Living Folklore Archive</span>
         </Link>
-        <nav aria-label="Main navigation">
-          <ul className="gr-nav-links">
-            <li><Link href="/" className="gr-nav-link">Home</Link></li>
-            <li><Link href="/daily" className="gr-nav-link">Daily Challenge</Link></li>
-            <li><Link href="/contribute" className="gr-nav-link">Submit Riddle</Link></li>
-          </ul>
-        </nav>
+
         <div className="gr-nav-actions">
+          <Link href="/contribute" className="gr-nav-link" style={{ display: "inline-flex" }}>
+            Submit Riddle
+          </Link>
+
           {streak > 0 && (
             <Link href="/daily" className="gr-streak-badge">
-              🔥 {streak} Day Streak
+              🔥 {streak}
             </Link>
           )}
 
@@ -101,7 +112,7 @@ export default function NavBar() {
             {user ? (
               <>
                 <span
-                  style={{ fontSize: "13px", color: "var(--text-secondary)", maxWidth: "150px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+                  style={{ fontSize: "12px", color: "var(--text-primary)", fontWeight: 500, maxWidth: "120px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
                   title={user.email}
                 >
                   {user.email}
@@ -109,7 +120,7 @@ export default function NavBar() {
                 <button
                   onClick={handleLogout}
                   className="gr-btn-secondary"
-                  style={{ padding: "6px 12px", fontSize: "12px", minHeight: "32px", cursor: "pointer" }}
+                  style={{ padding: "5px 10px", fontSize: "11px", minHeight: "28px", borderRadius: "99px", cursor: "pointer" }}
                 >
                   Log Out
                 </button>
@@ -122,7 +133,7 @@ export default function NavBar() {
                 <Link
                   href="/signup"
                   className="gr-btn-primary"
-                  style={{ padding: "6px 12px", fontSize: "12px", minHeight: "32px", textDecoration: "none" }}
+                  style={{ padding: "6px 14px", fontSize: "12px", minHeight: "32px", borderRadius: "99px", textDecoration: "none" }}
                 >
                   Sign Up
                 </Link>
@@ -138,6 +149,7 @@ export default function NavBar() {
           >
             {theme === "dark" ? <SunIcon /> : <MoonIcon />}
           </button>
+
           <button
             className="gr-nav-mobile-btn"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -164,7 +176,7 @@ export default function NavBar() {
           )}
           {user ? (
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "6px", paddingTop: "12px", borderTop: "1px solid var(--border)" }}>
-              <span style={{ fontSize: "13px", color: "var(--text-secondary)" }}>
+              <span style={{ fontSize: "13px", color: "var(--text-primary)" }}>
                 Signed in as: <strong>{user.email}</strong>
               </span>
               <button

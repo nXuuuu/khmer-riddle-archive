@@ -2,11 +2,11 @@ const S = {
   wrap: {
     padding: "56px 24px", textAlign: "center",
     border: "1px dashed var(--border)", borderRadius: "var(--radius-lg)",
-    color: "var(--text-muted)",
+    color: "var(--text-secondary)",
   },
-  title: { fontSize: 28, fontWeight: 700, color: "var(--text-secondary)", marginBottom: 8, display: "block" },
-  sub: { fontSize: 14, lineHeight: 1.7, marginBottom: 20, color: "var(--text-muted)" },
-  km: { display: "block", fontSize: 13, color: "var(--text-muted)", marginTop: 4 },
+  title: { fontSize: 28, fontWeight: 700, color: "var(--text-primary)", marginBottom: 8, display: "block" },
+  sub: { fontSize: 14, lineHeight: 1.7, marginBottom: 20, color: "var(--text-secondary)" },
+  km: { display: "block", fontSize: 13, color: "var(--text-secondary)", marginTop: 4 },
   reset: {
     display: "inline-block", fontFamily: "var(--mono)", fontSize: 12,
     color: "var(--accent)", border: "1px solid var(--border-accent)",

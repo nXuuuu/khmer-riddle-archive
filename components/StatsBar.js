@@ -4,9 +4,9 @@ const S = {
     padding: "10px 0 18px", borderBottom: "1px solid var(--border)",
     marginBottom: 24, flexWrap: "wrap", gap: 8,
   },
-  left: { fontFamily: "var(--mono)", fontSize: 13, color: "var(--text-muted)" },
+  left: { fontFamily: "var(--mono)", fontSize: 13, color: "var(--text-secondary)" },
   count: { color: "var(--accent)", fontWeight: 700 },
-  right: { fontFamily: "var(--mono)", fontSize: 12, color: "var(--text-muted)" },
+  right: { fontFamily: "var(--mono)", fontSize: 12, color: "var(--text-secondary)" },
 };
 
 export default function StatsBar({ total, visibleCount }) {

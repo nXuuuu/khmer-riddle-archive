@@ -4,20 +4,23 @@ const S = {
   wrap: { position: "relative", width: "100%", marginBottom: 4 },
   icon: {
     position: "absolute", left: 16, top: "50%",
-    transform: "translateY(-50%)", color: "var(--text-muted)",
+    transform: "translateY(-50%)", color: "var(--text-secondary)",
     pointerEvents: "none", lineHeight: 0,
   },
   input: {
     width: "100%", boxSizing: "border-box",
-    padding: "13px 44px", backgroundColor: "var(--bg-base)",
-    border: "1px solid var(--border)", borderRadius: "var(--radius-md)",
-    color: "var(--text-primary)", fontSize: 16, lineHeight: 1.6,
-    minHeight: 48, outline: "none", fontFamily: "inherit",
+    padding: "14px 48px", backgroundColor: "var(--bg-card)",
+    border: "1px solid var(--border)", borderRadius: 999,
+    color: "var(--text-primary)", fontSize: 15, lineHeight: 1.6,
+    minHeight: 50, outline: "none", fontFamily: "inherit",
+    boxShadow: "var(--shadow-card)",
+    backdropFilter: "blur(12px)",
+    WebkitBackdropFilter: "blur(12px)",
     transition: "border-color var(--transition-fast), box-shadow var(--transition-fast)",
   },
   clearBtn: {
     position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)",
-    color: "var(--text-muted)", fontSize: 20, lineHeight: 1, padding: 8,
+    color: "var(--text-secondary)", fontSize: 20, lineHeight: 1, padding: 8,
     width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center",
     borderRadius: 4, transition: "color var(--transition-fast)",
   },
@@ -52,7 +55,7 @@ export default function SearchBar({ query, onChange }) {
       {query && (
         <button style={S.clearBtn} onClick={() => onChange("")} aria-label="Clear search"
           onMouseEnter={e => e.target.style.color = "var(--text-primary)"}
-          onMouseLeave={e => e.target.style.color = "var(--text-muted)"}>
+          onMouseLeave={e => e.target.style.color = "var(--text-secondary)"}>
           ×
         </button>
       )}

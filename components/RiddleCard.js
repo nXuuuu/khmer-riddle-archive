@@ -63,8 +63,8 @@ export default function RiddleCard({ item, currentUser }) {
       </div>
 
       {item.image_url && (
-        <div style={{ marginBottom: "16px", borderRadius: "8px", overflow: "hidden", backgroundColor: "var(--bg-elevated)", display: "flex", justifyContent: "center" }}>
-          <img src={item.image_url} alt="Riddle visual clue" style={{ maxWidth: "100%", maxHeight: "200px", objectFit: "contain" }} />
+        <div className="gr-card-image-wrap">
+          <img src={item.image_url} alt="Riddle visual clue" loading="lazy" />
         </div>
       )}
 
@@ -94,15 +94,15 @@ export default function RiddleCard({ item, currentUser }) {
             <Link 
               href={`/edit/${item.id}`} 
               className="gr-card-reveal-btn" 
-              style={{ flex: 1, width: "auto", textDecoration: "none", backgroundColor: "var(--bg-elevated)" }}
+              style={{ flex: 1, width: "auto", textDecoration: "none" }}
             >
               Edit
             </Link>
             <button
               type="button"
               onClick={handleDelete}
-              className="gr-card-reveal-btn"
-              style={{ flex: 1, width: "auto", backgroundColor: "#ffebee", color: "#c62828", border: "1px solid #ffcdd2" }}
+              className="gr-card-reveal-btn gr-card-delete-btn"
+              style={{ flex: 1, width: "auto" }}
             >
               Delete
             </button>
