@@ -79,7 +79,9 @@ export default function NavBar() {
 
   return (
     <header className={`gr-nav ${scrolled ? "gr-nav-scrolled" : ""}`} role="banner">
-      <div className="scroll-progress-bar" style={{ width: `${progress}%` }} aria-hidden="true" />
+      <div className="scroll-progress-container" aria-hidden="true">
+        <div className="scroll-progress-bar" style={{ width: `${progress}%` }} />
+      </div>
       <div className="gr-nav-inner">
         <div className="gr-nav-left">
           <nav aria-label="Main navigation">
