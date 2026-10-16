@@ -12,6 +12,7 @@ import RiddleCard from "../components/RiddleCard.js";
 import EmptyState from "../components/EmptyState.js";
 import RiddleShowcase from "../components/RiddleShowcase.js";
 import CuratorSpotlight from "../components/CuratorSpotlight.js";
+import AstraCosmicBackground from "../components/AstraCosmicBackground.js";
 import CosmicTransitionZone from "../components/CosmicTransitionZone.js";
 import { SEED_RIDDLES } from "../data/seedRiddles.js";
 
@@ -186,6 +187,7 @@ export default function Home() {
 
   return (
     <>
+      <AstraCosmicBackground />
       <NavBar />
 
       <HeroSection

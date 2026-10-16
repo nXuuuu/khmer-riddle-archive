@@ -583,17 +583,6 @@ button {
   justify-content: center;
   pointer-events: none;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-}
-
-.vt-transition-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
 }
 
 .vt-transition-telemetry {
