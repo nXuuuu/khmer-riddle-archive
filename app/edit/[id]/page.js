@@ -108,6 +108,12 @@ export default function EditRiddle() {
         image_url: updatedImageUrl,
       };
 
+      // Check if the current user is a reviewer; if not, editing sends entry back to pending
+      const { data: reviewerCheck } = await supabase.rpc("is_reviewer");
+      if (!reviewerCheck) {
+        updatedRiddle.status = "pending";
+      }
+
       // Part 2 Check: Call .select() and check that a row actually came back
       const { data, error } = await supabase
         .from("entries")

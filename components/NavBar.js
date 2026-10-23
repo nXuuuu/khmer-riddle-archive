@@ -104,6 +104,12 @@ export default function NavBar() {
             Submit Riddle
           </Link>
 
+          {user && (
+            <Link href="/my-entries" className="gr-nav-link" style={{ display: "inline-flex" }}>
+              My Entries
+            </Link>
+          )}
+
           {streak > 0 && (
             <Link href="/daily" className="gr-streak-badge">
               🔥 {streak}
@@ -171,6 +177,9 @@ export default function NavBar() {
           <Link href="/" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Home</Link>
           <Link href="/daily" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Daily Challenge</Link>
           <Link href="/contribute" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Submit Riddle</Link>
+          {user && (
+            <Link href="/my-entries" className="gr-nav-link" onClick={() => setMobileOpen(false)}>My Entries</Link>
+          )}
           {streak > 0 && (
             <Link href="/daily" className="gr-streak-badge" onClick={() => setMobileOpen(false)}>
               🔥 {streak} Day Streak

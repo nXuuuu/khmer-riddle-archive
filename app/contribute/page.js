@@ -23,6 +23,7 @@ export default function ContributeRiddle() {
   const [photoFile, setPhotoFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     async function checkUser() {
@@ -91,8 +92,8 @@ export default function ContributeRiddle() {
         return setErrorMsg("Failed to save the entry. Please try again.");
       }
 
-      // Success, go to homepage (since we don't have individual entry pages yet)
-      router.push('/');
+      // Success — show pending message instead of redirecting
+      setSubmitted(true);
     } catch (err) {
       console.error(err);
       setErrorMsg("An unexpected error occurred.");
@@ -117,6 +118,30 @@ export default function ContributeRiddle() {
             You must be logged in to contribute an entry to the archive.
           </p>
           <Link href="/login" className="gr-btn-primary">Log In</Link>
+        </main>
+      </>
+    );
+  }
+
+  if (submitted) {
+    return (
+      <>
+        <NavBar />
+        <main className="gr-submit-container" style={{ textAlign: "center", padding: "80px 20px" }}>
+          <div className="modern-card gr-form-card" style={{ padding: "40px 32px" }}>
+            <p style={{ fontSize: "40px", marginBottom: "16px" }}>⏳</p>
+            <h2 style={{ marginBottom: "12px" }}>Riddle submitted!</h2>
+            <p style={{ color: "var(--text-secondary)", marginBottom: "8px" }}>
+              Your riddle is waiting for review. It will appear in the archive once the curator approves it.
+            </p>
+            <p lang="km" style={{ color: "var(--accent)", fontSize: "15px", marginBottom: "28px" }}>
+              ពាក្យបណ្ដៅរបស់អ្នកកំពុងរង់ចាំការត្រួតពិនិត្យ។
+            </p>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+              <Link href="/my-entries" className="gr-btn-primary">View My Entries</Link>
+              <Link href="/" className="gr-btn-secondary">Back to Archive</Link>
+            </div>
+          </div>
         </main>
       </>
     );

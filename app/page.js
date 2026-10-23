@@ -137,7 +137,7 @@ export default function Home() {
       try {
         const [authRes, entriesRes] = await Promise.all([
           supabase.auth.getUser(),
-          supabase.from("entries").select("*").order("created_at", { ascending: false }),
+          supabase.from("entries").select("*").eq("status", "published").order("created_at", { ascending: false }),
         ]);
 
         if (authRes?.data?.user) {
