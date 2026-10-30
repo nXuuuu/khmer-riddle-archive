@@ -13,6 +13,7 @@ export default function NavBar() {
   const [streak, setStreak] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [isReviewer, setIsReviewer] = useState(false);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
@@ -46,12 +47,29 @@ export default function NavBar() {
       };
     }
 
+    const checkReviewer = async (u) => {
+      if (!u) {
+        setIsReviewer(false);
+        return;
+      }
+      try {
+        const { data } = await supabase.rpc("is_reviewer");
+        setIsReviewer(data === true);
+      } catch {
+        setIsReviewer(false);
+      }
+    };
+
     supabase.auth.getUser().then(({ data }) => {
-      setUser(data?.user ?? null);
+      const u = data?.user ?? null;
+      setUser(u);
+      checkReviewer(u);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+      const u = session?.user ?? null;
+      setUser(u);
+      checkReviewer(u);
     });
 
     return () => {
@@ -74,6 +92,7 @@ export default function NavBar() {
       await supabase.auth.signOut();
     }
     setUser(null);
+    setIsReviewer(false);
     window.location.href = "/";
   };
 
@@ -107,6 +126,12 @@ export default function NavBar() {
           {user && (
             <Link href="/my-entries" className="gr-nav-link" style={{ display: "inline-flex" }}>
               My Entries
+            </Link>
+          )}
+
+          {isReviewer && (
+            <Link href="/review" className="gr-nav-link" style={{ display: "inline-flex" }}>
+              Review Queue
             </Link>
           )}
 
@@ -179,6 +204,9 @@ export default function NavBar() {
           <Link href="/contribute" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Submit Riddle</Link>
           {user && (
             <Link href="/my-entries" className="gr-nav-link" onClick={() => setMobileOpen(false)}>My Entries</Link>
+          )}
+          {isReviewer && (
+            <Link href="/review" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Review Queue</Link>
           )}
           {streak > 0 && (
             <Link href="/daily" className="gr-streak-badge" onClick={() => setMobileOpen(false)}>
