@@ -107,6 +107,7 @@ export default function NavBar() {
             <ul className="gr-nav-links">
               <li><Link href="/" className="gr-nav-link">Home</Link></li>
               <li><Link href="/daily" className="gr-nav-link">Daily Challenge</Link></li>
+              <li><Link href="/contribute" className="gr-nav-link">Submit Riddle</Link></li>
             </ul>
           </nav>
         </div>
@@ -119,21 +120,19 @@ export default function NavBar() {
         </Link>
 
         <div className="gr-nav-actions">
-          <Link href="/contribute" className="gr-nav-link" style={{ display: "inline-flex" }}>
-            Submit Riddle
-          </Link>
+          <div className="gr-nav-right-links">
+            {user && (
+              <Link href="/my-entries" className="gr-nav-link">
+                My Entries
+              </Link>
+            )}
 
-          {user && (
-            <Link href="/my-entries" className="gr-nav-link" style={{ display: "inline-flex" }}>
-              My Entries
-            </Link>
-          )}
-
-          {isReviewer && (
-            <Link href="/review" className="gr-nav-link" style={{ display: "inline-flex" }}>
-              Review Queue
-            </Link>
-          )}
+            {isReviewer && (
+              <Link href="/review" className="gr-nav-review-badge">
+                <span className="gr-review-dot" /> Review Queue
+              </Link>
+            )}
+          </div>
 
           {streak > 0 && (
             <Link href="/daily" className="gr-streak-badge">
@@ -141,36 +140,36 @@ export default function NavBar() {
             </Link>
           )}
 
-          <div className="gr-desktop-auth" style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+          <div className="gr-desktop-auth">
             {user ? (
-              <>
-                <span
-                  style={{ fontSize: "12px", color: "var(--text-primary)", fontWeight: 500, maxWidth: "120px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
-                  title={user.email}
-                >
-                  {user.email}
+              <div className="gr-user-pill">
+                <span className="gr-user-avatar">
+                  {(user.email || "U")[0].toUpperCase()}
+                </span>
+                <span className="gr-user-name" title={user.email}>
+                  {user.email.split("@")[0]}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="gr-btn-secondary"
-                  style={{ padding: "5px 10px", fontSize: "11px", minHeight: "28px", borderRadius: "99px", cursor: "pointer" }}
+                  className="gr-logout-btn"
+                  title="Log Out"
                 >
                   Log Out
                 </button>
-              </>
+              </div>
             ) : (
-              <>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
                 <Link href="/login" className="gr-nav-link" style={{ fontSize: "13px" }}>
                   Log In
                 </Link>
                 <Link
                   href="/signup"
                   className="gr-btn-primary"
-                  style={{ padding: "6px 14px", fontSize: "12px", minHeight: "32px", borderRadius: "99px", textDecoration: "none" }}
+                  style={{ padding: "6px 14px", fontSize: "12px", minHeight: "32px", borderRadius: "99px", textDecoration: "none", whiteSpace: "nowrap" }}
                 >
                   Sign Up
                 </Link>
-              </>
+              </div>
             )}
           </div>
 
