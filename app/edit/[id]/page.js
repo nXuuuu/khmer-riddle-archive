@@ -131,8 +131,8 @@ export default function EditRiddle() {
         return setErrorMsg("That change wasn't saved.");
       }
 
-      // Success
-      router.push('/');
+      // Success — return to My Entries so contributor immediately sees pending status
+      router.push('/my-entries');
     } catch (err) {
       console.error(err);
       setErrorMsg("An unexpected error occurred.");
