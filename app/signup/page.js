@@ -38,7 +38,14 @@ export default function SignupPage() {
       });
 
       if (signUpError) {
-        setError(signUpError.message || "Unable to sign up. Please try again.");
+        const msg = signUpError.message?.toLowerCase() || "";
+        if (msg.includes("already registered") || msg.includes("already exists")) {
+          setError("An account with this email already exists. Please log in instead.");
+        } else if (msg.includes("password")) {
+          setError("Password must be at least 6 characters.");
+        } else {
+          setError("Unable to create account. Please try again.");
+        }
         setLoading(false);
         return;
       }
