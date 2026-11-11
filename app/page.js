@@ -178,7 +178,8 @@ export default function Home() {
       return searchable.includes(q);
     });
   }, [query, selectedCategory, riddles]);
-  useReveal(filteredRiddles.length);
+  // Re-run on the list itself, not its length: seed → Supabase swaps same-length lists.
+  useReveal(filteredRiddles);
 
   const handleReset = () => {
     setQuery("");
