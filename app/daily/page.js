@@ -32,7 +32,7 @@ export default function DailyChallenge() {
     async function loadRiddles() {
       const supabase = createClient();
       if (!supabase) return;
-      const { data } = await supabase.from("entries").select("*");
+      const { data } = await supabase.from("entries").select("*").eq("status", "published"); // never pending/returned ones
       if (data) {
         setRiddles(data);
         initGame(data);
