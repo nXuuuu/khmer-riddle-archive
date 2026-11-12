@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { createClient } from "../utils/supabase/client.js";
+import RiddleOwnerActions from "./RiddleOwnerActions.js";
 
 export default function RiddleCard({ item, currentUser }) {
   const [revealed, setRevealed] = useState(false);
@@ -11,47 +10,6 @@ export default function RiddleCard({ item, currentUser }) {
   // Use a short version of the UUID for display
   const displayId = item.id.length > 15 ? item.id.slice(0, 8) : item.id;
   const isOwner = currentUser && currentUser.id === item.owner;
-
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this riddle?")) return;
-    
-    const supabase = createClient();
-    if (!supabase) return;
-
-    // Delete through supabase-js and .select() to verify
-    const { data, error } = await supabase
-      .from("entries")
-      .delete()
-      .eq("id", item.id)
-      .select();
-
-    if (error) {
-      console.error(error);
-      alert("An error occurred during deletion.");
-      return;
-    }
-
-    if (!data || data.length === 0) {
-      console.error("Deletion refused by RLS. Zero rows returned.");
-      alert("That change wasn't saved.");
-      return;
-    }
-
-    // Success
-    setDeleted(true);
-    // Optional cleanup: if image_url exists, parse path and remove from storage
-    if (item.image_url) {
-      try {
-        const urlObj = new URL(item.image_url);
-        const pathSegments = urlObj.pathname.split('/');
-        const userFolder = pathSegments[pathSegments.length - 2];
-        const fileName = pathSegments[pathSegments.length - 1];
-        await supabase.storage.from("photos").remove([`${userFolder}/${fileName}`]);
-      } catch (e) {
-        console.error("Cleanup photo error:", e);
-      }
-    }
-  };
 
   if (deleted) return null;
 
@@ -89,25 +47,7 @@ export default function RiddleCard({ item, currentUser }) {
           {revealed ? "Hide Answer" : "Reveal Answer"}
         </button>
         
-        {isOwner && (
-          <div style={{ display: "flex", gap: "8px" }}>
-            <Link 
-              href={`/edit/${item.id}`} 
-              className="gr-card-reveal-btn" 
-              style={{ flex: 1, width: "auto", textDecoration: "none" }}
-            >
-              Edit
-            </Link>
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="gr-card-reveal-btn gr-card-delete-btn"
-              style={{ flex: 1, width: "auto" }}
-            >
-              Delete
-            </button>
-          </div>
-        )}
+        {isOwner && <RiddleOwnerActions item={item} onDeleted={() => setDeleted(true)} />}
       </div>
 
       {revealed && (
