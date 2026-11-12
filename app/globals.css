@@ -30,7 +30,7 @@
 
   --text-primary:   #16130f;
   --text-secondary: #5a5349;
-  --text-muted:     #8a8276;
+  --text-muted:     #6b6358;   /* 5.2:1 on the ivory background (WCAG AA) */
 
   --nav-bg:        rgba(243, 239, 231, 0.9);
   --shadow-card:   none;
