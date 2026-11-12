@@ -260,7 +260,8 @@ button:hover .mu-arrow { transform: translateX(4px); }
 .gr-nav-link {
   position: relative;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  line-height: 1.35;
   color: var(--text-primary);
   text-decoration: none;
   white-space: nowrap;
@@ -280,7 +281,7 @@ button:hover .mu-arrow { transform: translateX(4px); }
 .gr-nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
 
 .gr-logo-center { display: flex; flex-direction: column; align-items: center; text-decoration: none; padding: 0 16px; }
-.gr-logo-title { font-family: var(--font-heading); font-size: 24px; line-height: 1; color: var(--text-primary); }
+.gr-logo-title { font-family: var(--font-khmer-display); font-size: 24px; line-height: 1.4; color: var(--text-primary); }
 .gr-logo-dot { color: var(--accent); margin: 0 6px; }
 .gr-logo-tagline { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
 
@@ -367,42 +368,48 @@ button:hover .mu-arrow { transform: translateX(4px); }
    HERO — exhibition poster
    ============================================================ */
 .mu-hero {
-  min-height: calc(100vh - 68px);
   display: grid;
   grid-template-columns: 1.15fr 1fr;
   gap: var(--space-lg);
   align-items: center;
-  padding: var(--space-lg) var(--container-padding) var(--space-xl);
+  padding: clamp(20px, 3vw, 40px) var(--container-padding) var(--space-xl);
   max-width: var(--container-max);
   margin: 0 auto;
 }
 @media (max-width: 900px) { .mu-hero { grid-template-columns: 1fr; min-height: 0; } }
 
-.mu-hero-text { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.mu-hero-text { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 .mu-hero-khmer {
   font-family: var(--font-khmer-display);
-  font-size: clamp(3rem, 8.5vw, 8.5rem);
+  font-size: clamp(3rem, 7.2vw, 7.5rem);
   line-height: 1.3;
   white-space: nowrap; /* keep the word whole on one line */
   color: var(--text-primary);
   margin: -0.1em 0 -0.2em;
 }
 @media (max-width: 900px) { .mu-hero-khmer { font-size: 17vw; } }
-.mu-hero-title { font-family: var(--font-heading); font-size: var(--text-2xl); line-height: 1.1; max-width: 18ch; }
+/* Khmer tagline leads; the English line is the smaller translation under it. */
+.mu-hero-km-tag { font-size: var(--text-xl); font-weight: 500; line-height: 1.75; max-width: 30ch; color: var(--text-primary); }
+.mu-hero-title { font-family: var(--font-heading); font-size: var(--text-lg); line-height: 1.35; max-width: 40ch; color: var(--text-secondary); }
 .mu-hero-title em { color: var(--accent); }
 .mu-hero-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 12px 36px;
-  padding-top: 20px;
+  padding-top: 18px;
+  margin-top: 6px;
   border-top: 1px solid var(--border);
 }
 .mu-hero-meta div { display: flex; flex-direction: column; gap: 2px; }
-.mu-hero-meta strong { font-family: var(--font-heading); font-size: 30px; font-weight: 400; line-height: 1.1; }
+.mu-hero-meta strong { font-family: var(--font-heading); font-size: 30px; font-weight: 400; line-height: 1.2; }
+.mu-hero-meta .km-main { font-size: 14px; font-weight: 600; line-height: 1.6; }
 .mu-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
 /* The framed "featured object" */
 .mu-hero-object { margin: 0; }
+/* Height follows the screen so the whole hero fits above the fold on a laptop. */
+.mu-hero-object .mu-frame { aspect-ratio: auto; height: min(calc(100vh - 230px), 600px); min-height: 360px; }
+@media (max-width: 900px) { .mu-hero-object .mu-frame { aspect-ratio: 4 / 5; height: auto; min-height: 0; } }
 .mu-frame {
   position: relative;
   aspect-ratio: 4 / 5;
@@ -420,7 +427,7 @@ button:hover .mu-arrow { transform: translateX(4px); }
   font-size: 13px;
   color: var(--text-secondary);
 }
-.mu-hero-object figcaption [lang="km"] { grid-column: 1 / -1; font-size: 15px; color: var(--text-primary); line-height: 1.7; }
+.mu-hero-object figcaption .mu-hero-object-q { grid-column: 1 / -1; font-size: 15px; color: var(--text-primary); line-height: 1.7; }
 
 /* ============================================================
    VISUALS (photo or illustration)
@@ -445,17 +452,15 @@ button:hover .mu-arrow { transform: translateX(4px); }
 /* ============================================================
    INTRO ESSAY
    ============================================================ */
-.mu-essay { display: grid; grid-template-columns: minmax(160px, 1fr) 3fr; gap: var(--space-lg); }
+.mu-essay { display: grid; grid-template-columns: minmax(200px, 1fr) 2.4fr; gap: var(--space-xl); align-items: start; }
 @media (max-width: 760px) { .mu-essay { grid-template-columns: 1fr; } }
-.mu-essay-body p { font-family: var(--font-heading); font-size: var(--text-xl); line-height: 1.45; max-width: 34ch; }
-.mu-essay-body p + p { font-family: var(--font-sans); font-size: var(--text-base); line-height: 1.75; color: var(--text-secondary); max-width: 62ch; margin-top: 24px; }
-.mu-essay-body p:first-child::first-letter {
-  float: left;
-  font-size: 4.2em;
-  line-height: 0.82;
-  padding: 6px 12px 0 0;
-  color: var(--accent);
-}
+.mu-essay-side { display: flex; flex-direction: column; gap: 18px; }
+.mu-essay-figure { margin: 0; }
+.mu-essay-figure .mu-frame { animation: none; aspect-ratio: 4 / 5; }
+.mu-essay-figure figcaption { font-size: 13px; color: var(--text-secondary); padding-top: 10px; }
+.mu-essay-km { font-size: var(--text-xl); font-weight: 500; line-height: 1.85; max-width: 36ch; }
+.mu-essay-en { font-family: var(--font-heading); font-size: var(--text-lg); line-height: 1.5; color: var(--text-secondary); max-width: 52ch; margin-top: 20px; }
+.mu-essay-en + .mu-essay-en { font-family: var(--font-sans); font-size: var(--text-base); }
 .mu-essay-sign { margin-top: 28px; font-size: 14px; color: var(--text-secondary); }
 .mu-essay-sign strong { color: var(--text-primary); font-weight: 600; }
 
@@ -480,8 +485,8 @@ button:hover .mu-arrow { transform: translateX(4px); }
 .mu-gallery .mu-frame { aspect-ratio: 3 / 4; animation: none; }
 .mu-gallery .mu-visual { transition: transform 1.2s var(--ease); }
 .mu-gallery:hover .mu-visual { transform: scale(1.05); }
-.mu-gallery-name { font-family: var(--font-heading); font-size: 22px; line-height: 1.15; }
-.mu-gallery-km { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.mu-gallery-name { font-size: 19px; font-weight: 600; line-height: 1.6; }
+.mu-gallery-en { font-family: var(--font-heading); font-size: 16px; color: var(--text-secondary); line-height: 1.2; }
 .mu-gallery-count { font-size: 12px; color: var(--text-muted); }
 
 /* ============================================================
@@ -580,8 +585,8 @@ button:hover .mu-arrow { transform: translateX(4px); }
   transition: transform 0.7s var(--ease);
 }
 .mu-object.open .mu-answer { transform: translateY(0); }
-.mu-answer-en { font-family: var(--font-heading); font-size: var(--text-2xl); line-height: 1.05; }
-.mu-answer-km { font-family: var(--font-khmer-display); font-size: var(--text-xl); color: var(--accent); line-height: 1.6; }
+.mu-answer-km { font-family: var(--font-khmer-display); font-size: var(--text-2xl); color: var(--accent); line-height: 1.5; }
+.mu-answer-en { font-family: var(--font-heading); font-size: var(--text-lg); line-height: 1.2; }
 .mu-answer-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
 .mu-answer-source { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted); line-height: 1.6; }
 
@@ -783,6 +788,31 @@ button:hover .mu-arrow { transform: translateX(4px); }
 .delay-5 { transition-delay: 0.40s; }
 
 /* ============================================================
+   KHMER-FIRST TYPE HIERARCHY
+   Khmer is the main line (bigger, darker); English is the smaller translation.
+   ============================================================ */
+.km-main { display: block; }
+.en-sub { display: block; font-size: max(12px, 0.6em); font-weight: 400; color: var(--text-secondary); margin-top: 2px; letter-spacing: 0; }
+.km-inline,
+.en-inline { display: inline; }
+.en-inline { font-size: max(12px, 0.85em); margin: 0 0 0 8px; opacity: 0.75; color: inherit; }
+
+.mu-title-km { font-family: var(--font-khmer-display); font-size: var(--text-3xl); font-weight: 400; line-height: 1.35; }
+.mu-title-en { font-family: var(--font-heading); font-size: var(--text-xl); line-height: 1.2; color: var(--text-secondary); margin-top: 4px; }
+.mu-title-en em { color: var(--accent); }
+
+/* Spaced capitals suit English labels, not Khmer script. */
+.mu-label [lang="km"],
+.mu-label[lang="km"],
+.gr-section-label [lang="km"],
+.vt-tag-label [lang="km"] { letter-spacing: 0; text-transform: none; font-size: 13px; font-weight: 600; color: var(--text-primary); }
+
+.mu-tab-text { display: flex; flex-direction: column; line-height: 1.3; text-align: left; }
+.mu-tab-text [lang="km"] { line-height: 1.7; }
+.mu-tab-en { font-size: 12px; color: var(--text-muted); }
+.mu-tab.active .mu-tab-en { color: var(--text-secondary); }
+
+/* ============================================================
    MOTION — slow, eased, never bouncy
    ============================================================ */
 
@@ -794,9 +824,10 @@ button:hover .mu-arrow { transform: translateX(4px); }
 }
 .mu-hero-text > * { animation: fade-up 1.1s var(--ease) backwards; }
 .mu-hero-text > :nth-child(1) { animation-delay: 0.1s; }
-.mu-hero-text > :nth-child(3) { animation-delay: 0.55s; }
-.mu-hero-text > :nth-child(4) { animation-delay: 0.75s; }
-.mu-hero-text > :nth-child(5) { animation-delay: 0.9s; }
+.mu-hero-text > :nth-child(3) { animation-delay: 0.5s; }
+.mu-hero-text > :nth-child(4) { animation-delay: 0.62s; }
+.mu-hero-text > :nth-child(5) { animation-delay: 0.78s; }
+.mu-hero-text > :nth-child(6) { animation-delay: 0.92s; }
 /* The Khmer title is "unmasked" upward (only during the animation, so no glyph gets clipped after). */
 .mu-hero-khmer { animation: rise 1.4s var(--ease) 0.2s backwards; }
 .mu-hero-object figcaption { animation: fade-up 1s var(--ease) 1.2s backwards; }

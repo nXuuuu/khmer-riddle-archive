@@ -1,5 +1,7 @@
 import { CATEGORY_LABELS } from "../collection.config.js";
 import RiddleVisual from "./RiddleVisual.js";
+import SectionHeading from "./SectionHeading.js";
+import { toKhmerDigits } from "../utils/khmerDigits.js";
 
 // The five categories shown as museum "galleries", each with a cover image.
 // Clicking one filters the collection to that category.
@@ -9,10 +11,11 @@ export default function GalleryCovers({ categories, riddles, onOpen }) {
   return (
     <section className="mu-section" aria-label="Galleries">
       <div className="gr-container">
-        <header className="gr-section-header reveal">
-          <span className="gr-section-label">Galleries · វិចិត្រសាល</span>
-          <h2 className="gr-section-title">Five rooms, <em>one oral tradition</em></h2>
-        </header>
+        <SectionHeading
+          label="Galleries"
+          km="វិចិត្រសាលទាំងប្រាំ"
+          en={<>Five rooms, <em>one oral tradition</em></>}
+        />
 
         <div className="mu-galleries">
           {galleries.map((cat, i) => {
@@ -29,10 +32,11 @@ export default function GalleryCovers({ categories, riddles, onOpen }) {
                 <div className="mu-frame">
                   <RiddleVisual item={cover} category={cat} showTag={false} />
                 </div>
-                <span className="mu-gallery-name">{cat}</span>
-                <span className="mu-gallery-km" lang="km">{CATEGORY_LABELS[cat]}</span>
+                <span className="mu-gallery-name" lang="km">{CATEGORY_LABELS[cat]}</span>
+                <span className="mu-gallery-en">{cat}</span>
                 <span className="mu-gallery-count">
-                  {count} {count === 1 ? "object" : "objects"} <span className="mu-arrow">→</span>
+                  <span lang="km">{toKhmerDigits(count)} ពាក្យបណ្តៅ</span> · {count} {count === 1 ? "riddle" : "riddles"}{" "}
+                  <span className="mu-arrow">→</span>
                 </span>
               </button>
             );

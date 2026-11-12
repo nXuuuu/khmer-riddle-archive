@@ -14,6 +14,7 @@ import EmptyState from "../components/EmptyState.js";
 import CuratorSpotlight from "../components/CuratorSpotlight.js";
 import AboutFacts from "../components/AboutFacts.js";
 import SiteFooter from "../components/SiteFooter.js";
+import SectionHeading from "../components/SectionHeading.js";
 import CursorLabel from "../components/CursorLabel.js";
 import { SEED_RIDDLES } from "../data/seedRiddles.js";
 
@@ -135,10 +136,11 @@ export default function Home() {
 
       <main id="collection" className="mu-section" aria-label="The collection">
         <div className="gr-container">
-          <header className="gr-section-header reveal">
-            <span className="gr-section-label">The collection · បណ្តុំ</span>
-            <h2 className="gr-section-title">Every riddle, <em>one object at a time</em></h2>
-          </header>
+          <SectionHeading
+            label="The collection"
+            km="បណ្តុំពាក្យបណ្តៅ"
+            en={<>Every riddle, <em>one object at a time</em></>}
+          />
 
           <CollectionToolbar
             query={query}

@@ -16,7 +16,7 @@ export default function CursorLabel() {
       const frame = e.target.closest?.(".mu-object .mu-frame");
       if (!frame) return setLabel(null);
       const isOpen = frame.closest(".mu-object").classList.contains("open");
-      setLabel(isOpen ? "Close" : "Reveal");
+      setLabel(isOpen ? "បិទ" : "មើលចម្លើយ");
     };
     // After a click the card opens/closes, so re-check the label once React has updated it.
     const onClick = (e) => setTimeout(() => onMove(e), 60);
@@ -29,7 +29,7 @@ export default function CursorLabel() {
   }, []);
 
   return (
-    <div ref={ref} className={`mu-cursor${label ? " on" : ""}`} aria-hidden="true">
+    <div ref={ref} className={`mu-cursor${label ? " on" : ""}`} aria-hidden="true" lang="km">
       {label}
     </div>
   );

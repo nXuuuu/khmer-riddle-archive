@@ -53,7 +53,7 @@ export default function CuratorSpotlight() {
   return (
     <section className="vt-quote-section reveal" aria-label="Curator Philosophy Spotlight">
       <div className="vt-quote-card">
-        <span className="vt-tag-label">GUARDIANS OF ORAL WISDOM · ទស្សនវិជ្ជាបុរាណ</span>
+        <span className="vt-tag-label"><span lang="km">ទស្សនវិជ្ជាបុរាណ</span> · Guardians of oral wisdom</span>
         <div className="vt-quote-mark" aria-hidden="true">"</div>
 
         <AnimatedQuote text={QUOTE} />

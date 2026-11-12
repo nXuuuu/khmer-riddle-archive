@@ -1,9 +1,10 @@
 import Link from "next/link";
-import collection from "../collection.config.js";
+import collection, { CATEGORY_LABELS } from "../collection.config.js";
 import RiddleVisual from "./RiddleVisual.js";
 import CountUp from "./CountUp.js";
+import KmEn from "./KmEn.js";
 
-// Exhibition-poster hero: giant Khmer title on the left,
+// Exhibition-poster hero: Khmer title and tagline first, English below,
 // one framed "featured object" from the collection on the right.
 export default function HeroSection({ riddles = [], totalCategories, loaded }) {
   // Wait for the real data before choosing, so the featured object and the
@@ -14,32 +15,39 @@ export default function HeroSection({ riddles = [], totalCategories, loaded }) {
   return (
     <section className="mu-hero" aria-label="Introduction">
       <div className="mu-hero-text">
-        <span className="mu-label">A living collection · {collection.name}</span>
+        <span className="mu-label">
+          <span lang="km">{collection.nameKm}</span> · {collection.name}
+        </span>
         <h1 className="mu-hero-khmer" lang="km">ពាក្យបណ្តៅ</h1>
+        <p className="mu-hero-km-tag" lang="km">
+          ពាក្យបណ្តៅរបស់ជនជាតិខ្មែរ ដែលបានប្រមូល និងថែរក្សាទុកសម្រាប់មនុស្សជំនាន់ក្រោយ។
+        </p>
         <p className="mu-hero-title">
           Riddles of the Khmer people, <em>collected and kept</em> for the next generation.
         </p>
 
+        <div className="mu-hero-actions">
+          <Link href="#collection" className="mu-btn">
+            <KmEn km="ចូលទស្សនា" en="Enter the collection" inline /> <span className="mu-arrow">→</span>
+          </Link>
+          <Link href="/daily" className="mu-btn mu-btn-ghost">
+            <KmEn km="ពាក្យបណ្តៅប្រចាំថ្ងៃ" en="Daily riddle" inline />
+          </Link>
+        </div>
+
         <div className="mu-hero-meta">
           <div>
             <strong><CountUp value={loaded ? riddles.length : 0} /></strong>
-            <span className="mu-label">Objects</span>
+            <KmEn km="ពាក្យបណ្តៅ" en="Riddles" />
           </div>
           <div>
             <strong><CountUp value={loaded ? totalCategories : 0} delay={850} /></strong>
-            <span className="mu-label">Galleries</span>
+            <KmEn km="វិចិត្រសាល" en="Galleries" />
           </div>
           <div>
-            <strong lang="km" style={{ fontFamily: "var(--font-khmer-display)", fontSize: 24 }}>ខ្មែរ</strong>
-            <span className="mu-label">Khmer &amp; English</span>
+            <strong lang="km" style={{ fontFamily: "var(--font-khmer-display)" }}>ខ្មែរ</strong>
+            <KmEn km="ខ្មែរ និង អង់គ្លេស" en="Khmer & English" />
           </div>
-        </div>
-
-        <div className="mu-hero-actions">
-          <Link href="#collection" className="mu-btn">
-            Enter the collection <span className="mu-arrow">→</span>
-          </Link>
-          <Link href="/daily" className="mu-btn mu-btn-ghost">Daily riddle</Link>
         </div>
       </div>
 
@@ -49,9 +57,9 @@ export default function HeroSection({ riddles = [], totalCategories, loaded }) {
           {featured && <RiddleVisual item={featured} />}
         </div>
         <figcaption style={{ visibility: featured ? "visible" : "hidden" }}>
-          <span className="mu-label">Featured object</span>
-          <span>{featured?.category}</span>
-          <span lang="km">« {featured?.question} »</span>
+          <span className="mu-label"><span lang="km">វត្ថុពិសេស</span> · Featured</span>
+          <span lang="km">{CATEGORY_LABELS[featured?.category]}</span>
+          <span lang="km" className="mu-hero-object-q">« {featured?.question} »</span>
         </figcaption>
       </figure>
     </section>

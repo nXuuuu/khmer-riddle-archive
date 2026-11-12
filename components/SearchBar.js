@@ -8,7 +8,7 @@ export default function SearchBar({ query, onChange }) {
         type="search"
         value={query}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Search the collection… · ស្វែងរក"
+        placeholder="ស្វែងរកពាក្យបណ្តៅ… · Search the collection"
         aria-label="Search the archive"
       />
       {query && (

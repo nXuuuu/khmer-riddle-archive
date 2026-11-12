@@ -10,6 +10,9 @@ const collection = {
   // What does your archive collect? e.g. "Khmer Proverbs"
   name: "Khmer Riddle",
 
+  // The archive's name in Khmer, shown first (Khmer is the primary language).
+  nameKm: "ពាក្យបណ្តៅខ្មែរ",
+
   // One sentence: what is this archive, and why does it matter?
   description: "A living digital archive preserving traditional Khmer riddles (ពាក្យបណ្តៅ) from oral literature, the Buddhist Institute of Cambodia, and folk traditions.",
 
