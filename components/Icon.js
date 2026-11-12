@@ -9,6 +9,7 @@ const PATHS = {
   sun: "M12 7a5 5 0 1 0 0 10 5 5 0 1 0 0-10ZM12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42",
   moon: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z",
   menu: "M3 12h18M3 6h18M3 18h18",
+  clock: "M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18ZM12 7v5l3 2",
 };
 
 export default function Icon({ name, size = 18, style }) {

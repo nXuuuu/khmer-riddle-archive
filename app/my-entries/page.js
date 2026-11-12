@@ -63,7 +63,6 @@ export default function MyEntries() {
           <h1 style={{ fontSize: "clamp(22px, 4vw, 30px)", fontWeight: 800, marginBottom: "8px" }}>
             <KmEn km="ពាក្យបណ្តៅរបស់ខ្ញុំ" en="My Entries" />
           </h1>
-          <p lang="km" style={{ color: "var(--accent)", fontSize: "14px" }}>ពាក្យបណ្ដៅរបស់ខ្ញុំ</p>
         </div>
 
         {entries.length === 0 ? (

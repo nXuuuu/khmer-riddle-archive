@@ -7,6 +7,7 @@ import NavBar from "../../components/NavBar.js";
 import { CATEGORIES } from "../../collection.config.js";
 import { createClient } from "../../utils/supabase/client.js";
 import KmEn from "../../components/KmEn.js";
+import Icon from "../../components/Icon.js";
 
 export default function ContributeRiddle() {
   const router = useRouter();
@@ -130,7 +131,7 @@ export default function ContributeRiddle() {
         <NavBar />
         <main className="gr-submit-container" style={{ textAlign: "center", padding: "80px 20px" }}>
           <div className="modern-card gr-form-card" style={{ padding: "40px 32px" }}>
-            <p style={{ fontSize: "40px", marginBottom: "16px" }}>⏳</p>
+            <p style={{ marginBottom: "16px", color: "var(--accent)" }}><Icon name="clock" size={40} /></p>
             <h2 style={{ marginBottom: "12px" }}><KmEn km="បានដាក់ស្នើរួចរាល់!" en="Riddle submitted!" /></h2>
             <p style={{ color: "var(--text-secondary)", marginBottom: "8px" }}>
               Your riddle is waiting for review. It will appear in the archive once the curator approves it.
