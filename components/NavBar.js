@@ -1,102 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import collection from "../collection.config.js";
-import { SunIcon, MoonIcon } from "./ThemeIcons.js";
-import { createClient } from "../utils/supabase/client.js";
 import Icon from "./Icon.js";
 import KmEn from "./KmEn.js";
+import NavUserLinks from "./NavUserLinks.js";
+import NavDesktopAuth from "./NavDesktopAuth.js";
+import MobileMenu from "./MobileMenu.js";
+import useScrollProgress from "../hooks/useScrollProgress.js";
+import usePreferences from "../hooks/usePreferences.js";
+import useSession from "../hooks/useSession.js";
 
+// Site header. The logic lives in three hooks (scroll, theme/streak, session);
+// this file only lays out the bar. Desktop auth and the mobile menu are their own files.
 export default function NavBar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [theme, setTheme] = useState("light");
-  const [streak, setStreak] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [user, setUser] = useState(null);
-  const [isReviewer, setIsReviewer] = useState(false);
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    const activeTheme = storedTheme || "light";
-    setTheme(activeTheme);
-    document.documentElement.setAttribute("data-theme", activeTheme);
-
-    const storedStreak = localStorage.getItem("riddle-streak");
-    if (storedStreak) setStreak(parseInt(storedStreak, 10));
-
-    const handleStreakChange = () => {
-      const s = localStorage.getItem("riddle-streak");
-      setStreak(s ? parseInt(s, 10) : 0);
-    };
-    window.addEventListener("streak-updated", handleStreakChange);
-
-    const onScroll = () => {
-      const el = document.documentElement;
-      const top = el.scrollTop || document.body.scrollTop;
-      const height = el.scrollHeight - el.clientHeight;
-      setProgress(height > 0 ? (top / height) * 100 : 0);
-      setScrolled(top > 40);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    const supabase = createClient();
-    if (!supabase) {
-      return () => {
-        window.removeEventListener("scroll", onScroll);
-        window.removeEventListener("streak-updated", handleStreakChange);
-      };
-    }
-
-    const checkReviewer = async (u) => {
-      if (!u) {
-        setIsReviewer(false);
-        return;
-      }
-      try {
-        const { data } = await supabase.rpc("is_reviewer");
-        setIsReviewer(data === true);
-      } catch {
-        setIsReviewer(false);
-      }
-    };
-
-    supabase.auth.getUser().then(({ data }) => {
-      const u = data?.user ?? null;
-      setUser(u);
-      checkReviewer(u);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      const u = session?.user ?? null;
-      setUser(u);
-      checkReviewer(u);
-    });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("streak-updated", handleStreakChange);
-      subscription?.unsubscribe?.();
-    };
-  }, []);
-
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-  };
-
-  const handleLogout = async () => {
-    const supabase = createClient();
-    if (supabase) {
-      await supabase.auth.signOut();
-    }
-    setUser(null);
-    setIsReviewer(false);
-    window.location.href = "/";
-  };
+  const { scrolled, progress } = useScrollProgress();
+  const { theme, toggleTheme, streak } = usePreferences();
+  const { user, isReviewer, handleLogout } = useSession();
 
   return (
     <header className={`gr-nav ${scrolled ? "gr-nav-scrolled" : ""}`} role="banner">
@@ -120,58 +42,9 @@ export default function NavBar() {
         </Link>
 
         <div className="gr-nav-actions">
-          <div className="gr-nav-right-links">
-            {user && (
-              <Link href="/my-entries" className="gr-nav-link">
-                <KmEn km="របស់ខ្ញុំ" en="My Entries" />
-              </Link>
-            )}
+          <NavUserLinks user={user} isReviewer={isReviewer} streak={streak} />
 
-            {isReviewer && (
-              <Link href="/review" className="gr-nav-review-badge">
-                <span className="gr-review-dot" /> <span lang="km">ត្រួតពិនិត្យ</span> · Review
-              </Link>
-            )}
-          </div>
-
-          {streak > 0 && (
-            <Link href="/daily" className="gr-streak-badge">
-              <Icon name="flame" size={14} /> {streak}
-            </Link>
-          )}
-
-          <div className="gr-desktop-auth">
-            {user ? (
-              <div className="gr-user-pill">
-                <span className="gr-user-avatar">
-                  {(user.email || "U")[0].toUpperCase()}
-                </span>
-                <span className="gr-user-name" title={user.email}>
-                  {user.email.split("@")[0]}
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="gr-logout-btn"
-                  title="Log Out"
-                >
-                  <span lang="km">ចាកចេញ</span>
-                </button>
-              </div>
-            ) : (
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-                <Link href="/login" className="gr-nav-link" style={{ fontSize: "13px" }} title="Log in">
-                  <span lang="km">ចូលគណនី</span>
-                </Link>
-                <Link
-                  href="/signup"
-                  className="gr-btn-primary"
-                  style={{ padding: "6px 14px", fontSize: "12px", minHeight: "32px", borderRadius: "99px", textDecoration: "none", whiteSpace: "nowrap" }}
-                >
-                  <span lang="km">ចុះឈ្មោះ</span>&nbsp;· Sign up
-                </Link>
-              </div>
-            )}
-          </div>
+          <NavDesktopAuth user={user} onLogout={handleLogout} />
 
           <button
             className="gr-theme-btn"
@@ -179,7 +52,7 @@ export default function NavBar() {
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
             title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+            <Icon name={theme === "dark" ? "sun" : "moon"} size={16} />
           </button>
 
           <button
@@ -188,64 +61,18 @@ export default function NavBar() {
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
           >
-            {mobileOpen ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            )}
+            <Icon name={mobileOpen ? "cross" : "menu"} size={18} />
           </button>
         </div>
       </div>
       {mobileOpen && (
-        <div className="gr-mobile-menu">
-          <Link href="/" className="gr-nav-link" onClick={() => setMobileOpen(false)}><KmEn km="ទំព័រដើម" en="Home" /></Link>
-          <Link href="/daily" className="gr-nav-link" onClick={() => setMobileOpen(false)}><KmEn km="ប្រចាំថ្ងៃ" en="Daily Challenge" /></Link>
-          <Link href="/contribute" className="gr-nav-link" onClick={() => setMobileOpen(false)}><KmEn km="ដាក់ស្នើ" en="Submit Riddle" /></Link>
-          {user && (
-            <Link href="/my-entries" className="gr-nav-link" onClick={() => setMobileOpen(false)}><KmEn km="របស់ខ្ញុំ" en="My Entries" /></Link>
-          )}
-          {isReviewer && (
-            <Link href="/review" className="gr-nav-link" onClick={() => setMobileOpen(false)}><KmEn km="ត្រួតពិនិត្យ" en="Review Queue" /></Link>
-          )}
-          {streak > 0 && (
-            <Link href="/daily" className="gr-streak-badge" onClick={() => setMobileOpen(false)}>
-              <Icon name="flame" size={14} /> <span lang="km">{streak} ថ្ងៃជាប់គ្នា</span> · {streak} Day Streak
-            </Link>
-          )}
-          {user ? (
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "6px", paddingTop: "12px", borderTop: "1px solid var(--border)" }}>
-              <span style={{ fontSize: "13px", color: "var(--text-primary)" }}>
-                Signed in as: <strong>{user.email}</strong>
-              </span>
-              <button
-                onClick={() => { setMobileOpen(false); handleLogout(); }}
-                className="gr-btn-secondary"
-                style={{ width: "100%", padding: "10px", textAlign: "center" }}
-              >
-                <span lang="km">ចាកចេញ</span> · Log Out
-              </button>
-            </div>
-          ) : (
-            <div style={{ display: "flex", gap: "10px", marginTop: "6px", paddingTop: "12px", borderTop: "1px solid var(--border)" }}>
-              <Link
-                href="/login"
-                className="gr-btn-secondary"
-                style={{ flex: 1, textAlign: "center", padding: "10px", textDecoration: "none" }}
-                onClick={() => setMobileOpen(false)}
-              >
-                <span lang="km">ចូលគណនី</span> · Log In
-              </Link>
-              <Link
-                href="/signup"
-                className="gr-btn-primary"
-                style={{ flex: 1, textAlign: "center", padding: "10px", textDecoration: "none" }}
-                onClick={() => setMobileOpen(false)}
-              >
-                <span lang="km">ចុះឈ្មោះ</span> · Sign Up
-              </Link>
-            </div>
-          )}
-        </div>
+        <MobileMenu
+          user={user}
+          isReviewer={isReviewer}
+          streak={streak}
+          onClose={() => setMobileOpen(false)}
+          onLogout={handleLogout}
+        />
       )}
     </header>
   );
