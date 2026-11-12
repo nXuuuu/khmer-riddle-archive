@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import collection from "../collection.config.js";
 import Icon from "./Icon.js";
-import KmEn from "./KmEn.js";
 import NavUserLinks from "./NavUserLinks.js";
 import NavDesktopAuth from "./NavDesktopAuth.js";
 import MobileMenu from "./MobileMenu.js";
@@ -29,16 +28,16 @@ export default function NavBar() {
         <div className="gr-nav-left">
           <nav aria-label="Main navigation">
             <ul className="gr-nav-links">
-              <li><Link href="/" className="gr-nav-link"><KmEn km="ទំព័រដើម" en="Home" /></Link></li>
-              <li><Link href="/daily" className="gr-nav-link"><KmEn km="ប្រចាំថ្ងៃ" en="Daily Challenge" /></Link></li>
-              <li><Link href="/contribute" className="gr-nav-link"><KmEn km="ដាក់ស្នើ" en="Submit Riddle" /></Link></li>
+              <li><Link href="/" className="gr-nav-link">Home</Link></li>
+              <li><Link href="/daily" className="gr-nav-link">Daily Challenge</Link></li>
+              <li><Link href="/contribute" className="gr-nav-link">Submit Riddle</Link></li>
             </ul>
           </nav>
         </div>
 
         <Link href="/" className="gr-logo-center" aria-label="Khmer Riddle Archive Home">
-          <span className="gr-logo-title" lang="km">{collection.nameKm}</span>
-          <span className="gr-logo-tagline">{collection.name} · Living Archive</span>
+          <span className="gr-logo-title">{collection.name}</span>
+          <span className="gr-logo-tagline">Living Folklore Archive</span>
         </Link>
 
         <div className="gr-nav-actions">

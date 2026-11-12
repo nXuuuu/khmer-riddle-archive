@@ -281,7 +281,7 @@ button:hover .mu-arrow { transform: translateX(4px); }
 .gr-nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
 
 .gr-logo-center { display: flex; flex-direction: column; align-items: center; text-decoration: none; padding: 0 16px; }
-.gr-logo-title { font-family: var(--font-khmer-display); font-size: 24px; line-height: 1.4; color: var(--text-primary); }
+.gr-logo-title { font-family: var(--font-heading); font-size: 24px; line-height: 1.1; color: var(--text-primary); }
 .gr-logo-dot { color: var(--accent); margin: 0 6px; }
 .gr-logo-tagline { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
 

@@ -14,20 +14,20 @@ export default function NavDesktopAuth({ user, onLogout }) {
             {user.email.split("@")[0]}
           </span>
           <button onClick={onLogout} className="gr-logout-btn" title="Log Out">
-            <span lang="km">ចាកចេញ</span>
+            Log Out
           </button>
         </div>
       ) : (
         <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-          <Link href="/login" className="gr-nav-link" style={{ fontSize: "13px" }} title="Log in">
-            <span lang="km">ចូលគណនី</span>
+          <Link href="/login" className="gr-nav-link" style={{ fontSize: "13px" }}>
+            Log In
           </Link>
           <Link
             href="/signup"
             className="gr-btn-primary"
             style={{ padding: "6px 14px", fontSize: "12px", minHeight: "32px", borderRadius: "99px", textDecoration: "none", whiteSpace: "nowrap" }}
           >
-            <span lang="km">ចុះឈ្មោះ</span>&nbsp;· Sign up
+            Sign Up
           </Link>
         </div>
       )}
