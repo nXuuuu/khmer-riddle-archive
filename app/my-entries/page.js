@@ -5,6 +5,7 @@ import Link from "next/link";
 import NavBar from "../../components/NavBar.js";
 import { createClient } from "../../utils/supabase/client.js";
 import KmEn from "../../components/KmEn.js";
+import RiddleOwnerActions from "../../components/RiddleOwnerActions.js";
 
 const STATUS_LABELS = {
   published: { en: "Published", km: "បានផ្សព្វផ្សាយ", color: "#10b981" },
@@ -28,7 +29,7 @@ export default function MyEntries() {
       if (user) {
         const { data } = await supabase
           .from("entries")
-          .select("id, question, category, status, created_at")
+          .select("id, question, category, status, created_at, image_url")
           .eq("owner", user.id)
           .order("created_at", { ascending: false });
         setEntries(data || []);
@@ -91,9 +92,12 @@ export default function MyEntries() {
                       {label.en}
                       <span lang="km" style={{ marginLeft: "6px", fontWeight: 400 }}>· {label.km}</span>
                     </span>
-                    <Link href={`/edit/${entry.id}`} className="gr-btn-secondary" style={{ fontSize: "12px", padding: "5px 12px", textDecoration: "none" }}>
-                      Edit
-                    </Link>
+                    {/* Same Edit/Delete as the archive cards, so owners can remove pending entries too
+                        (allowed by the "owners delete their own entries" rule in Supabase). */}
+                    <RiddleOwnerActions
+                      item={entry}
+                      onDeleted={() => setEntries((prev) => prev.filter((e) => e.id !== entry.id))}
+                    />
                   </div>
                 </div>
               );
