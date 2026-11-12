@@ -27,18 +27,19 @@ function cleanKhmer(str) {
     .toLowerCase();
 }
 
-/* ── Scroll-reveal via IntersectionObserver (vanilla browser API) ── */
+/* ── Scroll-reveal via IntersectionObserver (vanilla browser API) ──
+   Replays in both scroll directions: an element animates in once 8% of it is
+   on screen, and resets only after it has fully left the screen, so the reset
+   is never visible. */
 function useReveal(deps) {
   useEffect(() => {
-    const els = document.querySelectorAll(".reveal:not(.visible)");
+    const els = document.querySelectorAll(".reveal");
     const io = new IntersectionObserver(
       entries => entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add("visible");
-          io.unobserve(e.target);
-        }
+        if (e.intersectionRatio >= 0.08) e.target.classList.add("visible");
+        else if (!e.isIntersecting) e.target.classList.remove("visible");
       }),
-      { threshold: 0.08 }
+      { threshold: [0, 0.08] }
     );
     els.forEach(el => io.observe(el));
     return () => io.disconnect();
