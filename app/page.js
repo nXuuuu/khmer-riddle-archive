@@ -50,11 +50,15 @@ export default function Home() {
   const [riddles, setRiddles] = useState(SEED_RIDDLES);
   const [currentUser, setCurrentUser] = useState(null);
   const [view, setView] = useState("gallery"); // "gallery" or "index"
+  const [loaded, setLoaded] = useState(false); // true once Supabase has answered (or failed)
 
   useEffect(() => {
     async function loadData() {
       const supabase = createClient();
-      if (!supabase) return;
+      if (!supabase) {
+        setLoaded(true); // no Supabase: keep showing the seed riddles
+        return;
+      }
 
       try {
         const [authRes, entriesRes] = await Promise.all([
@@ -70,6 +74,8 @@ export default function Home() {
         }
       } catch (err) {
         console.error("Data load error:", err);
+      } finally {
+        setLoaded(true);
       }
     }
     
@@ -123,7 +129,7 @@ export default function Home() {
     <>
       <NavBar />
       <CursorLabel />
-      <HeroSection riddles={riddles} totalCategories={CATEGORIES.length - 1} />
+      <HeroSection riddles={riddles} totalCategories={CATEGORIES.length - 1} loaded={loaded} />
       <IntroEssay />
       <GalleryCovers categories={CATEGORIES} riddles={riddles} onOpen={openGallery} />
 

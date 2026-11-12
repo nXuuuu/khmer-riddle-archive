@@ -5,9 +5,11 @@ import CountUp from "./CountUp.js";
 
 // Exhibition-poster hero: giant Khmer title on the left,
 // one framed "featured object" from the collection on the right.
-export default function HeroSection({ riddles = [], totalCategories }) {
+export default function HeroSection({ riddles = [], totalCategories, loaded }) {
+  // Wait for the real data before choosing, so the featured object and the
+  // counts don't visibly swap from the seed riddles to the Supabase ones.
   // Prefer an entry that has a real photo; otherwise the newest entry.
-  const featured = riddles.find((r) => r.image_url) || riddles[0];
+  const featured = loaded ? riddles.find((r) => r.image_url) || riddles[0] : null;
 
   return (
     <section className="mu-hero" aria-label="Introduction">
@@ -20,11 +22,11 @@ export default function HeroSection({ riddles = [], totalCategories }) {
 
         <div className="mu-hero-meta">
           <div>
-            <strong><CountUp value={riddles.length} /></strong>
+            <strong><CountUp value={loaded ? riddles.length : 0} /></strong>
             <span className="mu-label">Objects</span>
           </div>
           <div>
-            <strong><CountUp value={totalCategories} delay={850} /></strong>
+            <strong><CountUp value={loaded ? totalCategories : 0} delay={850} /></strong>
             <span className="mu-label">Galleries</span>
           </div>
           <div>
@@ -41,18 +43,17 @@ export default function HeroSection({ riddles = [], totalCategories }) {
         </div>
       </div>
 
-      {featured && (
-        <figure className="mu-hero-object">
-          <div className="mu-frame">
-            <RiddleVisual item={featured} />
-          </div>
-          <figcaption>
-            <span className="mu-label">Featured object</span>
-            <span>{featured.category}</span>
-            <span lang="km">« {featured.question} »</span>
-          </figcaption>
-        </figure>
-      )}
+      {/* The frame is always there (keeps the layout still); the object fades in once loaded. */}
+      <figure className="mu-hero-object">
+        <div className="mu-frame">
+          {featured && <RiddleVisual item={featured} />}
+        </div>
+        <figcaption style={{ visibility: featured ? "visible" : "hidden" }}>
+          <span className="mu-label">Featured object</span>
+          <span>{featured?.category}</span>
+          <span lang="km">« {featured?.question} »</span>
+        </figcaption>
+      </figure>
     </section>
   );
 }
