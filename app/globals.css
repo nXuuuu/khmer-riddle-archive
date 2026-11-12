@@ -160,6 +160,8 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; a
 .gr-container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-padding); }
 
 .mu-section { padding: var(--space-2xl) 0; border-top: 1px solid var(--border); }
+/* No divider straight after the hero: it would peek in at the bottom of the first screen. */
+.mu-hero + .mu-section { border-top: none; }
 
 .gr-section-header {
   display: grid;
