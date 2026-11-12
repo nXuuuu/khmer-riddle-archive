@@ -14,6 +14,7 @@ import EmptyState from "../components/EmptyState.js";
 import CuratorSpotlight from "../components/CuratorSpotlight.js";
 import AboutFacts from "../components/AboutFacts.js";
 import SiteFooter from "../components/SiteFooter.js";
+import CursorLabel from "../components/CursorLabel.js";
 import { SEED_RIDDLES } from "../data/seedRiddles.js";
 
 /* ── Normalize Khmer & English text (NFC + strip zero-width chars) ── */
@@ -121,6 +122,7 @@ export default function Home() {
   return (
     <>
       <NavBar />
+      <CursorLabel />
       <HeroSection riddles={riddles} totalCategories={CATEGORIES.length - 1} />
       <IntroEssay />
       <GalleryCovers categories={CATEGORIES} riddles={riddles} onOpen={openGallery} />

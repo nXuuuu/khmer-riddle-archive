@@ -1,6 +1,7 @@
 import Link from "next/link";
 import collection from "../collection.config.js";
 import RiddleVisual from "./RiddleVisual.js";
+import CountUp from "./CountUp.js";
 
 // Exhibition-poster hero: giant Khmer title on the left,
 // one framed "featured object" from the collection on the right.
@@ -19,11 +20,11 @@ export default function HeroSection({ riddles = [], totalCategories }) {
 
         <div className="mu-hero-meta">
           <div>
-            <strong>{riddles.length}</strong>
+            <strong><CountUp value={riddles.length} /></strong>
             <span className="mu-label">Objects</span>
           </div>
           <div>
-            <strong>{totalCategories}</strong>
+            <strong><CountUp value={totalCategories} delay={850} /></strong>
             <span className="mu-label">Galleries</span>
           </div>
           <div>
