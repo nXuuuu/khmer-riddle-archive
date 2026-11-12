@@ -15,38 +15,44 @@ export default function HeroSection({ riddles = [], totalCategories, loaded }) {
   return (
     <section className="mu-hero" aria-label="Introduction">
       <div className="mu-hero-text">
-        <span className="mu-label">
-          <span lang="km">{collection.nameKm}</span> · {collection.name}
-        </span>
-        <h1 className="mu-hero-khmer" lang="km">ពាក្យបណ្តៅ</h1>
-        <p className="mu-hero-km-tag" lang="km">
-          ពាក្យបណ្តៅរបស់ជនជាតិខ្មែរ ដែលបានប្រមូល និងថែរក្សាទុកសម្រាប់មនុស្សជំនាន់ក្រោយ។
-        </p>
-        <p className="mu-hero-title">
-          Riddles of the Khmer people, <em>collected and kept</em> for the next generation.
-        </p>
-
-        <div className="mu-hero-actions">
-          <Link href="#collection" className="mu-btn">
-            <KmEn km="ចូលទស្សនា" en="Enter the collection" inline /> <span className="mu-arrow">→</span>
-          </Link>
-          <Link href="/daily" className="mu-btn mu-btn-ghost">
-            <KmEn km="ពាក្យបណ្តៅប្រចាំថ្ងៃ" en="Daily riddle" inline />
-          </Link>
+        {/* Top group (title) and bottom group (actions + numbers) are pushed apart so
+            they line up with the top and bottom of the featured object on the right. */}
+        <div className="mu-hero-top">
+          <span className="mu-label">
+            <span lang="km">{collection.nameKm}</span> · {collection.name}
+          </span>
+          <h1 className="mu-hero-khmer" lang="km">ពាក្យបណ្តៅ</h1>
+          <p className="mu-hero-km-tag" lang="km">
+            ពាក្យបណ្តៅរបស់ជនជាតិខ្មែរ ដែលបានប្រមូល និងថែរក្សាទុកសម្រាប់មនុស្សជំនាន់ក្រោយ។
+          </p>
+          <p className="mu-hero-title">
+            Riddles of the Khmer people, <em>collected and kept</em> for the next generation.
+          </p>
         </div>
 
-        <div className="mu-hero-meta">
-          <div>
-            <strong><CountUp value={loaded ? riddles.length : 0} /></strong>
-            <KmEn km="ពាក្យបណ្តៅ" en="Riddles" />
+        <div className="mu-hero-bottom">
+          <div className="mu-hero-actions">
+            <Link href="#collection" className="mu-btn">
+              <KmEn km="ចូលទស្សនា" en="Enter the collection" inline /> <span className="mu-arrow">→</span>
+            </Link>
+            <Link href="/daily" className="mu-btn mu-btn-ghost">
+              <KmEn km="ពាក្យបណ្តៅប្រចាំថ្ងៃ" en="Daily riddle" inline />
+            </Link>
           </div>
-          <div>
-            <strong><CountUp value={loaded ? totalCategories : 0} delay={850} /></strong>
-            <KmEn km="វិចិត្រសាល" en="Galleries" />
-          </div>
-          <div>
-            <strong lang="km" style={{ fontFamily: "var(--font-khmer-display)" }}>ខ្មែរ</strong>
-            <KmEn km="ខ្មែរ និង អង់គ្លេស" en="Khmer & English" />
+
+          <div className="mu-hero-meta">
+            <div>
+              <strong><CountUp value={loaded ? riddles.length : 0} /></strong>
+              <KmEn km="ពាក្យបណ្តៅ" en="Riddles" />
+            </div>
+            <div>
+              <strong><CountUp value={loaded ? totalCategories : 0} delay={850} /></strong>
+              <KmEn km="វិចិត្រសាល" en="Galleries" />
+            </div>
+            <div>
+              <strong lang="km" style={{ fontFamily: "var(--font-khmer-display)" }}>ខ្មែរ</strong>
+              <KmEn km="ខ្មែរ និង អង់គ្លេស" en="Khmer & English" />
+            </div>
           </div>
         </div>
       </div>
