@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ReviewCard from "./ReviewCard.js";
 import { createClient } from "../utils/supabase/client.js";
-import Icon from "./Icon.js";
+import ReviewEmpty from "./ReviewEmpty.js";
 import KmEn from "./KmEn.js";
 
 export default function ReviewQueue({ initialEntries }) {
@@ -60,16 +60,7 @@ export default function ReviewQueue({ initialEntries }) {
       )}
 
       {entries.length === 0 ? (
-        <div className="modern-card" style={{ padding: "48px 24px", textAlign: "center" }}>
-          <p style={{ marginBottom: "12px", color: "var(--success)" }}><Icon name="check" size={40} /></p>
-          <h3 style={{ marginBottom: "8px", fontSize: "18px" }}>No pending entries in the queue</h3>
-          <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
-            The queue is clear. All submissions have been reviewed.
-          </p>
-          <p lang="km" style={{ color: "var(--accent)", fontSize: "14px", marginTop: "6px" }}>
-            គ្មានពាក្យបណ្ដៅដែលរង់ចាំការត្រួតពិនិត្យទេ។
-          </p>
-        </div>
+        <ReviewEmpty />
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           {entries.map((entry) => (
