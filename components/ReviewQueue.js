@@ -3,6 +3,8 @@
 import { useState } from "react";
 import ReviewCard from "./ReviewCard.js";
 import { createClient } from "../utils/supabase/client.js";
+import ReviewEmpty from "./ReviewEmpty.js";
+import KmEn from "./KmEn.js";
 
 export default function ReviewQueue({ initialEntries }) {
   const [entries, setEntries] = useState(initialEntries);
@@ -44,7 +46,7 @@ export default function ReviewQueue({ initialEntries }) {
     <div>
       <div style={{ marginBottom: "28px" }}>
         <h1 style={{ fontSize: "clamp(22px, 4vw, 30px)", fontWeight: 800, marginBottom: "8px" }}>
-          Review Queue · កន្លែងត្រួតពិនិត្យ
+          <KmEn km="កន្លែងត្រួតពិនិត្យ" en="Review Queue" />
         </h1>
         <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
           Pending entries submitted by contributors, sorted oldest first.
@@ -58,16 +60,7 @@ export default function ReviewQueue({ initialEntries }) {
       )}
 
       {entries.length === 0 ? (
-        <div className="modern-card" style={{ padding: "48px 24px", textAlign: "center" }}>
-          <p style={{ fontSize: "40px", marginBottom: "12px" }}>✓</p>
-          <h3 style={{ marginBottom: "8px", fontSize: "18px" }}>No pending entries in the queue</h3>
-          <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
-            The queue is clear. All submissions have been reviewed.
-          </p>
-          <p lang="km" style={{ color: "var(--accent)", fontSize: "14px", marginTop: "6px" }}>
-            គ្មានពាក្យបណ្ដៅដែលរង់ចាំការត្រួតពិនិត្យទេ។
-          </p>
-        </div>
+        <ReviewEmpty />
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           {entries.map((entry) => (

@@ -1,76 +1,73 @@
-"use client";
-
-import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import collection from "../collection.config.js";
-import useTypewriter from "../hooks/useTypewriter.js";
-import HeroQuizCard from "./HeroQuizCard.js";
+import collection, { CATEGORY_LABELS } from "../collection.config.js";
+import RiddleVisual from "./RiddleVisual.js";
+import CountUp from "./CountUp.js";
+import KmEn from "./KmEn.js";
 
-export default function HeroSection({ totalEntries, totalCategories, riddles = [] }) {
-  const [riddle, setRiddle] = useState(() => (riddles.length > 0 ? riddles[0] : null));
-  const [options, setOptions] = useState(() => {
-    if (!riddles || riddles.length === 0) return [];
-    const r = riddles[0];
-    const distractors = riddles.slice(1, 4);
-    return [r, ...distractors].sort(() => 0.5 - Math.random());
-  });
-
-  const typeText = riddle ? `ចំណោទ: « ${riddle.question} »` : "Loading a riddle from the archive…";
-  const { displayed, done } = useTypewriter(typeText, 38, 400);
-
-  const loadNewRiddle = useCallback(() => {
-    if (!riddles || riddles.length === 0) return;
-    const r = riddles[Math.floor(Math.random() * riddles.length)];
-    const distractors = riddles.filter((x) => x.id !== r.id).sort(() => 0.5 - Math.random()).slice(0, 3);
-    setRiddle(r);
-    setOptions([r, ...distractors].sort(() => 0.5 - Math.random()));
-  }, [riddles]);
-
-  useEffect(() => {
-    if (!riddle && riddles.length > 0) loadNewRiddle();
-  }, [riddles, riddle, loadNewRiddle]);
+// Exhibition-poster hero: Khmer title and tagline first, English below,
+// one framed "featured object" from the collection on the right.
+export default function HeroSection({ riddles = [], totalCategories, loaded }) {
+  // Wait for the real data before choosing, so the featured object and the
+  // counts don't visibly swap from the seed riddles to the Supabase ones.
+  // Prefer an entry that has a real photo; otherwise the newest entry.
+  const featured = loaded ? riddles.find((r) => r.image_url) || riddles[0] : null;
 
   return (
-    <section className="gr-hero-sec" aria-label="Archive hero">
-      <div className="gr-hero-inner">
-        <div className="gr-hero-content">
-          <div className="gr-hero-counter">
-            <span className="gr-hero-dot" />
-            LIVING FOLKLORE ARCHIVE · {totalEntries} PRESERVED
-          </div>
-
-          <h1 className="gr-hero-title">
-            The oral wisdom of <span>Cambodia</span> is a living treasure.
-          </h1>
-
-          <p className="gr-hero-typewriter" lang="km" aria-live="polite">
-            {displayed}
-            {!done && <span className="gr-cursor" aria-hidden="true" />}
+    <section className="mu-hero" aria-label="Introduction">
+      <div className="mu-hero-text">
+        {/* Top group (title) and bottom group (actions + numbers) are pushed apart so
+            they line up with the top and bottom of the featured object on the right. */}
+        <div className="mu-hero-top">
+          <span className="mu-label">
+            <span lang="km">{collection.nameKm}</span> · {collection.name}
+          </span>
+          <h1 className="mu-hero-khmer" lang="km">ពាក្យបណ្តៅ</h1>
+          <p className="mu-hero-km-tag" lang="km">
+            ពាក្យបណ្តៅរបស់ជនជាតិខ្មែរ ដែលបានប្រមូល និងថែរក្សាទុកសម្រាប់មនុស្សជំនាន់ក្រោយ។
           </p>
-
-          <p className="gr-hero-sub">
-            {collection.description}
-            <span className="gr-hero-khmer-sub" lang="km">
-              ថែរក្សាចំណោទប្រាជ្ញាខ្មែរ ដោយ {collection.curator}
-            </span>
+          <p className="mu-hero-title">
+            Riddles of the Khmer people, <em>collected and kept</em> for the next generation.
           </p>
-
-          <div className="gr-hero-pills">
-            <Link href="#archive" className="gr-pill gr-pill-primary">
-              Explore Archive
-            </Link>
-            <Link href="/daily" className="gr-pill gr-pill-secondary">
-              Daily Challenge →
-            </Link>
-          </div>
         </div>
 
-        <HeroQuizCard
-          riddle={riddle}
-          options={options}
-          onNext={loadNewRiddle}
-        />
+        <div className="mu-hero-bottom">
+          <div className="mu-hero-actions">
+            <Link href="#collection" className="mu-btn">
+              <KmEn km="ចូលទស្សនា" en="Enter the collection" inline /> <span className="mu-arrow">→</span>
+            </Link>
+            <Link href="/daily" className="mu-btn mu-btn-ghost">
+              <KmEn km="ពាក្យបណ្តៅប្រចាំថ្ងៃ" en="Daily riddle" inline />
+            </Link>
+          </div>
+
+          <div className="mu-hero-meta">
+            <div>
+              <strong><CountUp value={loaded ? riddles.length : 0} /></strong>
+              <KmEn km="ពាក្យបណ្តៅ" en="Riddles" />
+            </div>
+            <div>
+              <strong><CountUp value={loaded ? totalCategories : 0} delay={850} /></strong>
+              <KmEn km="វិចិត្រសាល" en="Galleries" />
+            </div>
+            <div>
+              <strong lang="km" style={{ fontFamily: "var(--font-khmer-display)" }}>ខ្មែរ</strong>
+              <KmEn km="ខ្មែរ និង អង់គ្លេស" en="Khmer & English" />
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* The frame is always there (keeps the layout still); the object fades in once loaded. */}
+      <figure className="mu-hero-object">
+        <div className="mu-frame">
+          {featured && <RiddleVisual item={featured} />}
+        </div>
+        <figcaption style={{ visibility: featured ? "visible" : "hidden" }}>
+          <span className="mu-label"><span lang="km">វត្ថុពិសេស</span> · Featured</span>
+          <span lang="km">{CATEGORY_LABELS[featured?.category]}</span>
+          <span lang="km" className="mu-hero-object-q">« {featured?.question} »</span>
+        </figcaption>
+      </figure>
     </section>
   );
 }

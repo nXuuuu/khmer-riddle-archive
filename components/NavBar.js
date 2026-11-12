@@ -1,100 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import collection from "../collection.config.js";
-import { SunIcon, MoonIcon } from "./ThemeIcons.js";
-import { createClient } from "../utils/supabase/client.js";
+import Icon from "./Icon.js";
+import NavUserLinks from "./NavUserLinks.js";
+import NavDesktopAuth from "./NavDesktopAuth.js";
+import MobileMenu from "./MobileMenu.js";
+import useScrollProgress from "../hooks/useScrollProgress.js";
+import usePreferences from "../hooks/usePreferences.js";
+import useSession from "../hooks/useSession.js";
 
+// Site header. The logic lives in three hooks (scroll, theme/streak, session);
+// this file only lays out the bar. Desktop auth and the mobile menu are their own files.
 export default function NavBar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [theme, setTheme] = useState("dark");
-  const [streak, setStreak] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [user, setUser] = useState(null);
-  const [isReviewer, setIsReviewer] = useState(false);
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    const activeTheme = storedTheme || "dark";
-    setTheme(activeTheme);
-    document.documentElement.setAttribute("data-theme", activeTheme);
-
-    const storedStreak = localStorage.getItem("riddle-streak");
-    if (storedStreak) setStreak(parseInt(storedStreak, 10));
-
-    const handleStreakChange = () => {
-      const s = localStorage.getItem("riddle-streak");
-      setStreak(s ? parseInt(s, 10) : 0);
-    };
-    window.addEventListener("streak-updated", handleStreakChange);
-
-    const onScroll = () => {
-      const el = document.documentElement;
-      const top = el.scrollTop || document.body.scrollTop;
-      const height = el.scrollHeight - el.clientHeight;
-      setProgress(height > 0 ? (top / height) * 100 : 0);
-      setScrolled(top > 40);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    const supabase = createClient();
-    if (!supabase) {
-      return () => {
-        window.removeEventListener("scroll", onScroll);
-        window.removeEventListener("streak-updated", handleStreakChange);
-      };
-    }
-
-    const checkReviewer = async (u) => {
-      if (!u) {
-        setIsReviewer(false);
-        return;
-      }
-      try {
-        const { data } = await supabase.rpc("is_reviewer");
-        setIsReviewer(data === true);
-      } catch {
-        setIsReviewer(false);
-      }
-    };
-
-    supabase.auth.getUser().then(({ data }) => {
-      const u = data?.user ?? null;
-      setUser(u);
-      checkReviewer(u);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      const u = session?.user ?? null;
-      setUser(u);
-      checkReviewer(u);
-    });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("streak-updated", handleStreakChange);
-      subscription?.unsubscribe?.();
-    };
-  }, []);
-
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-  };
-
-  const handleLogout = async () => {
-    const supabase = createClient();
-    if (supabase) {
-      await supabase.auth.signOut();
-    }
-    setUser(null);
-    setIsReviewer(false);
-    window.location.href = "/";
-  };
+  const { scrolled, progress } = useScrollProgress();
+  const { theme, toggleTheme, streak } = usePreferences();
+  const { user, isReviewer, handleLogout } = useSession();
 
   return (
     <header className={`gr-nav ${scrolled ? "gr-nav-scrolled" : ""}`} role="banner">
@@ -113,65 +36,14 @@ export default function NavBar() {
         </div>
 
         <Link href="/" className="gr-logo-center" aria-label="Khmer Riddle Archive Home">
-          <span className="gr-logo-title">
-            {collection.name.split(" ")[0]}<span className="gr-logo-dot">·</span>{collection.name.split(" ").slice(1).join(" ")}
-          </span>
+          <span className="gr-logo-title">{collection.name}</span>
           <span className="gr-logo-tagline">Living Folklore Archive</span>
         </Link>
 
         <div className="gr-nav-actions">
-          <div className="gr-nav-right-links">
-            {user && (
-              <Link href="/my-entries" className="gr-nav-link">
-                My Entries
-              </Link>
-            )}
+          <NavUserLinks user={user} isReviewer={isReviewer} streak={streak} />
 
-            {isReviewer && (
-              <Link href="/review" className="gr-nav-review-badge">
-                <span className="gr-review-dot" /> Review Queue
-              </Link>
-            )}
-          </div>
-
-          {streak > 0 && (
-            <Link href="/daily" className="gr-streak-badge">
-              🔥 {streak}
-            </Link>
-          )}
-
-          <div className="gr-desktop-auth">
-            {user ? (
-              <div className="gr-user-pill">
-                <span className="gr-user-avatar">
-                  {(user.email || "U")[0].toUpperCase()}
-                </span>
-                <span className="gr-user-name" title={user.email}>
-                  {user.email.split("@")[0]}
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="gr-logout-btn"
-                  title="Log Out"
-                >
-                  Log Out
-                </button>
-              </div>
-            ) : (
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-                <Link href="/login" className="gr-nav-link" style={{ fontSize: "13px" }}>
-                  Log In
-                </Link>
-                <Link
-                  href="/signup"
-                  className="gr-btn-primary"
-                  style={{ padding: "6px 14px", fontSize: "12px", minHeight: "32px", borderRadius: "99px", textDecoration: "none", whiteSpace: "nowrap" }}
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
-          </div>
+          <NavDesktopAuth user={user} onLogout={handleLogout} />
 
           <button
             className="gr-theme-btn"
@@ -179,7 +51,7 @@ export default function NavBar() {
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
             title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+            <Icon name={theme === "dark" ? "sun" : "moon"} size={16} />
           </button>
 
           <button
@@ -188,64 +60,18 @@ export default function NavBar() {
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
           >
-            {mobileOpen ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            )}
+            <Icon name={mobileOpen ? "cross" : "menu"} size={18} />
           </button>
         </div>
       </div>
       {mobileOpen && (
-        <div className="gr-mobile-menu">
-          <Link href="/" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Home</Link>
-          <Link href="/daily" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Daily Challenge</Link>
-          <Link href="/contribute" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Submit Riddle</Link>
-          {user && (
-            <Link href="/my-entries" className="gr-nav-link" onClick={() => setMobileOpen(false)}>My Entries</Link>
-          )}
-          {isReviewer && (
-            <Link href="/review" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Review Queue</Link>
-          )}
-          {streak > 0 && (
-            <Link href="/daily" className="gr-streak-badge" onClick={() => setMobileOpen(false)}>
-              🔥 {streak} Day Streak
-            </Link>
-          )}
-          {user ? (
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "6px", paddingTop: "12px", borderTop: "1px solid var(--border)" }}>
-              <span style={{ fontSize: "13px", color: "var(--text-primary)" }}>
-                Signed in as: <strong>{user.email}</strong>
-              </span>
-              <button
-                onClick={() => { setMobileOpen(false); handleLogout(); }}
-                className="gr-btn-secondary"
-                style={{ width: "100%", padding: "10px", textAlign: "center" }}
-              >
-                Log Out
-              </button>
-            </div>
-          ) : (
-            <div style={{ display: "flex", gap: "10px", marginTop: "6px", paddingTop: "12px", borderTop: "1px solid var(--border)" }}>
-              <Link
-                href="/login"
-                className="gr-btn-secondary"
-                style={{ flex: 1, textAlign: "center", padding: "10px", textDecoration: "none" }}
-                onClick={() => setMobileOpen(false)}
-              >
-                Log In
-              </Link>
-              <Link
-                href="/signup"
-                className="gr-btn-primary"
-                style={{ flex: 1, textAlign: "center", padding: "10px", textDecoration: "none" }}
-                onClick={() => setMobileOpen(false)}
-              >
-                Sign Up
-              </Link>
-            </div>
-          )}
-        </div>
+        <MobileMenu
+          user={user}
+          isReviewer={isReviewer}
+          streak={streak}
+          onClose={() => setMobileOpen(false)}
+          onLogout={handleLogout}
+        />
       )}
     </header>
   );

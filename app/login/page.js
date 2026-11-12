@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import NavBar from "../../components/NavBar.js";
 import { createClient } from "../../utils/supabase/client.js";
+import KmEn from "../../components/KmEn.js";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function LoginPage() {
       <main style={{ maxWidth: 440, margin: "clamp(40px, 8vw, 80px) auto", padding: "0 20px" }}>
         <form className="modern-card gr-form-card" onSubmit={handleSubmit}>
           <h1 style={{ fontSize: "24px", fontWeight: 800, marginBottom: "8px" }}>
-            Log In
+            <KmEn km="ចូលគណនី" en="Log In" />
           </h1>
           <p style={{ color: "var(--text-secondary)", fontSize: "14px", marginBottom: "24px" }}>
             Sign in to your contributor account.

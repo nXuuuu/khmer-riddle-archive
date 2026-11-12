@@ -6,6 +6,7 @@ import { useRouter, useParams } from "next/navigation";
 import NavBar from "../../../components/NavBar.js";
 import { CATEGORIES } from "../../../collection.config.js";
 import { createClient } from "../../../utils/supabase/client.js";
+import KmEn from "../../../components/KmEn.js";
 
 export default function EditRiddle() {
   const router = useRouter();
@@ -152,7 +153,7 @@ export default function EditRiddle() {
       <>
         <NavBar />
         <main className="gr-submit-container" style={{ textAlign: "center", padding: "80px 20px" }}>
-          <h2>Access Denied</h2>
+          <h2><KmEn km="គ្មានការអនុញ្ញាត" en="Access Denied" /></h2>
           <p style={{ color: "var(--text-secondary)", margin: "20px 0" }}>
             {errorMsg || "You must be logged in to edit an entry."}
           </p>
@@ -167,7 +168,7 @@ export default function EditRiddle() {
       <NavBar />
       <main className="gr-submit-container">
         <form className="modern-card gr-form-card" onSubmit={handleSubmit}>
-          <h2 style={{ marginBottom: "8px", fontSize: "26px", fontWeight: 800 }}>Edit Riddle</h2>
+          <h2 style={{ marginBottom: "8px", fontSize: "26px", fontWeight: 800 }}><KmEn km="កែសម្រួលពាក្យបណ្តៅ" en="Edit Riddle" /></h2>
           <p style={{ color: "var(--text-secondary)", marginBottom: "28px", fontSize: "14px" }}>
             Make changes to your entry below.
           </p>

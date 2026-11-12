@@ -1,119 +1,51 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import AdminRiddleList from "./AdminRiddleList.js";
+import useCustomRiddles from "../hooks/useCustomRiddles.js";
 
-const S = {
-  container: { marginTop: "var(--space-md)", width: "100%" },
-  title: { fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: 16, color: "var(--text-primary)" },
-  listItem: {
-    borderBottom: "1px solid var(--border)",
-    padding: "14px 0",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexWrap: "wrap",
-    gap: 12,
-  },
-  btn: {
-    marginLeft: 6,
-    padding: "8px 14px",
-    minHeight: 38,
-    backgroundColor: "var(--accent-glow)",
-    border: "1px solid var(--border-accent)",
-    borderRadius: "var(--radius-sm)",
-    color: "var(--accent)",
-    fontFamily: "var(--mono)",
-    fontSize: 13,
-    cursor: "pointer",
-    transition: "background-color var(--transition-fast)",
-  },
-  empty: { color: "var(--text-secondary)", fontSize: 14 }
+const btn = {
+  marginLeft: 6,
+  padding: "8px 14px",
+  minHeight: 44,
+  backgroundColor: "var(--accent-glow)",
+  border: "1px solid var(--border-accent)",
+  borderRadius: "var(--radius-sm)",
+  color: "var(--accent)",
+  fontSize: 13,
+  cursor: "pointer",
 };
 
+// Admin curation panel: approve/reject pending riddles and remove published ones.
+// Data handling is in useCustomRiddles; each list is an AdminRiddleList.
 export default function AdminPanel() {
-  const [pending, setPending] = useState([]);
-  const [published, setPublished] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchData = () => {
-    setLoading(true);
-    const allCustom = JSON.parse(localStorage.getItem("custom-riddles") || "[]");
-    setPending(allCustom.filter(r => r.status === "pending"));
-    setPublished(allCustom.filter(r => r.status === "published"));
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchData();
-    window.addEventListener("riddleSubmitted", fetchData);
-    window.addEventListener("storage", fetchData);
-    return () => {
-      window.removeEventListener("riddleSubmitted", fetchData);
-      window.removeEventListener("storage", fetchData);
-    };
-  }, []);
-
-  const handleApprove = (id) => {
-    const allCustom = JSON.parse(localStorage.getItem("custom-riddles") || "[]");
-    const updated = allCustom.map(r => r.id === id ? { ...r, status: "published" } : r);
-    localStorage.setItem("custom-riddles", JSON.stringify(updated));
-    fetchData();
-    window.dispatchEvent(new Event("riddlesUpdated"));
-  };
-
-  const handleRemove = (id) => {
-    if (!window.confirm("Are you sure you want to remove this published riddle?")) return;
-    const allCustom = JSON.parse(localStorage.getItem("custom-riddles") || "[]");
-    const updated = allCustom.filter(r => r.id !== id);
-    localStorage.setItem("custom-riddles", JSON.stringify(updated));
-    fetchData();
-    window.dispatchEvent(new Event("riddlesUpdated"));
-  };
-
-  const handleReject = (id) => {
-    if (!window.confirm("Are you sure you want to reject and delete this submission?")) return;
-    const allCustom = JSON.parse(localStorage.getItem("custom-riddles") || "[]");
-    const updated = allCustom.filter(r => r.id !== id);
-    localStorage.setItem("custom-riddles", JSON.stringify(updated));
-    fetchData();
-  };
+  const { pending, published, loading, handleApprove, handleRemove, handleReject } = useCustomRiddles();
 
   return (
-    <section style={S.container} aria-label="Admin curation panel">
-      <h2 style={S.title}>Pending submissions</h2>
-      {loading ? (
-        <p style={S.empty}>Loading…</p>
-      ) : pending.length === 0 ? (
-        <p style={S.empty} style={{marginBottom: 32}}>No pending riddles.</p>
-      ) : (
-        <ul style={{ listStyle: "none", margin: "0 0 32px 0", padding: 0 }}>
-          {pending.map((item) => (
-            <li key={item.id} style={S.listItem}>
-              <strong>{item.question}</strong> – {item.category}
-              <div>
-                <button style={S.btn} onClick={() => handleApprove(item.id)}>Approve</button>
-                <button style={{...S.btn, color: "var(--text-secondary)", borderColor: "var(--border)"}} onClick={() => handleReject(item.id)}>Reject</button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <h2 style={S.title}>Published custom riddles</h2>
-      {published.length === 0 ? (
-        <p style={S.empty}>No custom riddles published yet.</p>
-      ) : (
-        <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-          {published.map((item) => (
-            <li key={item.id} style={S.listItem}>
-              <strong>{item.question}</strong> – {item.category}
-              <button style={{...S.btn, color: "#ef4444", borderColor: "#ef444440", backgroundColor: "transparent"}} onClick={() => handleRemove(item.id)}>
-                Remove
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+    <section style={{ marginTop: "var(--space-md)", width: "100%" }} aria-label="Admin curation panel">
+      <AdminRiddleList
+        title="Pending submissions"
+        items={pending}
+        loading={loading}
+        emptyText="No pending riddles."
+        renderActions={(item) => (
+          <>
+            <button style={btn} onClick={() => handleApprove(item.id)}>Approve</button>
+            <button style={{ ...btn, color: "var(--text-secondary)", borderColor: "var(--border)" }} onClick={() => handleReject(item.id)}>
+              Reject
+            </button>
+          </>
+        )}
+      />
+      <AdminRiddleList
+        title="Published custom riddles"
+        items={published}
+        emptyText="No custom riddles published yet."
+        renderActions={(item) => (
+          <button style={{ ...btn, color: "var(--danger)", borderColor: "var(--danger)", backgroundColor: "transparent" }} onClick={() => handleRemove(item.id)}>
+            Remove
+          </button>
+        )}
+      />
     </section>
   );
 }

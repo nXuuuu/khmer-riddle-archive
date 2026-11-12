@@ -1,123 +1,61 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { createClient } from "../utils/supabase/client.js";
+import RiddleVisual from "./RiddleVisual.js";
+import RiddleOwnerActions from "./RiddleOwnerActions.js";
+import { CATEGORY_LABELS } from "../collection.config.js";
+import { toKhmerDigits } from "../utils/khmerDigits.js";
 
-export default function RiddleCard({ item, currentUser }) {
-  const [revealed, setRevealed] = useState(false);
+// One object in the Gallery view: image first, Khmer riddle as the caption.
+// Clicking the image (or "Reveal") slides the answer up over it.
+export default function RiddleCard({ item, number, currentUser }) {
+  const [open, setOpen] = useState(false);
   const [deleted, setDeleted] = useState(false);
 
-  // Use a short version of the UUID for display
-  const displayId = item.id.length > 15 ? item.id.slice(0, 8) : item.id;
   const isOwner = currentUser && currentUser.id === item.owner;
-
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this riddle?")) return;
-    
-    const supabase = createClient();
-    if (!supabase) return;
-
-    // Delete through supabase-js and .select() to verify
-    const { data, error } = await supabase
-      .from("entries")
-      .delete()
-      .eq("id", item.id)
-      .select();
-
-    if (error) {
-      console.error(error);
-      alert("An error occurred during deletion.");
-      return;
-    }
-
-    if (!data || data.length === 0) {
-      console.error("Deletion refused by RLS. Zero rows returned.");
-      alert("That change wasn't saved.");
-      return;
-    }
-
-    // Success
-    setDeleted(true);
-    // Optional cleanup: if image_url exists, parse path and remove from storage
-    if (item.image_url) {
-      try {
-        const urlObj = new URL(item.image_url);
-        const pathSegments = urlObj.pathname.split('/');
-        const userFolder = pathSegments[pathSegments.length - 2];
-        const fileName = pathSegments[pathSegments.length - 1];
-        await supabase.storage.from("photos").remove([`${userFolder}/${fileName}`]);
-      } catch (e) {
-        console.error("Cleanup photo error:", e);
-      }
+  const toggle = () => setOpen((o) => !o);
+  // Let keyboard users open the image "button" with Enter or Space.
+  const onKey = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggle();
     }
   };
 
   if (deleted) return null;
 
   return (
-    <article className="modern-card" style={{ padding: "clamp(18px, 3vw, 24px)" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
-        <span className="gr-card-badge">{item.category}</span>
-        <span className="gr-card-id">#{displayId}</span>
-      </div>
-
-      {item.image_url && (
-        <div className="gr-card-image-wrap">
-          <img src={item.image_url} alt="Riddle visual clue" loading="lazy" />
+    <article className={`mu-object${open ? " open" : ""}`}>
+      <div
+        className="mu-frame"
+        onClick={toggle}
+        onKeyDown={onKey}
+        role="button"
+        tabIndex={0}
+        aria-label={open ? "Hide answer" : "Reveal answer"}
+      >
+        <RiddleVisual item={item} />
+        <div className="mu-answer" aria-hidden={!open}>
+          <span className="mu-label"><span lang="km">ចម្លើយ</span> · Answer</span>
+          <p className="mu-answer-km" lang="km">{item.answer_kh}</p>
+          <p className="mu-answer-en">{item.answer_en}</p>
+          {item.explanation && <p className="mu-answer-text">{item.explanation}</p>}
+          <p className="mu-answer-source">{item.source}</p>
         </div>
-      )}
-
-      {item.hint && (
-        <p className="gr-card-hint">"{item.hint}"</p>
-      )}
-
-      <div className="gr-card-question">
-        <p className="gr-card-q-text" lang="km">« {item.question} »</p>
       </div>
 
-      <div className="gr-card-source">
-        <span>{item.source}</span>
-      </div>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "16px" }}>
-        <button
-          type="button"
-          onClick={() => setRevealed(r => !r)}
-          className={`gr-card-reveal-btn ${revealed ? "active" : ""}`}
-        >
-          {revealed ? "Hide Answer" : "Reveal Answer"}
+      <div className="mu-caption">
+        <div className="mu-caption-top">
+          <span className="mu-label" lang="km">លេខ {toKhmerDigits(String(number).padStart(2, "0"))}</span>
+          <span className="mu-label" lang="km">{CATEGORY_LABELS[item.category] || item.category}</span>
+        </div>
+        <p className="mu-caption-q" lang="km">« {item.question} »</p>
+        {item.hint && <p className="mu-caption-hint">{item.hint}</p>}
+        <button type="button" className="mu-reveal-link" onClick={toggle}>
+          <span lang="km">{open ? "លាក់ចម្លើយ" : "បង្ហាញចម្លើយ"}</span> · {open ? "Hide" : "Reveal"}
         </button>
-        
-        {isOwner && (
-          <div style={{ display: "flex", gap: "8px" }}>
-            <Link 
-              href={`/edit/${item.id}`} 
-              className="gr-card-reveal-btn" 
-              style={{ flex: 1, width: "auto", textDecoration: "none" }}
-            >
-              Edit
-            </Link>
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="gr-card-reveal-btn gr-card-delete-btn"
-              style={{ flex: 1, width: "auto" }}
-            >
-              Delete
-            </button>
-          </div>
-        )}
+        {isOwner && <RiddleOwnerActions item={item} onDeleted={() => setDeleted(true)} />}
       </div>
-
-      {revealed && (
-        <div className="gr-card-ans-box">
-          <span className="gr-card-ans-title">ANSWER</span>
-          <p className="gr-card-ans-en">{item.answer_en}</p>
-          <p className="gr-card-ans-km" lang="km">{item.answer_kh}</p>
-          {item.explanation && <p className="gr-card-explanation">{item.explanation}</p>}
-        </div>
-      )}
     </article>
   );
 }

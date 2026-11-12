@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import NavBar from "../../components/NavBar.js";
+import Icon from "../../components/Icon.js";
+import KmEn from "../../components/KmEn.js";
 
 export default function CuratorDashboard() {
   const [pendingList, setPendingList] = useState([]);
@@ -38,7 +40,7 @@ export default function CuratorDashboard() {
       <main className="gr-curator-container">
         <div className="gr-curator-header">
           <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginBottom: "8px" }}>
-            Curator Curation Dashboard
+            <KmEn km="ផ្ទាំងអ្នកថែរក្សា" en="Curator Dashboard" />
           </h2>
           <p style={{ color: "var(--text-secondary)" }}>
             Review, edit, and publish community riddle submissions to the main Khmer archive.
@@ -47,7 +49,7 @@ export default function CuratorDashboard() {
 
         {pendingList.length === 0 ? (
           <div className="modern-card" style={{ padding: "clamp(24px, 5vw, 40px)", textAlign: "center" }}>
-            <span style={{ fontSize: "48px", display: "block", marginBottom: "16px" }}>🌿</span>
+            <span style={{ display: "block", marginBottom: "16px", color: "var(--success)" }}><Icon name="leaf" size={48} /></span>
             <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px" }}>
               Archive is Up to Date
             </h3>

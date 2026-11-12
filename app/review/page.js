@@ -2,6 +2,7 @@ import Link from "next/link";
 import NavBar from "../../components/NavBar.js";
 import ReviewQueue from "../../components/ReviewQueue.js";
 import { createClient } from "../../utils/supabase/server.js";
+import KmEn from "../../components/KmEn.js";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,7 @@ export default async function ReviewPage() {
         <main className="gr-submit-container" style={{ textAlign: "center", padding: "80px 20px" }}>
           <div className="modern-card" style={{ padding: "48px 24px", maxWidth: "560px", margin: "0 auto" }}>
             <h2 style={{ marginBottom: "12px", fontSize: "24px", fontWeight: 800 }}>
-              Access Denied · គ្មានការអនុញ្ញាត
+              <KmEn km="គ្មានការអនុញ្ញាត" en="Access Denied" />
             </h2>
             <p style={{ color: "var(--text-secondary)", margin: "16px 0 24px", lineHeight: 1.6 }}>
               This page is for reviewers only. You do not have permission to view or review pending entries.
