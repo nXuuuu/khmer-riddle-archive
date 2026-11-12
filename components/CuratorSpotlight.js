@@ -1,5 +1,5 @@
 import collection from "../collection.config.js";
-import CuratorHeritageArtifact from "./CuratorHeritageArtifact.js";
+import PalmLeafManuscript from "./PalmLeafManuscript.js";
 import AnimatedQuote from "./AnimatedQuote.js";
 
 const QUOTE =
@@ -24,9 +24,7 @@ export default function CuratorSpotlight() {
         </div>
       </div>
 
-      <div className="vt-quote-visual-wrap">
-        <CuratorHeritageArtifact />
-      </div>
+      <PalmLeafManuscript />
     </section>
   );
 }
