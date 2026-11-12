@@ -9,7 +9,7 @@ import { createClient } from "../utils/supabase/client.js";
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
   const [streak, setStreak] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -17,7 +17,7 @@ export default function NavBar() {
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
-    const activeTheme = storedTheme || "dark";
+    const activeTheme = storedTheme || "light";
     setTheme(activeTheme);
     document.documentElement.setAttribute("data-theme", activeTheme);
 

@@ -1,9 +1,14 @@
 import "./globals.css";
 import collection from "../collection.config.js";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Instrument_Serif, Inter_Tight, Kantumruy_Pro, Koulen } from "next/font/google";
 
-const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-playfair', display: 'swap' });
-const inter = Inter({ subsets: ["latin"], variable: '--font-inter', display: 'swap' });
+// Instrument Serif: editorial Latin headings (museum-catalogue feel).
+// Inter Tight: clean Latin body and labels. Kantumruy Pro: Khmer body text.
+// Koulen: bold Khmer display face for the big Khmer titles.
+const serif = Instrument_Serif({ weight: "400", style: ["normal", "italic"], subsets: ["latin"], variable: "--font-serif", display: "swap" });
+const sans = Inter_Tight({ subsets: ["latin"], variable: "--font-inter-tight", display: "swap" });
+const kantumruy = Kantumruy_Pro({ subsets: ["khmer", "latin"], variable: "--font-kantumruy", display: "swap" });
+const koulen = Koulen({ weight: "400", subsets: ["khmer", "latin"], variable: "--font-koulen", display: "swap" });
 
 export const metadata = {
   title: `${collection.name} — Khmer Living Archive`,
@@ -12,12 +17,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="en" data-theme="light" suppressHydrationWarning className={`${serif.variable} ${sans.variable} ${kantumruy.variable} ${koulen.variable}`}>
       <head>
         {/*
           Inline script runs synchronously before React hydrates —
           prevents flash of wrong theme (FOUT) on page load.
-          Reads localStorage preference, falls back to dark mode.
+          Reads localStorage preference, falls back to light mode.
         */}
         <script
           dangerouslySetInnerHTML={{
@@ -25,10 +30,10 @@ export default function RootLayout({ children }) {
               (function() {
                 try {
                   var stored = localStorage.getItem('theme');
-                  var theme = stored || 'dark';
+                  var theme = stored || 'light';
                   document.documentElement.setAttribute('data-theme', theme);
                 } catch(e) {
-                  document.documentElement.setAttribute('data-theme', 'dark');
+                  document.documentElement.setAttribute('data-theme', 'light');
                 }
               })();
             `,

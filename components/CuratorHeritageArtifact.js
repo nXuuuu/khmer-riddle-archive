@@ -23,13 +23,13 @@ export default function CuratorHeritageArtifact() {
           points="100,32 118,82 168,100 118,118 100,168 82,118 32,100 82,82"
           stroke="var(--accent)"
           strokeWidth="1.25"
-          fill="rgba(223, 183, 92, 0.05)"
+          fill="var(--accent-glow)"
         />
         <polygon
           points="100,46 114,86 154,100 114,114 100,154 86,114 46,100 86,86"
           stroke="var(--border-accent)"
           strokeWidth="0.75"
-          fill="rgba(34, 197, 94, 0.04)"
+          fill="var(--bg-sand)"
           transform="rotate(22.5 100 100)"
         />
 
