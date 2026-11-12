@@ -369,20 +369,26 @@ button:hover .mu-arrow { transform: translateX(4px); }
 /* ============================================================
    HERO — exhibition poster
    ============================================================ */
+/* The hero fills the first screen and centres its content, so the space above
+   and below it is always equal. The row height comes from the text; the image
+   stretches to match it (see .mu-hero-object below). */
 .mu-hero {
+  min-height: calc(100vh - 80px); /* screen height minus the nav bar */
   display: grid;
   grid-template-columns: 1.15fr 1fr;
+  align-content: center;
+  align-items: stretch;
   gap: var(--space-lg);
-  align-items: stretch; /* both columns share one height */
-  padding: clamp(20px, 3vw, 40px) var(--container-padding) var(--space-lg);
+  padding: 32px var(--container-padding);
   max-width: var(--container-max);
   margin: 0 auto;
 }
 @media (max-width: 900px) { .mu-hero { grid-template-columns: 1fr; min-height: 0; } }
 
-.mu-hero-text { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; min-width: 0; }
-.mu-hero-top,
-.mu-hero-bottom { display: flex; flex-direction: column; gap: 16px; }
+.mu-hero-text { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
+.mu-hero-top { display: flex; flex-direction: column; gap: 16px; }
+/* Same space above and below the divider line: buttons ↔ line ↔ numbers. */
+.mu-hero-bottom { display: flex; flex-direction: column; gap: 28px; }
 .mu-hero-khmer {
   font-family: var(--font-khmer-display);
   font-size: clamp(3rem, 7.2vw, 7.5rem);
@@ -400,8 +406,7 @@ button:hover .mu-arrow { transform: translateX(4px); }
   display: flex;
   flex-wrap: wrap;
   gap: 12px 36px;
-  padding-top: 18px;
-  margin-top: 6px;
+  padding-top: 28px; /* breathing room under the divider line */
   border-top: 1px solid var(--border);
 }
 .mu-hero-meta div { display: flex; flex-direction: column; gap: 2px; }
@@ -410,9 +415,9 @@ button:hover .mu-arrow { transform: translateX(4px); }
 .mu-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
 /* The framed "featured object" */
-.mu-hero-object { margin: 0; }
+.mu-hero-object { margin: 0; display: flex; flex-direction: column; }
 /* Height follows the screen so the whole hero fits above the fold on a laptop. */
-.mu-hero-object .mu-frame { aspect-ratio: auto; height: min(calc(100vh - 300px), 600px); min-height: 360px; }
+.mu-hero-object .mu-frame { aspect-ratio: auto; flex: 1; height: auto; min-height: 320px; }
 @media (max-width: 900px) { .mu-hero-object .mu-frame { aspect-ratio: 4 / 5; height: auto; min-height: 0; } }
 .mu-frame {
   position: relative;
