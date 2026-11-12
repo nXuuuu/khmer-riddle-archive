@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import NavBar from "../../components/NavBar.js";
 import { CATEGORIES } from "../../collection.config.js";
 import { createClient } from "../../utils/supabase/client.js";
+import KmEn from "../../components/KmEn.js";
 
 export default function ContributeRiddle() {
   const router = useRouter();
@@ -113,7 +114,7 @@ export default function ContributeRiddle() {
       <>
         <NavBar />
         <main className="gr-submit-container" style={{ textAlign: "center", padding: "80px 20px" }}>
-          <h2>Members Only</h2>
+          <h2><KmEn km="សម្រាប់សមាជិកប៉ុណ្ណោះ" en="Members Only" /></h2>
           <p style={{ color: "var(--text-secondary)", margin: "20px 0" }}>
             You must be logged in to contribute an entry to the archive.
           </p>
@@ -130,7 +131,7 @@ export default function ContributeRiddle() {
         <main className="gr-submit-container" style={{ textAlign: "center", padding: "80px 20px" }}>
           <div className="modern-card gr-form-card" style={{ padding: "40px 32px" }}>
             <p style={{ fontSize: "40px", marginBottom: "16px" }}>⏳</p>
-            <h2 style={{ marginBottom: "12px" }}>Riddle submitted!</h2>
+            <h2 style={{ marginBottom: "12px" }}><KmEn km="បានដាក់ស្នើរួចរាល់!" en="Riddle submitted!" /></h2>
             <p style={{ color: "var(--text-secondary)", marginBottom: "8px" }}>
               Your riddle is waiting for review. It will appear in the archive once the curator approves it.
             </p>
@@ -152,7 +153,7 @@ export default function ContributeRiddle() {
       <NavBar />
       <main className="gr-submit-container">
         <form className="modern-card gr-form-card" onSubmit={handleSubmit}>
-          <h2 style={{ marginBottom: "8px", fontSize: "26px", fontWeight: 800 }}>Submit a Khmer Riddle</h2>
+          <h2 style={{ marginBottom: "8px", fontSize: "26px", fontWeight: 800 }}><KmEn km="ដាក់ស្នើពាក្យបណ្តៅខ្មែរ" en="Submit a Khmer Riddle" /></h2>
           <p style={{ color: "var(--text-secondary)", marginBottom: "28px", fontSize: "14px" }}>
             Share a riddle with a photo to help preserve Khmer oral history.
           </p>

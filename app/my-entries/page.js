@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "../../components/NavBar.js";
 import { createClient } from "../../utils/supabase/client.js";
+import KmEn from "../../components/KmEn.js";
 
 const STATUS_LABELS = {
   published: { en: "Published", km: "បានផ្សព្វផ្សាយ", color: "#10b981" },
@@ -44,7 +45,7 @@ export default function MyEntries() {
       <>
         <NavBar />
         <main className="gr-submit-container" style={{ textAlign: "center", padding: "80px 20px" }}>
-          <h2>Members Only</h2>
+          <h2><KmEn km="សម្រាប់សមាជិកប៉ុណ្ណោះ" en="Members Only" /></h2>
           <p style={{ color: "var(--text-secondary)", margin: "20px 0" }}>
             You must be logged in to view your entries.
           </p>
@@ -60,7 +61,7 @@ export default function MyEntries() {
       <main className="gr-submit-container">
         <div style={{ marginBottom: "32px" }}>
           <h1 style={{ fontSize: "clamp(22px, 4vw, 30px)", fontWeight: 800, marginBottom: "8px" }}>
-            My Entries
+            <KmEn km="ពាក្យបណ្តៅរបស់ខ្ញុំ" en="My Entries" />
           </h1>
           <p lang="km" style={{ color: "var(--accent)", fontSize: "14px" }}>ពាក្យបណ្ដៅរបស់ខ្ញុំ</p>
         </div>

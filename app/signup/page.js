@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import NavBar from "../../components/NavBar.js";
 import { createClient } from "../../utils/supabase/client.js";
+import KmEn from "../../components/KmEn.js";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -64,7 +65,7 @@ export default function SignupPage() {
       <main style={{ maxWidth: 440, margin: "clamp(40px, 8vw, 80px) auto", padding: "0 20px" }}>
         <form className="modern-card gr-form-card" onSubmit={handleSubmit}>
           <h1 style={{ fontSize: "24px", fontWeight: 800, marginBottom: "8px" }}>
-            Sign Up
+            <KmEn km="ចុះឈ្មោះ" en="Sign Up" />
           </h1>
           <p style={{ color: "var(--text-secondary)", fontSize: "14px", marginBottom: "24px" }}>
             Create a contributor account to join the archive.

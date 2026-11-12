@@ -6,6 +6,7 @@ import collection from "../collection.config.js";
 import { SunIcon, MoonIcon } from "./ThemeIcons.js";
 import { createClient } from "../utils/supabase/client.js";
 import Icon from "./Icon.js";
+import KmEn from "./KmEn.js";
 
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -106,31 +107,29 @@ export default function NavBar() {
         <div className="gr-nav-left">
           <nav aria-label="Main navigation">
             <ul className="gr-nav-links">
-              <li><Link href="/" className="gr-nav-link">Home</Link></li>
-              <li><Link href="/daily" className="gr-nav-link">Daily Challenge</Link></li>
-              <li><Link href="/contribute" className="gr-nav-link">Submit Riddle</Link></li>
+              <li><Link href="/" className="gr-nav-link"><KmEn km="ទំព័រដើម" en="Home" /></Link></li>
+              <li><Link href="/daily" className="gr-nav-link"><KmEn km="ប្រចាំថ្ងៃ" en="Daily Challenge" /></Link></li>
+              <li><Link href="/contribute" className="gr-nav-link"><KmEn km="ដាក់ស្នើ" en="Submit Riddle" /></Link></li>
             </ul>
           </nav>
         </div>
 
         <Link href="/" className="gr-logo-center" aria-label="Khmer Riddle Archive Home">
-          <span className="gr-logo-title">
-            {collection.name.split(" ")[0]}<span className="gr-logo-dot">·</span>{collection.name.split(" ").slice(1).join(" ")}
-          </span>
-          <span className="gr-logo-tagline">Living Folklore Archive</span>
+          <span className="gr-logo-title" lang="km">{collection.nameKm}</span>
+          <span className="gr-logo-tagline">{collection.name} · Living Archive</span>
         </Link>
 
         <div className="gr-nav-actions">
           <div className="gr-nav-right-links">
             {user && (
               <Link href="/my-entries" className="gr-nav-link">
-                My Entries
+                <KmEn km="របស់ខ្ញុំ" en="My Entries" />
               </Link>
             )}
 
             {isReviewer && (
               <Link href="/review" className="gr-nav-review-badge">
-                <span className="gr-review-dot" /> Review Queue
+                <span className="gr-review-dot" /> <span lang="km">ត្រួតពិនិត្យ</span> · Review
               </Link>
             )}
           </div>
@@ -155,20 +154,20 @@ export default function NavBar() {
                   className="gr-logout-btn"
                   title="Log Out"
                 >
-                  Log Out
+                  <span lang="km">ចាកចេញ</span>
                 </button>
               </div>
             ) : (
               <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-                <Link href="/login" className="gr-nav-link" style={{ fontSize: "13px" }}>
-                  Log In
+                <Link href="/login" className="gr-nav-link" style={{ fontSize: "13px" }} title="Log in">
+                  <span lang="km">ចូលគណនី</span>
                 </Link>
                 <Link
                   href="/signup"
                   className="gr-btn-primary"
                   style={{ padding: "6px 14px", fontSize: "12px", minHeight: "32px", borderRadius: "99px", textDecoration: "none", whiteSpace: "nowrap" }}
                 >
-                  Sign Up
+                  <span lang="km">ចុះឈ្មោះ</span>&nbsp;· Sign up
                 </Link>
               </div>
             )}
@@ -199,18 +198,18 @@ export default function NavBar() {
       </div>
       {mobileOpen && (
         <div className="gr-mobile-menu">
-          <Link href="/" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Home</Link>
-          <Link href="/daily" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Daily Challenge</Link>
-          <Link href="/contribute" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Submit Riddle</Link>
+          <Link href="/" className="gr-nav-link" onClick={() => setMobileOpen(false)}><KmEn km="ទំព័រដើម" en="Home" /></Link>
+          <Link href="/daily" className="gr-nav-link" onClick={() => setMobileOpen(false)}><KmEn km="ប្រចាំថ្ងៃ" en="Daily Challenge" /></Link>
+          <Link href="/contribute" className="gr-nav-link" onClick={() => setMobileOpen(false)}><KmEn km="ដាក់ស្នើ" en="Submit Riddle" /></Link>
           {user && (
-            <Link href="/my-entries" className="gr-nav-link" onClick={() => setMobileOpen(false)}>My Entries</Link>
+            <Link href="/my-entries" className="gr-nav-link" onClick={() => setMobileOpen(false)}><KmEn km="របស់ខ្ញុំ" en="My Entries" /></Link>
           )}
           {isReviewer && (
-            <Link href="/review" className="gr-nav-link" onClick={() => setMobileOpen(false)}>Review Queue</Link>
+            <Link href="/review" className="gr-nav-link" onClick={() => setMobileOpen(false)}><KmEn km="ត្រួតពិនិត្យ" en="Review Queue" /></Link>
           )}
           {streak > 0 && (
             <Link href="/daily" className="gr-streak-badge" onClick={() => setMobileOpen(false)}>
-              <Icon name="flame" size={14} /> {streak} Day Streak
+              <Icon name="flame" size={14} /> <span lang="km">{streak} ថ្ងៃជាប់គ្នា</span> · {streak} Day Streak
             </Link>
           )}
           {user ? (
@@ -223,7 +222,7 @@ export default function NavBar() {
                 className="gr-btn-secondary"
                 style={{ width: "100%", padding: "10px", textAlign: "center" }}
               >
-                Log Out
+                <span lang="km">ចាកចេញ</span> · Log Out
               </button>
             </div>
           ) : (
@@ -234,7 +233,7 @@ export default function NavBar() {
                 style={{ flex: 1, textAlign: "center", padding: "10px", textDecoration: "none" }}
                 onClick={() => setMobileOpen(false)}
               >
-                Log In
+                <span lang="km">ចូលគណនី</span> · Log In
               </Link>
               <Link
                 href="/signup"
@@ -242,7 +241,7 @@ export default function NavBar() {
                 style={{ flex: 1, textAlign: "center", padding: "10px", textDecoration: "none" }}
                 onClick={() => setMobileOpen(false)}
               >
-                Sign Up
+                <span lang="km">ចុះឈ្មោះ</span> · Sign Up
               </Link>
             </div>
           )}

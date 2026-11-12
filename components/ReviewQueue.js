@@ -4,6 +4,7 @@ import { useState } from "react";
 import ReviewCard from "./ReviewCard.js";
 import { createClient } from "../utils/supabase/client.js";
 import Icon from "./Icon.js";
+import KmEn from "./KmEn.js";
 
 export default function ReviewQueue({ initialEntries }) {
   const [entries, setEntries] = useState(initialEntries);
@@ -45,7 +46,7 @@ export default function ReviewQueue({ initialEntries }) {
     <div>
       <div style={{ marginBottom: "28px" }}>
         <h1 style={{ fontSize: "clamp(22px, 4vw, 30px)", fontWeight: 800, marginBottom: "8px" }}>
-          Review Queue · កន្លែងត្រួតពិនិត្យ
+          <KmEn km="កន្លែងត្រួតពិនិត្យ" en="Review Queue" />
         </h1>
         <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
           Pending entries submitted by contributors, sorted oldest first.

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import NavBar from "../../components/NavBar.js";
 import Icon from "../../components/Icon.js";
+import KmEn from "../../components/KmEn.js";
 
 export default function CuratorDashboard() {
   const [pendingList, setPendingList] = useState([]);
@@ -39,7 +40,7 @@ export default function CuratorDashboard() {
       <main className="gr-curator-container">
         <div className="gr-curator-header">
           <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginBottom: "8px" }}>
-            Curator Curation Dashboard
+            <KmEn km="ផ្ទាំងអ្នកថែរក្សា" en="Curator Dashboard" />
           </h2>
           <p style={{ color: "var(--text-secondary)" }}>
             Review, edit, and publish community riddle submissions to the main Khmer archive.
