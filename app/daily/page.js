@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "../../components/NavBar.js";
 import { createClient } from "../../utils/supabase/client.js";
+import Icon from "../../components/Icon.js";
 
 export default function DailyChallenge() {
   const [step, setStep] = useState(0); // 0, 1, 2 = riddle steps, 3 = success, -1 = fail
@@ -131,9 +132,10 @@ export default function DailyChallenge() {
                 </div>
                 <div className="gr-quiz-footer">
                   <span className="gr-quiz-hint" onClick={() => setHint(true)}>
+                    <Icon name="bulb" size={15} />{" "}
                     {hint
-                      ? `💡 ${currentRiddle.hint || "No hint available"}`
-                      : "💡 Need a hint? · ត្រូវការតម្រុយ?"}
+                      ? currentRiddle.hint || "No hint available"
+                      : "Need a hint? · ត្រូវការតម្រុយ?"}
                   </span>
                 </div>
               </div>
@@ -145,7 +147,7 @@ export default function DailyChallenge() {
 
         {step === 3 && (
           <div className="modern-card gr-daily-success">
-            <div className="gr-daily-success-icon">🔥</div>
+            <div className="gr-daily-success-icon"><Icon name="flame" size={56} /></div>
             <h2 style={{ marginBottom: "12px", fontSize: "28px" }}>Challenge Completed!</h2>
             <p style={{ color: "var(--text-secondary)", marginBottom: "24px" }}>
               Awesome job! You solved all 3 daily Khmer riddles.
@@ -159,7 +161,7 @@ export default function DailyChallenge() {
 
         {step === -1 && (
           <div className="modern-card gr-daily-success">
-            <div className="gr-daily-success-icon">❌</div>
+            <div className="gr-daily-success-icon"><Icon name="cross" size={56} /></div>
             <h2 style={{ marginBottom: "12px", fontSize: "28px" }}>Incorrect Answer</h2>
             <p style={{ color: "var(--text-secondary)", marginBottom: "32px" }}>
               Don't worry, daily challenges can be tried as many times as you like!

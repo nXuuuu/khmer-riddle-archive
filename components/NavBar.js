@@ -5,6 +5,7 @@ import Link from "next/link";
 import collection from "../collection.config.js";
 import { SunIcon, MoonIcon } from "./ThemeIcons.js";
 import { createClient } from "../utils/supabase/client.js";
+import Icon from "./Icon.js";
 
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -136,7 +137,7 @@ export default function NavBar() {
 
           {streak > 0 && (
             <Link href="/daily" className="gr-streak-badge">
-              🔥 {streak}
+              <Icon name="flame" size={14} /> {streak}
             </Link>
           )}
 
@@ -209,7 +210,7 @@ export default function NavBar() {
           )}
           {streak > 0 && (
             <Link href="/daily" className="gr-streak-badge" onClick={() => setMobileOpen(false)}>
-              🔥 {streak} Day Streak
+              <Icon name="flame" size={14} /> {streak} Day Streak
             </Link>
           )}
           {user ? (

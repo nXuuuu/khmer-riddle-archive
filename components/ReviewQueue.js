@@ -3,6 +3,7 @@
 import { useState } from "react";
 import ReviewCard from "./ReviewCard.js";
 import { createClient } from "../utils/supabase/client.js";
+import Icon from "./Icon.js";
 
 export default function ReviewQueue({ initialEntries }) {
   const [entries, setEntries] = useState(initialEntries);
@@ -59,7 +60,7 @@ export default function ReviewQueue({ initialEntries }) {
 
       {entries.length === 0 ? (
         <div className="modern-card" style={{ padding: "48px 24px", textAlign: "center" }}>
-          <p style={{ fontSize: "40px", marginBottom: "12px" }}>✓</p>
+          <p style={{ marginBottom: "12px", color: "var(--success)" }}><Icon name="check" size={40} /></p>
           <h3 style={{ marginBottom: "8px", fontSize: "18px" }}>No pending entries in the queue</h3>
           <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
             The queue is clear. All submissions have been reviewed.
