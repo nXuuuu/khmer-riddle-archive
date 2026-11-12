@@ -868,6 +868,8 @@ button:hover .mu-arrow { transform: translateX(4px); }
 @media (prefers-reduced-motion: reduce) {
   .reveal .mu-frame { clip-path: none; }
   .reveal .mu-frame .mu-visual { transform: none; }
+  /* scroll-linked animations ignore animation-duration, so switch the hero drift off by name */
+  .mu-hero-object .mu-visual > * { animation: none !important; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .reveal { opacity: 1; transform: none; }
 }
