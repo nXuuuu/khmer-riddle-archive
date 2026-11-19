@@ -26,10 +26,6 @@ export default function IntroEssay() {
             For generations, Khmer riddles were told in the evening: around the fire, under the stilt
             house, on temple grounds. A good riddle teaches you to look closely at the world.
           </p>
-          {collection.descriptionKm && (
-            <p className="mu-essay-km" lang="km" style={{ fontSize: "0.95em" }}>{collection.descriptionKm}</p>
-          )}
-          <p className="mu-essay-en">{collection.description}</p>
           <p className="mu-essay-sign">
             <span lang="km">រៀបចំដោយ</span> · Curated by <strong>{collection.curator}</strong>.
             Sources: {collection.source}.
