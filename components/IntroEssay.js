@@ -13,7 +13,7 @@ export default function IntroEssay() {
             <div className="mu-frame">
               <RiddleVisual category="Wisdom & Folklore" />
             </div>
-            <figcaption lang="km">ប្រាសាទ និងផ្កាឈូក នៅពេលរាត្រី</figcaption>
+            <figcaption><span lang="km">ប្រាសាទ និងផ្កាឈូក នៅពេលរាត្រី</span> · Temple towers and lotus at night</figcaption>
           </figure>
         </div>
 
@@ -26,6 +26,9 @@ export default function IntroEssay() {
             For generations, Khmer riddles were told in the evening: around the fire, under the stilt
             house, on temple grounds. A good riddle teaches you to look closely at the world.
           </p>
+          {collection.descriptionKm && (
+            <p className="mu-essay-km" lang="km" style={{ fontSize: "0.95em" }}>{collection.descriptionKm}</p>
+          )}
           <p className="mu-essay-en">{collection.description}</p>
           <p className="mu-essay-sign">
             <span lang="km">រៀបចំដោយ</span> · Curated by <strong>{collection.curator}</strong>.

@@ -16,6 +16,10 @@ const collection = {
   // One sentence: what is this archive, and why does it matter?
   description: "A living digital archive preserving traditional Khmer riddles (ពាក្យបណ្តៅ) from oral literature, the Buddhist Institute of Cambodia, and folk traditions.",
 
+  // Khmer translation of the sentence above, shown first (Khmer is the primary
+  // language). Written by Claude — flagged for a native-speaker check.
+  descriptionKm: "បណ្ណសារឌីជីថលរស់ដែលអភិរក្សពាក្យបណ្តៅខ្មែរប្រពៃណី (ពាក្យបណ្តៅ) ពីអក្សរសាស្ត្រផ្ទាល់មាត់ វិទ្យាស្ថានពុទ្ធសាសនបណ្ឌិត្យនៃកម្ពុជា និងប្រពៃណីប្រជាប្រិយ។",
+
   // Who is building this archive? Your name, as you want it shown.
   curator: "Sokunthanou Chhoy",
 

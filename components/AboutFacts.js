@@ -6,7 +6,7 @@ const FACTS = [
   { km: "រៀបចំដោយ", label: "Curated by", value: collection.curator },
   { km: "ប្រភព", label: "Sources", value: collection.source },
   { km: "មុខវិជ្ជា", label: "Course", value: "ICT 340 — Vibe Coding · AUPP" },
-  { km: "ស្ថានភាព", label: "Status", value: "A living archive, still growing" },
+  { km: "ស្ថានភាព", label: "Status", value: "A living archive, still growing", valueKm: "បណ្ណសាររស់ដែលកំពុងរីកចម្រើនបន្តបន្ទាប់" },
 ];
 
 export default function AboutFacts() {
@@ -18,6 +18,7 @@ export default function AboutFacts() {
           {FACTS.map((f, i) => (
             <div key={f.label} className={`mu-fact reveal delay-${i + 1}`}>
               <span className="mu-label"><span lang="km">{f.km}</span> · {f.label}</span>
+              {f.valueKm && <p lang="km">{f.valueKm}</p>}
               <p>{f.value}</p>
             </div>
           ))}
