@@ -14,7 +14,7 @@ export default function DailyChallenge() {
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState(null);
   const [hint, setHint] = useState(false);
-  const [streak, setStreak] = useState(0);
+  const [solved, setSolved] = useState(0); // total riddles solved on this device, all-time
 
   // Initialize game
   const initGame = (dataList) => {
@@ -40,8 +40,8 @@ export default function DailyChallenge() {
     }
     loadRiddles();
     
-    const storedStreak = localStorage.getItem("riddle-streak");
-    if (storedStreak) setStreak(parseInt(storedStreak, 10));
+    const storedSolved = localStorage.getItem("riddles-solved");
+    if (storedSolved) setSolved(parseInt(storedSolved, 10));
   }, []);
 
   // Generate options for the current riddle step
@@ -64,14 +64,15 @@ export default function DailyChallenge() {
     const current = selectedRiddles[step];
     
     if (opt.id === current.id) {
+      // Count this riddle as solved right away, not only on finishing all 3.
+      const newSolved = solved + 1;
+      setSolved(newSolved);
+      localStorage.setItem("riddles-solved", newSolved);
+      // Dispatch custom event to notify NavBar in real-time
+      window.dispatchEvent(new Event("riddles-solved-updated"));
+
       setTimeout(() => {
         if (step === 2) {
-          // Success! Update streak
-          const newStreak = streak + 1;
-          setStreak(newStreak);
-          localStorage.setItem("riddle-streak", newStreak);
-          // Dispatch custom event to notify NavBar in real-time
-          window.dispatchEvent(new Event("streak-updated"));
           setStep(3);
         } else {
           setStep(prev => prev + 1);
@@ -154,7 +155,7 @@ export default function DailyChallenge() {
               Awesome job! You solved all 3 daily Khmer riddles.
             </p>
             <div style={{ fontSize: "20px", fontWeight: 700, color: "var(--accent)", marginBottom: "32px" }}>
-              Current Streak: {streak} Day{streak > 1 ? "s" : ""}
+              Riddles Solved: {solved}
             </div>
             <Link href="/" className="gr-btn-primary">Back Home</Link>
           </div>

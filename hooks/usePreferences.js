@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-// Light/dark theme (saved in localStorage) and the daily-challenge streak.
+// Light/dark theme (saved in localStorage) and the daily-challenge solved count.
 export default function usePreferences() {
   const [theme, setTheme] = useState("light");
-  const [streak, setStreak] = useState(0);
+  const [solved, setSolved] = useState(0);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
@@ -13,16 +13,16 @@ export default function usePreferences() {
     setTheme(activeTheme);
     document.documentElement.setAttribute("data-theme", activeTheme);
 
-    const storedStreak = localStorage.getItem("riddle-streak");
-    if (storedStreak) setStreak(parseInt(storedStreak, 10));
+    const storedSolved = localStorage.getItem("riddles-solved");
+    if (storedSolved) setSolved(parseInt(storedSolved, 10));
 
-    // The daily page fires "streak-updated" when the streak changes.
-    const handleStreakChange = () => {
-      const s = localStorage.getItem("riddle-streak");
-      setStreak(s ? parseInt(s, 10) : 0);
+    // The daily page fires "riddles-solved-updated" when the count changes.
+    const handleSolvedChange = () => {
+      const s = localStorage.getItem("riddles-solved");
+      setSolved(s ? parseInt(s, 10) : 0);
     };
-    window.addEventListener("streak-updated", handleStreakChange);
-    return () => window.removeEventListener("streak-updated", handleStreakChange);
+    window.addEventListener("riddles-solved-updated", handleSolvedChange);
+    return () => window.removeEventListener("riddles-solved-updated", handleSolvedChange);
   }, []);
 
   const toggleTheme = () => {
@@ -32,5 +32,5 @@ export default function usePreferences() {
     localStorage.setItem("theme", next);
   };
 
-  return { theme, toggleTheme, streak };
+  return { theme, toggleTheme, solved };
 }

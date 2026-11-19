@@ -11,12 +11,12 @@ import useScrollProgress from "../hooks/useScrollProgress.js";
 import usePreferences from "../hooks/usePreferences.js";
 import useSession from "../hooks/useSession.js";
 
-// Site header. The logic lives in three hooks (scroll, theme/streak, session);
+// Site header. The logic lives in three hooks (scroll, theme/solved count, session);
 // this file only lays out the bar. Desktop auth and the mobile menu are their own files.
 export default function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrolled, progress } = useScrollProgress();
-  const { theme, toggleTheme, streak } = usePreferences();
+  const { theme, toggleTheme, solved } = usePreferences();
   const { user, isReviewer, handleLogout } = useSession();
 
   return (
@@ -41,7 +41,7 @@ export default function NavBar() {
         </Link>
 
         <div className="gr-nav-actions">
-          <NavUserLinks user={user} isReviewer={isReviewer} streak={streak} />
+          <NavUserLinks user={user} isReviewer={isReviewer} solved={solved} />
 
           <NavDesktopAuth user={user} onLogout={handleLogout} />
 
@@ -68,7 +68,7 @@ export default function NavBar() {
         <MobileMenu
           user={user}
           isReviewer={isReviewer}
-          streak={streak}
+          solved={solved}
           onClose={() => setMobileOpen(false)}
           onLogout={handleLogout}
         />

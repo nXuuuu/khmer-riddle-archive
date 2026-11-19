@@ -4,7 +4,7 @@ import Icon from "./Icon.js";
 const ROW = { display: "flex", gap: "10px", marginTop: "6px", paddingTop: "12px", borderTop: "1px solid var(--border)" };
 
 // The dropdown menu shown on small screens. Every link closes the menu.
-export default function MobileMenu({ user, isReviewer, streak, onClose, onLogout }) {
+export default function MobileMenu({ user, isReviewer, solved, onClose, onLogout }) {
   return (
     <div className="gr-mobile-menu">
       <Link href="/" className="gr-nav-link" onClick={onClose}>Home</Link>
@@ -16,9 +16,9 @@ export default function MobileMenu({ user, isReviewer, streak, onClose, onLogout
       {isReviewer && (
         <Link href="/review" className="gr-nav-link" onClick={onClose}>Review Queue</Link>
       )}
-      {streak > 0 && (
+      {solved > 0 && (
         <Link href="/daily" className="gr-streak-badge" onClick={onClose}>
-          <Icon name="flame" size={14} /> {streak} Day Streak
+          <Icon name="flame" size={14} /> {solved} Riddles Solved
         </Link>
       )}
       {user ? (
