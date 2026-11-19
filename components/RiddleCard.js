@@ -46,8 +46,8 @@ export default function RiddleCard({ item, number, currentUser }) {
 
       <div className="mu-caption">
         <div className="mu-caption-top">
-          <span className="mu-label"><span lang="km">លេខ {toKhmerDigits(String(number).padStart(2, "0"))}</span> · No. {String(number).padStart(2, "0")}</span>
-          <span className="mu-label"><span lang="km">{CATEGORY_LABELS[item.category] || item.category}</span> · {item.category}</span>
+          <span className="mu-label" lang="km" title={`No. ${String(number).padStart(2, "0")}`}>លេខ {toKhmerDigits(String(number).padStart(2, "0"))}</span>
+          <span className="mu-label" lang="km" title={item.category}>{CATEGORY_LABELS[item.category] || item.category}</span>
         </div>
         <p className="mu-caption-q" lang="km">« {item.question} »</p>
         {item.hint && <p className="mu-caption-hint">{item.hint}</p>}

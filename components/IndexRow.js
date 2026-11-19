@@ -27,7 +27,7 @@ export default function IndexRow({ item, number, currentUser, onHover, position 
         </span>
         <span className="mu-row-no" title={`No. ${String(number).padStart(2, "0")}`} lang="km">{toKhmerDigits(String(number).padStart(2, "0"))}</span>
         <span className="mu-row-q" lang="km">{item.question}</span>
-        <span className="mu-row-cat"><span lang="km">{CATEGORY_LABELS[item.category] || item.category}</span> · {item.category}</span>
+        <span className="mu-row-cat" title={item.category} lang="km">{CATEGORY_LABELS[item.category] || item.category}</span>
         <span className="mu-row-plus" aria-hidden="true">+</span>
       </button>
 
