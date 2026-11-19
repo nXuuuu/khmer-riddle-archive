@@ -5,12 +5,15 @@ import RiddleVisual from "./RiddleVisual.js";
 import RiddleOwnerActions from "./RiddleOwnerActions.js";
 import { CATEGORY_LABELS } from "../collection.config.js";
 import { toKhmerDigits } from "../utils/khmerDigits.js";
+import usePreferences from "../hooks/usePreferences.js";
 
 // One object in the Gallery view: image first, Khmer riddle as the caption.
 // Clicking the image (or "Reveal") slides the answer up over it.
 export default function RiddleCard({ item, number, currentUser }) {
   const [open, setOpen] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  // Same Khmer/English toggle as the nav bar, so these small tags switch with it.
+  const { navLang } = usePreferences();
 
   const isOwner = currentUser && currentUser.id === item.owner;
   const toggle = () => setOpen((o) => !o);
@@ -46,8 +49,17 @@ export default function RiddleCard({ item, number, currentUser }) {
 
       <div className="mu-caption">
         <div className="mu-caption-top">
-          <span className="mu-label" lang="km" title={`No. ${String(number).padStart(2, "0")}`}>លេខ {toKhmerDigits(String(number).padStart(2, "0"))}</span>
-          <span className="mu-label" lang="km" title={item.category}>{CATEGORY_LABELS[item.category] || item.category}</span>
+          {navLang === "km" ? (
+            <>
+              <span className="mu-label" lang="km">លេខ {toKhmerDigits(String(number).padStart(2, "0"))}</span>
+              <span className="mu-label" lang="km">{CATEGORY_LABELS[item.category] || item.category}</span>
+            </>
+          ) : (
+            <>
+              <span className="mu-label">No. {String(number).padStart(2, "0")}</span>
+              <span className="mu-label">{item.category}</span>
+            </>
+          )}
         </div>
         <p className="mu-caption-q" lang="km">« {item.question} »</p>
         {item.hint && <p className="mu-caption-hint">{item.hint}</p>}

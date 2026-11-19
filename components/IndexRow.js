@@ -5,11 +5,14 @@ import RiddleVisual from "./RiddleVisual.js";
 import RiddleOwnerActions from "./RiddleOwnerActions.js";
 import { CATEGORY_LABELS } from "../collection.config.js";
 import { toKhmerDigits } from "../utils/khmerDigits.js";
+import usePreferences from "../hooks/usePreferences.js";
 
 // One line of the Index view. Click to expand the answer underneath.
 export default function IndexRow({ item, number, currentUser, onHover, position = 0 }) {
   const [open, setOpen] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  // Same Khmer/English toggle as the nav bar, so the no./category columns switch with it.
+  const { navLang } = usePreferences();
 
   const isOwner = currentUser && currentUser.id === item.owner;
   if (deleted) return null;
@@ -25,9 +28,13 @@ export default function IndexRow({ item, number, currentUser, onHover, position 
         <span className="mu-row-thumb" aria-hidden="true">
           <RiddleVisual item={item} showTag={false} />
         </span>
-        <span className="mu-row-no" title={`No. ${String(number).padStart(2, "0")}`} lang="km">{toKhmerDigits(String(number).padStart(2, "0"))}</span>
+        <span className="mu-row-no" lang={navLang === "km" ? "km" : undefined}>
+          {navLang === "km" ? toKhmerDigits(String(number).padStart(2, "0")) : `No. ${String(number).padStart(2, "0")}`}
+        </span>
         <span className="mu-row-q" lang="km">{item.question}</span>
-        <span className="mu-row-cat" title={item.category} lang="km">{CATEGORY_LABELS[item.category] || item.category}</span>
+        <span className="mu-row-cat" lang={navLang === "km" ? "km" : undefined}>
+          {navLang === "km" ? (CATEGORY_LABELS[item.category] || item.category) : item.category}
+        </span>
         <span className="mu-row-plus" aria-hidden="true">+</span>
       </button>
 
