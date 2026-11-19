@@ -8,8 +8,9 @@ export default function SiteFooter() {
         <p className="mu-footer-big reveal" lang="km">ពាក្យបណ្តៅ</p>
         <div className="mu-footer-row">
           <span>
-            <span lang="km">{collection.nameKm}</span> · {collection.name} — preserving the oral wit of the Khmer
-            people, one riddle at a time.
+            <span lang="km">{collection.nameKm}</span> · {collection.name} —{" "}
+            <span lang="km">អភិរក្សប្រាជ្ញាផ្ទាល់មាត់របស់ប្រជាជនខ្មែរ ម្តងមួយពាក្យបណ្តៅ។</span>{" "}
+            preserving the oral wit of the Khmer people, one riddle at a time.
           </span>
           <a href="/login" className="vt-footer-admin-link">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

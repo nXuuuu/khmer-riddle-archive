@@ -41,7 +41,7 @@ export default function RiddleVisual({ item, category, showTag = true }) {
       <div style={{ height: "100%", transform: v >= 2 ? "scaleX(-1)" : "none" }}>
         <Art variant={v} />
       </div>
-      {showTag && <span className="mu-visual-tag">Illustration</span>}
+      {showTag && <span className="mu-visual-tag"><span lang="km">គំនូរ</span> · Illustration</span>}
     </div>
   );
 }

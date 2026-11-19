@@ -18,7 +18,7 @@ export default function ReviewQueue({ initialEntries }) {
     try {
       const supabase = createClient();
       if (!supabase) {
-        setErrorMsg("Failed to connect to database. Please try again.");
+        setErrorMsg("មិនអាចភ្ជាប់ទៅមូលដ្ឋានទិន្នន័យបានទេ។ សូមព្យាយាមម្តងទៀត។ · Failed to connect to database. Please try again.");
         setProcessingId(null);
         return;
       }
@@ -29,14 +29,14 @@ export default function ReviewQueue({ initialEntries }) {
       });
 
       if (error || data !== true) {
-        setErrorMsg("Failed to update entry status. Please try again or refresh.");
+        setErrorMsg("មិនអាចកែប្រែស្ថានភាពធាតុបានទេ។ សូមព្យាយាមម្តងទៀត ឬផ្ទុកទំព័រឡើងវិញ។ · Failed to update entry status. Please try again or refresh.");
         setProcessingId(null);
         return;
       }
 
       setEntries((prev) => prev.filter((e) => e.id !== id));
     } catch {
-      setErrorMsg("An unexpected error occurred while reviewing.");
+      setErrorMsg("មានកំហុសដែលមិនបានរំពឹងទុកកើតឡើងនៅពេលត្រួតពិនិត្យ។ · An unexpected error occurred while reviewing.");
     } finally {
       setProcessingId(null);
     }
@@ -49,7 +49,7 @@ export default function ReviewQueue({ initialEntries }) {
           <KmEn km="កន្លែងត្រួតពិនិត្យ" en="Review Queue" />
         </h1>
         <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
-          Pending entries submitted by contributors, sorted oldest first.
+          <span lang="km">ធាតុកំពុងរង់ចាំការត្រួតពិនិត្យពីអ្នករួមចំណែក រៀបតាមលំដាប់ចាស់ទៅថ្មី។</span> · Pending entries submitted by contributors, sorted oldest first.
         </p>
       </div>
 

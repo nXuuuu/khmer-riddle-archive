@@ -7,6 +7,8 @@ import NavBar from "../../components/NavBar.js";
 import { createClient } from "../../utils/supabase/client.js";
 import KmEn from "../../components/KmEn.js";
 
+// Khmer wording below was written by Claude for the November Khmer-first pass —
+// flagged for a native-speaker check (see README section 5).
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -22,7 +24,7 @@ export default function LoginPage() {
     try {
       const supabase = createClient();
       if (!supabase) {
-        setError("Authentication is not configured on this deployment.");
+        setError("ការផ្ទៀងផ្ទាត់មិនត្រូវបានកំណត់រចនាសម្ព័ន្ធលើការដាក់ឱ្យប្រើប្រាស់នេះទេ។ · Authentication is not configured on this deployment.");
         setLoading(false);
         return;
       }
@@ -34,7 +36,7 @@ export default function LoginPage() {
 
       if (signInError) {
         // Uniform error to prevent user enumeration
-        setError("Invalid email or password");
+        setError("អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។ · Invalid email or password");
         setLoading(false);
         return;
       }
@@ -42,7 +44,7 @@ export default function LoginPage() {
       router.push("/");
       router.refresh();
     } catch {
-      setError("Invalid email or password");
+      setError("អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។ · Invalid email or password");
       setLoading(false);
     }
   };
@@ -56,7 +58,7 @@ export default function LoginPage() {
             <KmEn km="ចូលគណនី" en="Log In" />
           </h1>
           <p style={{ color: "var(--text-secondary)", fontSize: "14px", marginBottom: "24px" }}>
-            Sign in to your contributor account.
+            <span lang="km">ចូលទៅគណនីអ្នករួមចំណែករបស់អ្នក។</span> · Sign in to your contributor account.
           </p>
 
           {error && (
@@ -67,7 +69,7 @@ export default function LoginPage() {
 
           <div className="gr-form-group">
             <label className="gr-form-label" htmlFor="login-email">
-              Email
+              <span lang="km">អ៊ីមែល</span> · Email
             </label>
             <input
               id="login-email"
@@ -83,7 +85,7 @@ export default function LoginPage() {
 
           <div className="gr-form-group" style={{ marginBottom: "24px" }}>
             <label className="gr-form-label" htmlFor="login-password">
-              Password
+              <span lang="km">ពាក្យសម្ងាត់</span> · Password
             </label>
             <input
               id="login-password"
@@ -103,13 +105,15 @@ export default function LoginPage() {
             className="gr-submit-btn"
             style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "wait" : "pointer" }}
           >
-            {loading ? "Signing in…" : "Log In"}
+            {loading
+              ? <><span lang="km">កំពុងចូល...</span> · Signing in…</>
+              : <><span lang="km">ចូលគណនី</span> · Log In</>}
           </button>
 
           <p style={{ marginTop: "20px", fontSize: "14px", color: "var(--text-secondary)", textAlign: "center" }}>
-            Don&apos;t have an account?{" "}
+            <span lang="km">មិនទាន់មានគណនីទេ?</span> Don&apos;t have an account?{" "}
             <Link href="/signup" style={{ color: "var(--accent)", textDecoration: "underline" }}>
-              Sign up
+              <span lang="km">ចុះឈ្មោះ</span> · Sign up
             </Link>
           </p>
         </form>

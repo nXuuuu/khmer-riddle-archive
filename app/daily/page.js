@@ -100,7 +100,7 @@ export default function DailyChallenge() {
             </div>
             {currentRiddle ? (
               <div className="modern-card gr-quiz-card">
-                <span className="gr-quiz-label">Question {step + 1} of 3</span>
+                <span className="gr-quiz-label"><span lang="km">សំណួរទី {step + 1} នៃ ៣</span> · Question {step + 1} of 3</span>
                 <div className="gr-quiz-question" lang="km">
                   « {currentRiddle.question} »
                 </div>
@@ -136,13 +136,13 @@ export default function DailyChallenge() {
                   <span className="gr-quiz-hint" onClick={() => setHint(true)}>
                     <Icon name="bulb" size={15} />{" "}
                     {hint
-                      ? currentRiddle.hint || "No hint available"
-                      : "Need a hint? · ត្រូវការតម្រុយ?"}
+                      ? currentRiddle.hint || "គ្មានតម្រុយ · No hint available"
+                      : "ត្រូវការតម្រុយ? · Need a hint?"}
                   </span>
                 </div>
               </div>
             ) : (
-              <p style={{ textAlign: "center", marginTop: "40px" }}>Loading daily challenge...</p>
+              <p style={{ textAlign: "center", marginTop: "40px" }}><span lang="km">កំពុងផ្ទុកល្បែងប្រចាំថ្ងៃ...</span> · Loading daily challenge...</p>
             )}
           </div>
         )}
@@ -151,13 +151,16 @@ export default function DailyChallenge() {
           <div className="modern-card gr-daily-success">
             <div className="gr-daily-success-icon"><Icon name="flame" size={56} /></div>
             <h2 style={{ marginBottom: "12px", fontSize: "28px" }}><KmEn km="បញ្ចប់ការប្រកួតហើយ!" en="Challenge Completed!" /></h2>
+            <p lang="km" style={{ color: "var(--text-secondary)", marginBottom: "4px" }}>
+              ល្អណាស់! អ្នកដោះស្រាយបានពាក្យបណ្តៅទាំង ៣ ប្រចាំថ្ងៃនេះ។
+            </p>
             <p style={{ color: "var(--text-secondary)", marginBottom: "24px" }}>
               Awesome job! You solved all 3 daily Khmer riddles.
             </p>
             <div style={{ fontSize: "20px", fontWeight: 700, color: "var(--accent)", marginBottom: "32px" }}>
-              Riddles Solved: {solved}
+              <span lang="km">ពាក្យបណ្តៅបានដោះស្រាយ៖</span> {solved} · Riddles Solved: {solved}
             </div>
-            <Link href="/" className="gr-btn-primary">Back Home</Link>
+            <Link href="/" className="gr-btn-primary"><KmEn km="ត្រឡប់ទៅទំព័រដើម" en="Back Home" inline /></Link>
           </div>
         )}
 
@@ -165,10 +168,13 @@ export default function DailyChallenge() {
           <div className="modern-card gr-daily-success">
             <div className="gr-daily-success-icon"><Icon name="cross" size={56} /></div>
             <h2 style={{ marginBottom: "12px", fontSize: "28px" }}><KmEn km="ចម្លើយមិនត្រឹមត្រូវ" en="Incorrect Answer" /></h2>
+            <p lang="km" style={{ color: "var(--text-secondary)", marginBottom: "4px" }}>
+              កុំបារម្ភ លោកអ្នកអាចសាកល្បងល្បែងប្រចាំថ្ងៃបានច្រើនដងតាមចង់បាន!
+            </p>
             <p style={{ color: "var(--text-secondary)", marginBottom: "32px" }}>
               Don't worry, daily challenges can be tried as many times as you like!
             </p>
-            <button className="gr-btn-primary" onClick={() => initGame()}>Try Again</button>
+            <button className="gr-btn-primary" onClick={() => initGame()}><KmEn km="ព្យាយាមម្តងទៀត" en="Try Again" inline /></button>
           </div>
         )}
       </main>

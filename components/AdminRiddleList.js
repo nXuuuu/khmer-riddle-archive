@@ -20,7 +20,7 @@ export default function AdminRiddleList({ title, items, loading = false, emptyTe
     <>
       <h2 style={S.title}>{title}</h2>
       {loading ? (
-        <p style={S.empty}>Loading…</p>
+        <p style={S.empty}><span lang="km">កំពុងផ្ទុក</span>… · Loading…</p>
       ) : items.length === 0 ? (
         <p style={S.empty}>{emptyText}</p>
       ) : (

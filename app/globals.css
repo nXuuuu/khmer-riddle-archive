@@ -338,6 +338,17 @@ button:hover .mu-arrow { transform: translateX(4px); }
 .gr-nav-mobile-btn:hover { border-color: var(--ink); }
 .gr-nav-mobile-btn { display: none; }
 
+/* The Khmer/English nav toggle reuses .gr-theme-btn but needs room for a
+   short text label instead of a single icon glyph. */
+.gr-lang-toggle-btn {
+  width: auto;
+  min-width: 44px;
+  padding: 0 12px;
+  border-radius: 22px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 @media (max-width: 960px) {
   .gr-nav-links,
   .gr-nav-right-links,

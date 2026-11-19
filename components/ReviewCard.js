@@ -23,7 +23,7 @@ export default function ReviewCard({ entry, onReview, disabled }) {
 
       <div style={{ marginBottom: "12px" }}>
         <span style={{ fontSize: "11px", fontWeight: 700, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "1px" }}>
-          Question (Khmer)
+          <span lang="km">សំណួរ (ខ្មែរ)</span> · Question (Khmer)
         </span>
         <p lang="km" style={{ fontSize: "18px", fontWeight: 700, marginTop: "4px", lineHeight: 1.6 }}>
           « {entry.question} »
@@ -38,19 +38,19 @@ export default function ReviewCard({ entry, onReview, disabled }) {
 
       <div style={{ background: "var(--bg-base)", padding: "12px 16px", borderRadius: "var(--radius-sm)", marginBottom: "12px", fontSize: "13px" }}>
         <div style={{ marginBottom: "6px" }}>
-          <strong style={{ color: "var(--text-secondary)" }}>Answers: </strong>
+          <strong style={{ color: "var(--text-secondary)" }}><span lang="km">ចម្លើយ</span> · Answers: </strong>
           <span lang="km" style={{ fontWeight: 600 }}>{entry.answer_kh}</span>
           <span style={{ color: "var(--text-muted)" }}> ({entry.answer_en})</span>
         </div>
         {entry.explanation && (
           <div style={{ color: "var(--text-secondary)", fontSize: "12px", marginTop: "4px" }}>
-            <strong>Explanation: </strong>{entry.explanation}
+            <strong><span lang="km">ការពន្យល់</span> · Explanation: </strong>{entry.explanation}
           </div>
         )}
       </div>
 
       <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "18px" }}>
-        <strong>Source: </strong>{entry.source}
+        <strong><span lang="km">ប្រភព</span> · Source: </strong>{entry.source}
       </div>
 
       <div style={{ display: "flex", gap: "10px" }}>

@@ -12,7 +12,7 @@ export default function ReviewEmpty() {
         No pending entries in the queue
       </h3>
       <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
-        The queue is clear. All submissions have been reviewed.
+        <span lang="km">ជួរនេះគ្មានអ្វីទេ។ រាល់ការដាក់ស្នើបានត្រួតពិនិត្យរួចហើយ។</span> · The queue is clear. All submissions have been reviewed.
       </p>
     </div>
   );

@@ -7,7 +7,7 @@ import { createClient } from "../utils/supabase/client.js";
 // The delete logic is unchanged from the original RiddleCard; it just lives here now.
 export default function RiddleOwnerActions({ item, onDeleted }) {
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this riddle?")) return;
+    if (!window.confirm("តើអ្នកប្រាកដថាចង់លុបពាក្យបណ្តៅនេះមែនទេ? · Are you sure you want to delete this riddle?")) return;
 
     const supabase = createClient();
     if (!supabase) return;
@@ -21,13 +21,13 @@ export default function RiddleOwnerActions({ item, onDeleted }) {
 
     if (error) {
       console.error(error);
-      alert("An error occurred during deletion.");
+      alert("មានកំហុសកើតឡើងកំឡុងពេលលុប។ · An error occurred during deletion.");
       return;
     }
 
     if (!data || data.length === 0) {
       console.error("Deletion refused by RLS. Zero rows returned.");
-      alert("That change wasn't saved.");
+      alert("ការផ្លាស់ប្តូរនេះមិនត្រូវបានរក្សាទុកទេ។ · That change wasn't saved.");
       return;
     }
 
@@ -49,11 +49,11 @@ export default function RiddleOwnerActions({ item, onDeleted }) {
 
   return (
     <div className="gr-card-owner">
-      <Link href={`/edit/${item.id}`} className="gr-card-reveal-btn">
-        Edit
+      <Link href={`/edit/${item.id}`} className="gr-card-reveal-btn" title="កែសម្រួល · Edit">
+        <span lang="km">កែសម្រួល</span> · Edit
       </Link>
-      <button type="button" onClick={handleDelete} className="gr-card-reveal-btn gr-card-delete-btn">
-        Delete
+      <button type="button" onClick={handleDelete} className="gr-card-reveal-btn gr-card-delete-btn" title="លុប · Delete">
+        <span lang="km">លុប</span> · Delete
       </button>
     </div>
   );

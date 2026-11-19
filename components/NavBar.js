@@ -10,13 +10,14 @@ import MobileMenu from "./MobileMenu.js";
 import useScrollProgress from "../hooks/useScrollProgress.js";
 import usePreferences from "../hooks/usePreferences.js";
 import useSession from "../hooks/useSession.js";
+import NAV_LABELS from "../utils/navLabels.js";
 
-// Site header. The logic lives in three hooks (scroll, theme/solved count, session);
+// Site header. The logic lives in three hooks (scroll, theme/solved/nav-lang, session);
 // this file only lays out the bar. Desktop auth and the mobile menu are their own files.
 export default function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrolled, progress } = useScrollProgress();
-  const { theme, toggleTheme, solved } = usePreferences();
+  const { theme, toggleTheme, solved, navLang, toggleNavLang } = usePreferences();
   const { user, isReviewer, handleLogout } = useSession();
 
   return (
@@ -28,22 +29,31 @@ export default function NavBar() {
         <div className="gr-nav-left">
           <nav aria-label="Main navigation">
             <ul className="gr-nav-links">
-              <li><Link href="/" className="gr-nav-link">Home</Link></li>
-              <li><Link href="/daily" className="gr-nav-link">Daily Challenge</Link></li>
-              <li><Link href="/contribute" className="gr-nav-link">Submit Riddle</Link></li>
+              <li><Link href="/" className="gr-nav-link">{NAV_LABELS.home[navLang]}</Link></li>
+              <li><Link href="/daily" className="gr-nav-link">{NAV_LABELS.daily[navLang]}</Link></li>
+              <li><Link href="/contribute" className="gr-nav-link">{NAV_LABELS.submit[navLang]}</Link></li>
             </ul>
           </nav>
         </div>
 
         <Link href="/" className="gr-logo-center" aria-label="Khmer Riddle Archive Home">
-          <span className="gr-logo-title">{collection.name}</span>
-          <span className="gr-logo-tagline">Living Folklore Archive</span>
+          <span className="gr-logo-title">{navLang === "km" ? collection.nameKm : collection.name}</span>
+          <span className="gr-logo-tagline">{navLang === "km" ? "បណ្ណសារនិទានប្រពៃណីរស់" : "Living Folklore Archive"}</span>
         </Link>
 
         <div className="gr-nav-actions">
-          <NavUserLinks user={user} isReviewer={isReviewer} solved={solved} />
+          <NavUserLinks user={user} isReviewer={isReviewer} solved={solved} navLang={navLang} />
 
-          <NavDesktopAuth user={user} onLogout={handleLogout} />
+          <NavDesktopAuth user={user} onLogout={handleLogout} navLang={navLang} />
+
+          <button
+            className="gr-theme-btn gr-lang-toggle-btn"
+            onClick={toggleNavLang}
+            aria-label={navLang === "km" ? "Switch navigation to English" : "ប្តូរម៉ឺនុយទៅភាសាខ្មែរ"}
+            title={navLang === "km" ? "English" : "ខ្មែរ"}
+          >
+            {navLang === "km" ? "EN" : "ខ្មែរ"}
+          </button>
 
           <button
             className="gr-theme-btn"
@@ -69,6 +79,8 @@ export default function NavBar() {
           user={user}
           isReviewer={isReviewer}
           solved={solved}
+          navLang={navLang}
+          toggleNavLang={toggleNavLang}
           onClose={() => setMobileOpen(false)}
           onLogout={handleLogout}
         />

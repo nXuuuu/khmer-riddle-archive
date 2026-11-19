@@ -21,7 +21,7 @@ export default function AdminPage() {
       setIsLoggedIn(true);
       setError("");
     } else {
-      setError("Incorrect password. (Hint: curator's first name)");
+      setError("ពាក្យសម្ងាត់មិនត្រឹមត្រូវ។ (តម្រុយ៖ ឈ្មោះដំបូងរបស់អ្នកថែរក្សា) · Incorrect password. (Hint: curator's first name)");
     }
   };
 
@@ -33,19 +33,19 @@ export default function AdminPage() {
           <div className="modern-card" style={{ maxWidth: 420, margin: "0 auto", padding: "clamp(24px, 5vw, 36px)" }}>
             <h2 style={{ marginBottom: 16, fontSize: "var(--text-xl)", fontWeight: 700 }}><KmEn km="ចូលសម្រាប់អ្នកថែរក្សា" en="Curator Login" /></h2>
             <p style={{ color: "var(--text-secondary)", marginBottom: 24, fontSize: 14 }}>
-              Enter your passcode to manage riddle submissions and edit the archive.
+              <span lang="km">បញ្ចូលលេខសម្ងាត់របស់អ្នកដើម្បីគ្រប់គ្រងការដាក់ស្នើ និងកែប្រែបណ្ណសារ។</span> · Enter your passcode to manage riddle submissions and edit the archive.
             </p>
             <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <input 
-                type="password" 
-                placeholder="Enter password" 
+              <input
+                type="password"
+                placeholder="បញ្ចូលពាក្យសម្ងាត់ · Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="gr-form-input"
                 autoFocus
               />
               <button type="submit" className="gr-btn-primary">
-                Login
+                <span lang="km">ចូល</span> · Login
               </button>
               {error && <p style={{ color: "var(--accent)", fontSize: 13, marginTop: 4 }}>{error}</p>}
             </form>
@@ -56,14 +56,14 @@ export default function AdminPage() {
               <div>
                 <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800 }}><KmEn km="ផ្ទាំងគ្រប់គ្រង" en="Admin Dashboard" /></h1>
                 <p style={{ color: "var(--text-secondary)", marginTop: 4 }}>
-                  Welcome back, {collection.curator}.
+                  <span lang="km">សូមស្វាគមន៍មកវិញ</span>, {collection.curator}. · Welcome back, {collection.curator}.
                 </p>
               </div>
               <button className="gr-btn-secondary" onClick={() => {
                 setIsLoggedIn(false);
                 setPassword("");
               }}>
-                Logout
+                <span lang="km">ចាកចេញ</span> · Logout
               </button>
             </div>
             
@@ -71,7 +71,7 @@ export default function AdminPage() {
             
             <div style={{ marginTop: 40, textAlign: "center" }}>
               <Link href="/" style={{ color: "var(--text-secondary)", textDecoration: "none", fontSize: 14 }}>
-                &larr; Back to Public Archive
+                &larr; <span lang="km">ត្រឡប់ទៅបណ្ណសារសាធារណៈ</span> · Back to Public Archive
               </Link>
             </div>
           </div>

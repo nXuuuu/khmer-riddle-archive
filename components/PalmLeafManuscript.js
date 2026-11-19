@@ -39,7 +39,7 @@ export default function PalmLeafManuscript() {
             </text>
           </g>
         </svg>
-        <span className="mu-visual-tag">Illustration</span>
+        <span className="mu-visual-tag"><span lang="km">គំនូរ</span> · Illustration</span>
       </div>
       <figcaption>
         <span lang="km">ស្លឹករឹតបុរាណ</span> · Palm-leaf manuscript

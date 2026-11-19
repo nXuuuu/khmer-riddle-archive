@@ -39,7 +39,7 @@ export default function MyEntries() {
     load();
   }, []);
 
-  if (loading) return <div style={{ textAlign: "center", padding: "60px" }}>Loading...</div>;
+  if (loading) return <div style={{ textAlign: "center", padding: "60px" }}><span lang="km">កំពុងផ្ទុក</span>… · Loading...</div>;
 
   if (!user) {
     return (
@@ -48,9 +48,9 @@ export default function MyEntries() {
         <main className="gr-submit-container" style={{ textAlign: "center", padding: "80px 20px" }}>
           <h2><KmEn km="សម្រាប់សមាជិកប៉ុណ្ណោះ" en="Members Only" /></h2>
           <p style={{ color: "var(--text-secondary)", margin: "20px 0" }}>
-            You must be logged in to view your entries.
+            <span lang="km">អ្នកត្រូវតែចូលគណនីដើម្បីមើលធាតុរបស់អ្នក។</span> · You must be logged in to view your entries.
           </p>
-          <Link href="/login" className="gr-btn-primary">Log In</Link>
+          <Link href="/login" className="gr-btn-primary"><KmEn km="ចូលគណនី" en="Log In" inline /></Link>
         </main>
       </>
     );
@@ -69,9 +69,9 @@ export default function MyEntries() {
         {entries.length === 0 ? (
           <div className="modern-card" style={{ padding: "40px", textAlign: "center" }}>
             <p style={{ color: "var(--text-secondary)", marginBottom: "20px" }}>
-              You haven&apos;t submitted any riddles yet.
+              <span lang="km">អ្នកមិនទាន់បានដាក់ស្នើពាក្យបណ្តៅណាមួយនៅឡើយទេ។</span> · You haven&apos;t submitted any riddles yet.
             </p>
-            <Link href="/contribute" className="gr-btn-primary">Submit a Riddle</Link>
+            <Link href="/contribute" className="gr-btn-primary"><KmEn km="ដាក់ស្នើពាក្យបណ្តៅ" en="Submit a Riddle" inline /></Link>
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -106,7 +106,7 @@ export default function MyEntries() {
         )}
 
         <div style={{ marginTop: "32px" }}>
-          <Link href="/contribute" className="gr-btn-primary">Submit Another Riddle</Link>
+          <Link href="/contribute" className="gr-btn-primary"><KmEn km="ដាក់ស្នើពាក្យបណ្តៅមួយទៀត" en="Submit Another Riddle" inline /></Link>
         </div>
       </main>
     </>

@@ -7,6 +7,8 @@ import NavBar from "../../components/NavBar.js";
 import { createClient } from "../../utils/supabase/client.js";
 import KmEn from "../../components/KmEn.js";
 
+// Khmer wording below was written by Claude for the November Khmer-first pass —
+// flagged for a native-speaker check (see README section 5).
 export default function SignupPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -19,7 +21,7 @@ export default function SignupPage() {
     setError("");
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError("ពាក្យសម្ងាត់ត្រូវមានយ៉ាងហោចណាស់ ៦ តួអក្សរ។ · Password must be at least 6 characters.");
       return;
     }
 
@@ -28,7 +30,7 @@ export default function SignupPage() {
     try {
       const supabase = createClient();
       if (!supabase) {
-        setError("Authentication is not configured on this deployment.");
+        setError("ការផ្ទៀងផ្ទាត់មិនត្រូវបានកំណត់រចនាសម្ព័ន្ធលើការដាក់ឱ្យប្រើប្រាស់នេះទេ។ · Authentication is not configured on this deployment.");
         setLoading(false);
         return;
       }
@@ -41,11 +43,11 @@ export default function SignupPage() {
       if (signUpError) {
         const msg = signUpError.message?.toLowerCase() || "";
         if (msg.includes("already registered") || msg.includes("already exists")) {
-          setError("An account with this email already exists. Please log in instead.");
+          setError("មានគណនីជាមួយអ៊ីមែលនេះរួចហើយ។ សូមចូលគណនីជំនួសវិញ។ · An account with this email already exists. Please log in instead.");
         } else if (msg.includes("password")) {
-          setError("Password must be at least 6 characters.");
+          setError("ពាក្យសម្ងាត់ត្រូវមានយ៉ាងហោចណាស់ ៦ តួអក្សរ។ · Password must be at least 6 characters.");
         } else {
-          setError("Unable to create account. Please try again.");
+          setError("មិនអាចបង្កើតគណនីបានទេ។ សូមព្យាយាមម្តងទៀត។ · Unable to create account. Please try again.");
         }
         setLoading(false);
         return;
@@ -54,7 +56,7 @@ export default function SignupPage() {
       router.push("/");
       router.refresh();
     } catch {
-      setError("Unable to sign up. Please try again.");
+      setError("មិនអាចចុះឈ្មោះបានទេ។ សូមព្យាយាមម្តងទៀត។ · Unable to sign up. Please try again.");
       setLoading(false);
     }
   };
@@ -68,7 +70,7 @@ export default function SignupPage() {
             <KmEn km="ចុះឈ្មោះ" en="Sign Up" />
           </h1>
           <p style={{ color: "var(--text-secondary)", fontSize: "14px", marginBottom: "24px" }}>
-            Create a contributor account to join the archive.
+            <span lang="km">បង្កើតគណនីអ្នករួមចំណែកដើម្បីចូលរួមជាមួយបណ្ណសារ។</span> · Create a contributor account to join the archive.
           </p>
 
           {error && (
@@ -79,7 +81,7 @@ export default function SignupPage() {
 
           <div className="gr-form-group">
             <label className="gr-form-label" htmlFor="signup-email">
-              Email
+              <span lang="km">អ៊ីមែល</span> · Email
             </label>
             <input
               id="signup-email"
@@ -95,7 +97,7 @@ export default function SignupPage() {
 
           <div className="gr-form-group" style={{ marginBottom: "24px" }}>
             <label className="gr-form-label" htmlFor="signup-password">
-              Password
+              <span lang="km">ពាក្យសម្ងាត់</span> · Password
             </label>
             <input
               id="signup-password"
@@ -116,13 +118,15 @@ export default function SignupPage() {
             className="gr-submit-btn"
             style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "wait" : "pointer" }}
           >
-            {loading ? "Creating account…" : "Create Account"}
+            {loading
+              ? <><span lang="km">កំពុងបង្កើតគណនី...</span> · Creating account…</>
+              : <><span lang="km">បង្កើតគណនី</span> · Create Account</>}
           </button>
 
           <p style={{ marginTop: "20px", fontSize: "14px", color: "var(--text-secondary)", textAlign: "center" }}>
-            Already have an account?{" "}
+            <span lang="km">មានគណនីរួចហើយ?</span> Already have an account?{" "}
             <Link href="/login" style={{ color: "var(--accent)", textDecoration: "underline" }}>
-              Log in
+              <span lang="km">ចូលគណនី</span> · Log in
             </Link>
           </p>
         </form>

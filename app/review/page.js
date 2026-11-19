@@ -19,11 +19,14 @@ export default async function ReviewPage() {
             <h2 style={{ marginBottom: "12px", fontSize: "24px", fontWeight: 800 }}>
               <KmEn km="គ្មានការអនុញ្ញាត" en="Access Denied" />
             </h2>
-            <p style={{ color: "var(--text-secondary)", margin: "16px 0 24px", lineHeight: 1.6 }}>
+            <p lang="km" style={{ color: "var(--text-secondary)", margin: "16px 0 8px", lineHeight: 1.9 }}>
+              ទំព័រនេះសម្រាប់តែអ្នកត្រួតពិនិត្យប៉ុណ្ណោះ។ អ្នកមិនមានសិទ្ធិមើល ឬត្រួតពិនិត្យធាតុដែលកំពុងរង់ចាំនោះទេ។
+            </p>
+            <p style={{ color: "var(--text-secondary)", margin: "0 0 24px", lineHeight: 1.6 }}>
               This page is for reviewers only. You do not have permission to view or review pending entries.
             </p>
             <Link href="/" className="gr-btn-primary">
-              Back to Archive
+              <KmEn km="ត្រឡប់ទៅបណ្ណសារ" en="Back to Archive" inline />
             </Link>
           </div>
         </main>
